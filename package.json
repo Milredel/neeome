@@ -1,0 +1,26 @@
+{
+  "name": "google_home_ifttt_neeo_gateway",
+  "version": "1.0.0",
+  "description": "A gateway in NodeJS to use NEEO through Google Home via IFTTT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milredel/google_home_ifttt_neeo_gateway.git"
+  },
+  "keywords": [
+    "server",
+    "ifttt",
+    "google home",
+    "neeo",
+    "NodeJS"
+  ],
+  "author": "Morgan Fromentin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Milredel/google_home_ifttt_neeo_gateway/issues"
+  },
+  "homepage": "https://github.com/Milredel/google_home_ifttt_neeo_gateway#readme"
+}
