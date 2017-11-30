@@ -2,5 +2,5 @@ if recipe.isPoweredOn
     p.isOn #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
 else 
     p.isOff #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
-p setPowerOnUrl : #{recipe.url.setPowerOn}
-p setPowerOffUrl : #{recipe.url.setPowerOff}
+p setPowerOnUrl : #{recipe.url.distantSetPowerOn}
+p setPowerOffUrl : #{recipe.url.distantSetPowerOff}
