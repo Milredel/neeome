@@ -1,0 +1,14 @@
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+.isOn {
+    background-color: green;
+    color: white;
+}
+
+.isOff {
+    background-color: red;
+    color: white;
+}

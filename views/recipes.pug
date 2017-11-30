@@ -1,0 +1,14 @@
+html
+    head
+        title= title
+        style
+            include style.css
+    body
+        .container
+            if recipes.error
+                p Something went wrong !
+            else 
+                ul
+                    each recipe in recipes
+                        li
+                            include recipe.pug
