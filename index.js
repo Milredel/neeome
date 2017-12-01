@@ -47,7 +47,7 @@ async function recipesHandler(req, res) {
         });
         res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes, runningOnConfigSample: runningOnConfigSample })
     } catch (e) {
-        req.send('Error from the recipesHandler (' + e +').');
+        res.send('Error from the recipesHandler (' + e +').');
     }
 }
 
@@ -59,6 +59,33 @@ function formatDistantUrl(url) {
     return config.home.public_dns+"/neeo?token="+myToken+"&room="+matches[0]+"&recipe="+matches[1];
 }
 
+function formatLocalUrl(action, roomId, recipeId) {
+    return "http://"+config.neeo.brain_ip+":3000/"+config.neeo.api_version+"/projects/home/rooms/"+roomId+"/recipes/"+recipeId+"/"+action;
+}
+
 async function executeHandler(req, res) {
-    res.send('OK, I received something from IFTTT, sending command to NEEO');
+    try {
+        var qData = req.query;
+        var roomId = qData.room;
+        var recipeId = qData.recipe;
+        if (roomId == undefined || recipeId == undefined) {
+            throw new Error('Missing parameter room or recipe. Cannot move on.');
+        }
+        var recipeIsActiveUrl = formatLocalUrl("isactive", roomId, recipeId);
+        var response = await fetch(recipeIsActiveUrl);
+        var responseJSON = await response.json();
+        if (responseJSON.active == undefined) {
+            throw new Error("Cannot get powerState for the recipe.");
+        }
+        if (!responseJSON.active) {
+            console.log("recipe is not active, calling execute command");
+            var executeUrl = formatLocalUrl("execute", roomId, recipeId);
+            var response = await fetch(executeUrl);
+        } else {
+            console.log("recipe already active, doing nothing");
+        }
+        res.send('OK, I received something from IFTTT and treated the command appropriately');
+    } catch (e) {
+        res.send('Error executing action ('+e+').');
+    }
 }
