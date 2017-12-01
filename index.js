@@ -1,6 +1,14 @@
 const express = require('express');
 const fetch = require('node-fetch');
-const config = require('./config.sample');
+const fs = require('fs');
+const configSample = require('./config.sample');
+let runningOnConfigSample = true;
+let config = configSample;
+
+if (fs.existsSync("./config.js")) {
+    config = require('./config');
+    runningOnConfigSample = false;
+}
 
 const app = express();
 
@@ -10,7 +18,9 @@ app.get('/', safeHandler(defaultHandler));
 app.get('/recipes', safeHandler(recipesHandler));
 app.get('/neeo', safeHandler(executeHandler));
 
-app.listen(8080);
+app.listen(config.home.local_port, function () {
+    console.log('server listening on port '+config.home.local_port);
+});
 
 function safeHandler(handler) {
     return function(req, res) {
@@ -35,7 +45,7 @@ async function recipesHandler(req, res) {
             recipes[index].url.distantSetPowerOn = formatDistantUrl(recipe.url.setPowerOn);
             recipes[index].url.distantSetPowerOff = formatDistantUrl(recipe.url.setPowerOff);
         });
-        res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes })
+        res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes, runningOnConfigSample: runningOnConfigSample })
     } catch (e) {
         req.send('Error from the recipesHandler (' + e +').');
     }

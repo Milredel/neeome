@@ -5,6 +5,8 @@ html
             include style.css
     body
         .container
+            if runningOnConfigSample
+                p Warning, you are using config.sample.js file. Please create a copy of config.sample.js and rename it config.js to write your own config.
             if recipes.error
                 p Something went wrong !
             else 
