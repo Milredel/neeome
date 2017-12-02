@@ -1,12 +1,14 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const fs = require('fs');
+const path = require('path');
 const configSample = require('./config.sample');
 let runningOnConfigSample = true;
 let config = configSample;
 
-if (fs.existsSync("./config.js")) {
-    config = require('./config');
+var configPath = path.join(__dirname, 'config.js');
+if (fs.existsSync(configPath)) {
+    config = require(configPath);
     runningOnConfigSample = false;
 }
 
