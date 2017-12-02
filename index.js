@@ -42,8 +42,8 @@ async function recipesHandler(req, res) {
         var response = await fetch(getAllRecipesUrl);
         var recipes = await response.json();
         recipes.forEach(function(recipe, index) {
-            recipes[index].url.distantSetPowerOn = formatDistantUrl(recipe.url.setPowerOn);
-            recipes[index].url.distantSetPowerOff = formatDistantUrl(recipe.url.setPowerOff);
+            recipes[index].url.distantSetPowerOn = formatDistantUrl(recipe.url.setPowerOn, "on");
+            recipes[index].url.distantSetPowerOff = formatDistantUrl(recipe.url.setPowerOff, "off");
         });
         res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes, runningOnConfigSample: runningOnConfigSample })
     } catch (e) {
@@ -51,12 +51,12 @@ async function recipesHandler(req, res) {
     }
 }
 
-function formatDistantUrl(url) {
+function formatDistantUrl(url, action) {
     var pattern = /[0-9]{8,}/;
     var regex = new RegExp(pattern, "g");
     var matches = url.match(regex);
     var myToken = config.home.private_token;
-    return config.home.public_dns+"/neeo?token="+myToken+"&room="+matches[0]+"&recipe="+matches[1];
+    return config.home.public_dns+"/neeo?token="+myToken+"&room="+matches[0]+"&recipe="+matches[1]+"&action="+action;
 }
 
 function formatLocalUrl(action, roomId, recipeId) {
@@ -67,9 +67,10 @@ async function executeHandler(req, res) {
     try {
         var qData = req.query;
         var roomId = qData.room;
+        var action = qData.action;
         var recipeId = qData.recipe;
-        if (roomId == undefined || recipeId == undefined) {
-            throw new Error('Missing parameter room or recipe. Cannot move on.');
+        if (roomId == undefined || recipeId == undefined || action == undefined) {
+            throw new Error('Missing parameter room, recipe or action. Cannot move on.');
         }
         var recipeIsActiveUrl = formatLocalUrl("isactive", roomId, recipeId);
         var response = await fetch(recipeIsActiveUrl);
@@ -77,14 +78,13 @@ async function executeHandler(req, res) {
         if (responseJSON.active == undefined) {
             throw new Error("Cannot get powerState for the recipe.");
         }
-        if (!responseJSON.active) {
-            console.log("recipe is not active, calling execute command");
+        if ((action == "on" && !responseJSON.active) || (action == "off" && responseJSON.active)) {
             var executeUrl = formatLocalUrl("execute", roomId, recipeId);
             var response = await fetch(executeUrl);
+            res.send('OK, I received something from IFTTT and executed the recipe');
         } else {
-            console.log("recipe already active, doing nothing");
+            res.send('OK, I received something from IFTTT but nothing to do regarding state of the recipe');
         }
-        res.send('OK, I received something from IFTTT and treated the command appropriately');
     } catch (e) {
         res.send('Error executing action ('+e+').');
     }
