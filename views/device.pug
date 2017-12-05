@@ -1,0 +1,10 @@
+p 
+    | #{device.name} (#{device.details.type}) 
+    button(onClick='onClickShowButtons("macros_'+device.key+'")') Show buttons
+-
+    var device_name = device.key;
+    var id = "macros_"+device_name;
+ul(class="hidden" id=id)
+    for macro in device.macros
+        li
+            include macro.pug

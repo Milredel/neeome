@@ -16,6 +16,7 @@ const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/views'));
+app.use('/views', express.static(path.join(__dirname, 'views')));
 
 app.get('/', safeHandler(defaultHandler));
 app.get('/recipes', safeHandler(recipesHandler));
@@ -41,6 +42,7 @@ async function defaultHandler(req, res) {
 
 async function recipesHandler(req, res) {
     var getAllRecipesUrl = "http://"+config.neeo.brain_ip+":3000/"+config.neeo.api_version+"/api/Recipes";
+    var getAllRooms = "http://"+config.neeo.brain_ip+":3000/"+config.neeo.api_version+"/projects/home/rooms";
     try {
         var response = await fetch(getAllRecipesUrl);
         var recipes = await response.json();
@@ -48,7 +50,19 @@ async function recipesHandler(req, res) {
             recipes[index].url.distantSetPowerOn = formatDistantUrl(recipe.url.setPowerOn, "on");
             recipes[index].url.distantSetPowerOff = formatDistantUrl(recipe.url.setPowerOff, "off");
         });
-        res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes, runningOnConfigSample: runningOnConfigSample })
+        var response = await fetch(getAllRooms);
+        var roomsRaw = await response.json();
+        var rooms = [];
+        roomsRaw.forEach(function(room, index) {
+            var roomDevices = room.devices;
+            if (!(Object.keys(roomDevices).length === 0 && roomDevices.constructor === Object)) {
+                Object.keys(roomDevices).forEach(function(key, index) {
+                    //TODO generate url for each macro                    
+                });
+                rooms.push(room);
+            }
+        });
+        res.render('main', { title: 'Existing NEEO Recipes', recipes: recipes, rooms: rooms, runningOnConfigSample: runningOnConfigSample })
     } catch (e) {
         res.send('Error from the recipesHandler (' + e +').');
     }

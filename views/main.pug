@@ -3,10 +3,13 @@ html
         title= title
         style
             include style.css
+        script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+        script(src='/views/recipes.js')
     body
         .container
             if runningOnConfigSample
                 p Warning, you are using config.sample.js file. Please create a copy of config.sample.js and rename it config.js to write your own config.
+            h1 Recipes
             if recipes.error
                 p Something went wrong !
             else 
@@ -14,3 +17,11 @@ html
                     each recipe in recipes
                         li
                             include recipe.pug
+            h1 Rooms & Devices
+            if rooms.error
+                p Something went wrong !
+            else
+                ul
+                    each room in rooms
+                        li
+                            include room.pug
