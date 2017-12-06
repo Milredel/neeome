@@ -6,6 +6,8 @@ const configSample = require('./config.sample');
 let runningOnConfigSample = true;
 let config = configSample;
 
+//this file is launched on raspi boot via script in /etc/rc.local
+
 var configPath = path.join(__dirname, 'config.js');
 if (fs.existsSync(configPath)) {
     config = require(configPath);
@@ -47,8 +49,18 @@ async function recipesHandler(req, res) {
         var response = await fetch(getAllRecipesUrl);
         var recipes = await response.json();
         recipes.forEach(function(recipe, index) {
-            recipes[index].url.distantSetPowerOn = formatDistantUrl(recipe.url.setPowerOn, "on");
-            recipes[index].url.distantSetPowerOff = formatDistantUrl(recipe.url.setPowerOff, "off");
+            var distantUrl = formatDistantUrl(recipe.url.setPowerOn, "on");;
+            recipes[index].url.distantSetPowerOn = distantUrl;
+            var pattern = /[0-9]{8,}/;
+            var regex = new RegExp(pattern, "g");
+            var matches = distantUrl.match(regex);
+            recipes[index].url.distantSetPowerOnId = matches[1];
+            var distantUrl = formatDistantUrl(recipe.url.setPowerOff, "off");
+            recipes[index].url.distantSetPowerOff = distantUrl;
+            var pattern = /[0-9]{8,}/;
+            var regex = new RegExp(pattern, "g");
+            var matches = distantUrl.match(regex);
+            recipes[index].url.distantSetPowerOffId = matches[1];
         });
         var response = await fetch(getAllRooms);
         var roomsRaw = await response.json();
@@ -56,8 +68,13 @@ async function recipesHandler(req, res) {
         roomsRaw.forEach(function(room, index) {
             var roomDevices = room.devices;
             if (!(Object.keys(roomDevices).length === 0 && roomDevices.constructor === Object)) {
-                Object.keys(roomDevices).forEach(function(key, index) {
-                    //TODO generate url for each macro                    
+                Object.keys(roomDevices).forEach(function(deviceKey, index) {
+                    var macros = roomDevices[deviceKey].macros;
+                    Object.keys(macros).forEach(function(macroKey, index) {
+                        var macro = macros[macroKey];
+                        var distantUrl = formatDistantButtonUrl(macro.roomKey, macro.deviceKey, macro.key);
+                        room.devices[deviceKey].macros[macroKey].distantUrl = distantUrl;
+                    });
                 });
                 rooms.push(room);
             }
@@ -76,8 +93,17 @@ function formatDistantUrl(url, action) {
     return config.home.public_dns+"/neeo?token="+myToken+"&room="+matches[0]+"&recipe="+matches[1]+"&action="+action;
 }
 
+function formatDistantButtonUrl(roomId, deviceId, buttonId) {
+    var myToken = config.home.private_token;
+    return config.home.public_dns+"/neeo?token="+myToken+"&room="+roomId+"&device="+deviceId+"&button="+buttonId+"&action=trigger";
+}
+
 function formatLocalUrl(action, roomId, recipeId) {
     return "http://"+config.neeo.brain_ip+":3000/"+config.neeo.api_version+"/projects/home/rooms/"+roomId+"/recipes/"+recipeId+"/"+action;
+}
+
+function formatLocalButtonUrl(action, roomId, deviceId, buttonId) {
+    return url = "http://"+config.neeo.brain_ip+":3000/"+config.neeo.api_version+"/projects/home/rooms/"+roomId+"/devices/"+deviceId+"/macros/"+buttonId+"/"+action;
 }
 
 async function executeHandler(req, res) {
@@ -86,21 +112,53 @@ async function executeHandler(req, res) {
         var roomId = qData.room;
         var action = qData.action;
         var recipeId = qData.recipe;
-        if (roomId == undefined || recipeId == undefined || action == undefined) {
-            throw new Error('Missing parameter room, recipe or action. Cannot move on.');
+        var deviceId = qData.device;
+        var buttonId = qData.button;
+        var repeat = qData.repeat;
+
+        var authorizedActions = ["on", "off", "trigger"];
+        if (action == undefined) {
+            throw new Error('Missing parameter action. Cannot move on.');
         }
-        var recipeIsActiveUrl = formatLocalUrl("isactive", roomId, recipeId);
-        var response = await fetch(recipeIsActiveUrl);
-        var responseJSON = await response.json();
-        if (responseJSON.active == undefined) {
-            throw new Error("Cannot get powerState for the recipe.");
+        if (authorizedActions.indexOf(action) === -1) {
+            throw new Error('Unauthorized action. Cannot move on.');
         }
-        if ((action == "on" && !responseJSON.active) || (action == "off" && responseJSON.active)) {
-            var executeUrl = formatLocalUrl("execute", roomId, recipeId);
-            var response = await fetch(executeUrl);
-            res.send('OK, I received something from IFTTT and executed the recipe');
-        } else {
-            res.send('OK, I received something from IFTTT but nothing to do regarding state of the recipe');
+        if ((action == "on" || action == "off") && (roomId == undefined || recipeId == undefined)) {
+            throw new Error('Missing parameter room or recipe for this action. Cannot move on.');
+        }
+        if ((action == "trigger") && (roomId == undefined || deviceId == undefined || buttonId == undefined)) {
+            throw new Error('Missing parameter room, device or button for this action. Cannot move on.');
+        }
+        if (repeat != undefined && !Number.isInteger(parseInt(repeat, 10))) {
+            throw new Error('Repeat parameter is not valid. Cannot move on.');    
+        }
+        if (action == "on" || action == "off") {
+            var recipeIsActiveUrl = formatLocalUrl("isactive", roomId, recipeId);
+            var response = await fetch(recipeIsActiveUrl);
+            var responseJSON = await response.json();
+            if (responseJSON.active == undefined) {
+                throw new Error("Cannot get powerState for the recipe.");
+            }
+            if ((action == "on" && !responseJSON.active) || (action == "off" && responseJSON.active)) {
+                var executeUrl = formatLocalUrl("execute", roomId, recipeId);
+                var response = await fetch(executeUrl);
+                res.send('OK, I received something from IFTTT and executed the recipe');
+            } else {
+                res.send('OK, I received something from IFTTT but nothing to do regarding state of the recipe');
+            }
+        }
+        if (action == "trigger") {
+            if (repeat == undefined) {
+                repeat = 1;
+            }
+            var executeUrl = formatLocalButtonUrl("trigger", roomId, deviceId, buttonId);
+            for (var i = 0; i < repeat; i++) {
+                var response = await fetch(executeUrl);
+            }
+            if (repeat > 1) {
+                res.send('OK, I received something from IFTTT and triggered the button '+repeat+' times');    
+            }
+            res.send('OK, I received something from IFTTT and triggered the button');
         }
     } catch (e) {
         res.send('Error executing action ('+e+').');

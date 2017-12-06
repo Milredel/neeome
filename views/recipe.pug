@@ -2,5 +2,17 @@ if recipe.isPoweredOn
     p.isOn #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
 else 
     p.isOff #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
-p setPowerOnUrl : #{recipe.url.distantSetPowerOn}
-p setPowerOffUrl : #{recipe.url.distantSetPowerOff}
+p 
+    | setPowerOnUrl : 
+    -
+        var value = recipe.url.distantSetPowerOn;
+        var id = "input_recipe_"+recipe.url.distantSetPowerOnId;
+    input(type='text' id=id value=value readonly=true size=50)
+    button(onClick='onClickCopyButton("'+id+'")') Copy link
+p 
+    | setPowerOffUrl : 
+    -
+        var value = recipe.url.distantSetPowerOff;
+        var id = "input_recipe_"+recipe.url.distantSetPowerOffId;
+    input(type='text' id=id value=value readonly=true size=50)
+    button(onClick='onClickCopyButton("'+id+'")') Copy link

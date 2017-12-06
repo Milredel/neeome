@@ -1,1 +1,7 @@
-p #{macro.name}
+p 
+    | #{macro.name} -> 
+    -
+        var value = macro.distantUrl;
+        var id = "input_macro_"+macro.key;
+    input(type='text' id=id value=value readonly=true size=50)
+    button(onClick='onClickCopyButton("'+id+'")') Copy link
