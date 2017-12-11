@@ -1,5 +1,5 @@
 p 
-    | #{device.name} (#{device.details.type}) 
+    | #{device.name} (#{device.details.type}) (##{device.key})
     button(onClick='onClickShowButtons("macros_'+device.key+'")') Show buttons
 -
     var device_name = device.key;
