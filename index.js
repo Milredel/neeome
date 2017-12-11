@@ -194,6 +194,10 @@ async function executeFreeboxHandler(req, res) {
         if (deviceId == undefined) {
             throw new Error('Missing config parameter deviceId for freebox. Cannot move on.');
         }
+        channel = channel.replace("sur ", "");
+        if (channel.indexOf("la") == 0) {
+            channel = channel.replace("la ", "");
+        }
         var filteredChannel = filterInt(channel);
         if (isNaN(filteredChannel)) {
             var channelNumber = getChannelNumberFromName(channel);
