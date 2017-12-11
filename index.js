@@ -23,6 +23,7 @@ app.use('/views', express.static(path.join(__dirname, 'views')));
 app.get('/', safeHandler(defaultHandler));
 app.get('/recipes', safeHandler(recipesHandler));
 app.get('/neeo', safeHandler(executeHandler));
+app.get('/neeo/freebox', safeHandler(executeFreeboxHandler));
 
 app.listen(config.home.local_port, function () {
     console.log('server listening on port '+config.home.local_port);
@@ -160,6 +161,58 @@ async function executeHandler(req, res) {
             }
             res.send('OK, I received something from IFTTT and triggered the button');
         }
+    } catch (e) {
+        res.send('Error executing action ('+e+').');
+    }
+}
+
+function filterInt(value) {
+    if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value)) return Number(value);
+    return NaN;
+}
+
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+function getChannelNumberFromName(name) {
+    return getKeyByValue(config.freebox.channels, name);
+}
+
+async function executeFreeboxHandler(req, res) {
+    try {
+        var qData = req.query;
+        var channel = qData.channel;
+        var roomId = config.freebox.roomId;
+        var deviceId = config.freebox.deviceId;
+        if (channel == undefined) {
+            throw new Error('Missing parameter channel. Cannot move on.');
+        }
+        if (roomId == undefined) {
+            throw new Error('Missing config parameter roomId for freebox. Cannot move on.');
+        }
+        if (deviceId == undefined) {
+            throw new Error('Missing config parameter deviceId for freebox. Cannot move on.');
+        }
+        var filteredChannel = filterInt(channel);
+        if (isNaN(filteredChannel)) {
+            var channelNumber = getChannelNumberFromName(channel);
+            if (channelNumber == undefined) {
+                throw new Error('Impossible to find channel number for "'+channel+'". Cannot move on.');
+            }
+            channel = channelNumber;
+        }    
+        var digits = channel.split('');
+        for (var i = 0; i < digits.length ; i++) {
+            var digit = digits[i];
+            var buttonId = config.freebox.buttons[digit];
+            if (buttonId == undefined) {
+                throw new Error('Button not found "'+digit+'". Cannot move on.');            
+            }
+            var executeUrl = formatLocalButtonUrl("trigger", roomId, deviceId, buttonId);
+            var response = await fetch(executeUrl);
+        }
+        res.send("OK I received something from IFTTT and triggered the button(s) accordingly");
     } catch (e) {
         res.send('Error executing action ('+e+').');
     }
