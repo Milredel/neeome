@@ -201,16 +201,25 @@ async function executeFreeboxHandler(req, res) {
                 throw new Error('Impossible to find channel number for "'+channel+'". Cannot move on.');
             }
             channel = channelNumber;
-        }    
-        var digits = channel.split('');
-        for (var i = 0; i < digits.length ; i++) {
-            var digit = digits[i];
-            var buttonId = config.freebox.buttons[digit];
+        }
+        if (channel == "red") {
+            var buttonId = config.freebox.buttons["red"];
             if (buttonId == undefined) {
                 throw new Error('Button not found "'+digit+'". Cannot move on.');            
             }
             var executeUrl = formatLocalButtonUrl("trigger", roomId, deviceId, buttonId);
             var response = await fetch(executeUrl);
+        } else {
+            var digits = channel.split('');
+            for (var i = 0; i < digits.length ; i++) {
+                var digit = digits[i];
+                var buttonId = config.freebox.buttons[digit];
+                if (buttonId == undefined) {
+                    throw new Error('Button not found "'+digit+'". Cannot move on.');
+                }
+                var executeUrl = formatLocalButtonUrl("trigger", roomId, deviceId, buttonId);
+                var response = await fetch(executeUrl);
+            }
         }
         res.send("OK I received something from IFTTT and triggered the button(s) accordingly");
     } catch (e) {
