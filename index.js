@@ -245,6 +245,12 @@ async function executeFilBleuHorairesHandler(req, res) {
         var qData = req.query;
         var arret = qData.arret;
 
+        var authorizedArrets = ["porte de Loire", "saint - cyr mairie"];
+        if (authorizedArrets.indexOf(arret) === -1) {
+            speaker.action("Désolé, je ne connais pas cet arrêt.");
+            throw new Error('Unauthorized arret. Cannot move on.');
+        }
+
         var executeUrl = "https://www.filbleu.fr/horaires-et-trajet/horaires-temps-reel?view=tempsreel";
 
         const form = new FormData();
