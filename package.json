@@ -24,7 +24,10 @@
   },
   "homepage": "https://github.com/Milredel/google_home_ifttt_neeo_gateway#readme",
   "dependencies": {
+    "castv2-client": "^1.2.0",
+    "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
+    "google-tts-api": "0.0.2",
     "node-fetch": "^1.7.3",
     "pug": "^2.0.0-rc.4"
   }

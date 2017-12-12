@@ -5,6 +5,7 @@ let config = {};
 config.neeo = {};
 config.home = {};
 config.freebox = {};
+config.googlehome = {};
 
 //-------------------------------------------
 // NEEO Settings
@@ -28,6 +29,12 @@ config.neeo.brain_ip = 'myneeobrainip';
 
 //neeo api version
 config.neeo.api_version = 'v1';
+
+//-------------------------------------------
+// Google Home Settings
+//-------------------------------------------
+
+config.googlehome.ip_address = 'googlehomelocalip';
 
 //-------------------------------------------
 // Freebox Settings

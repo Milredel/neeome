@@ -2,6 +2,9 @@ const express = require('express');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
+const FormData = require('form-data');
+const cheerio = require('cheerio');
+const notifier = require('./notifier');
 const configSample = require('./config.sample');
 let runningOnConfigSample = true;
 let config = configSample;
@@ -24,8 +27,14 @@ app.get('/', safeHandler(defaultHandler));
 app.get('/recipes', safeHandler(recipesHandler));
 app.get('/neeo', safeHandler(executeHandler));
 app.get('/neeo/freebox', safeHandler(executeFreeboxHandler));
+app.get('/filbleu/horaires', safeHandler(executeFilBleuHorairesHandler));
+
+var speaker = null;
 
 app.listen(config.home.local_port, function () {
+    notifier.init(config, []).then(function(resource) {
+        speaker = resource;
+    });
     console.log('server listening on port '+config.home.local_port);
 });
 
@@ -229,4 +238,94 @@ async function executeFreeboxHandler(req, res) {
     } catch (e) {
         res.send('Error executing action ('+e+').');
     }
+}
+
+async function executeFilBleuHorairesHandler(req, res) {
+    var qData = req.query;
+    var arret = qData.arret;
+
+    console.log(arret);
+
+    var executeUrl = "https://www.filbleu.fr/horaires-et-trajet/horaires-temps-reel?view=tempsreel";
+
+    const form = new FormData();
+    form.append('id_ligne', '953');
+    form.append('id_arret', 'WEDEB-1,WEDEB-2');
+    //form.append('id_arret', 'PEARB-1,PEARB-2');
+    form.append('ordering', 1);
+    form.append('user', 0);
+    
+    var options = { method: 'POST', 
+                    body: form };
+    var response = await fetch(executeUrl, options);
+    var responseText = await response.text();
+
+    var $ = cheerio.load(responseText);
+
+    var horairesPorteDeLoire, horairesStCyrMairie = null;
+    $('.result #resultslist .item').each(function(index) {
+        if ($(this).find(".passage0 em").length > 0) {
+            var horaire1 = "inconnu";
+        } else {
+            var horaire1 = $(this).find('.passage0').text();
+        }
+        if ($(this).find(".passage1 em").length > 0) {
+            var horaire2 = "inconnu";
+        } else {
+            var horaire2 = $(this).find('.passage1').text();
+        }
+    
+        //if ($(this).find('.headsign').html() == "Porte de Loire") {
+        if (index == 0) {
+            horairesPorteDeLoire = {horaire1 : horaire1,
+                                    horaire2 : horaire2};
+        //} else if ($(this).find('.headsign').html() == "St Cyr Mairie") {
+        } else if (index == 1) {
+            horairesStCyrMairie = {horaire1 : horaire1,
+                                    horaire2 : horaire2};
+        }
+    });
+
+    if (horairesPorteDeLoire != null || horairesStCyrMairie != null) {
+        if (arret == "porte de loire") {
+            var horaire1 = horairesPorteDeLoire["horaire1"];
+            var horaire2 = horairesPorteDeLoire["horaire2"];
+            if (horaire1 == "inconnu" && horaire2 == "inconnu") {
+                speaker.action("Désolé, les horaires sont inconnues chez Fil Bleu");
+            } else {
+                var sentence = "Le prochain bus vers Porte de Loire est dans ";
+                if (horaire1 == "inconnu") {
+                    sentence += horaire2;
+                } else {
+                    sentence += horaire1;
+                    if (horaire2 != "inconnu") {
+                        sentence += "Le suivant dans "+horaire2;
+                    }
+                }
+            }
+            speaker.action(sentence);
+        }
+        if (arret == "st cyr mairie") {
+            var horaire1 = horairesStCyrMairie["horaire1"];
+            var horaire2 = horairesStCyrMairie["horaire2"];
+            if (horaire1 == "inconnu" && horaire2 == "inconnu") {
+                speaker.action("Désolé, les horaires sont inconnues chez Fil Bleu");
+            } else {
+                var sentence = "Le prochain bus vers Saint Cyr Mairie est dans ";
+                if (horaire1 == "inconnu") {
+                    sentence += horaire2;
+                } else {
+                    sentence += horaire1;
+                    if (horaire2 != "inconnu") {
+                        sentence += "Le suivant dans "+horaire2;
+                    }
+                }
+            }
+            speaker.action(sentence);
+        }
+    } else {
+        speaker.action("Désolé, je n'ai pas réussi à récupérer l'information");
+    }
+
+    res.send("OK, I gave the information I could retrieve");
 }
