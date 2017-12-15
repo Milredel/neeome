@@ -280,11 +280,11 @@ async function executeFilBleuHorairesHandler(req, res) {
             }
         
             //if ($(this).find('.headsign').html() == "Porte de Loire") {
-            if (index == 0) {
+            if (index == 1) {
                 horairesPorteDeLoire = {horaire1 : horaire1,
                                         horaire2 : horaire2};
             //} else if ($(this).find('.headsign').html() == "St Cyr Mairie") {
-            } else if (index == 1) {
+            } else if (index == 0) {
                 horairesStCyrMairie = {horaire1 : horaire1,
                                         horaire2 : horaire2};
             }
