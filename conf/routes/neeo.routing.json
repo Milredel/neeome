@@ -1,0 +1,22 @@
+[
+    {
+        "route": "/neeo",
+        "method": "get",
+        "class": "Neeo",
+        "function": "execute",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    },
+    {
+        "route": "/neeo/freebox",
+        "method": "get",
+        "class": "Neeo",
+        "function": "executeFreebox",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    }
+]

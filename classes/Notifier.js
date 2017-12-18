@@ -56,7 +56,6 @@ AssistantNotifier.prototype.action = function(text) {
 exports.init=function(configuration, plugins) {
   return new AssistantNotifier(configuration).init(plugins)
   .then(function(resource) {
-    console.log("[assistant-notifier] Plugin chargé et prêt.");
     return resource;
   })
 }
