@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/",
+        "method": "get",
+        "class": "Server",
+        "function": "displayLanding",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    }
+]

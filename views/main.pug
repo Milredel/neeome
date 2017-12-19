@@ -104,24 +104,3 @@ html(lang='en')
         script(src='/views/vendor//jquery-easing/jquery.easing.min.js')
 
         script(src='/views/js/grayscale.min.js')
-
-        //-
-            .container
-                if runningOnConfigSample
-                    p Warning, you are using config.sample.js file. Please create a copy of config.sample.js and rename it config.js to write your own config.
-                h1 Recipes
-                if recipes.error
-                    p Something went wrong !
-                else 
-                    ul
-                        each recipe in recipes
-                            li
-                                include recipe.pug
-                h1 Rooms & Devices
-                if rooms.error
-                    p Something went wrong !
-                else
-                    ul
-                        each room in rooms
-                            li
-                                include room.pug

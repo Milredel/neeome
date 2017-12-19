@@ -4,7 +4,7 @@
         "method": "get",
         "class": "Neeo",
         "function": "execute",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []
@@ -14,7 +14,7 @@
         "method": "get",
         "class": "Neeo",
         "function": "executeFreebox",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []

@@ -17,7 +17,7 @@ class ServerController {
         try {
             Logger.info('Chargement des données');
             
-            const recipes = await neeoManager.getAllByName('recipes');
+            const recipes = await neeoManager.getAllRecipes();
 
             SRV_VARS.data.recipes = {};
             
@@ -28,7 +28,7 @@ class ServerController {
                 Logger.warn('No recipe have been found.');
             }
 
-            const rooms = await neeoManager.getAllByName('rooms');
+            const rooms = await neeoManager.getAllRooms();
 
             SRV_VARS.data.rooms = {};
             
@@ -42,6 +42,14 @@ class ServerController {
         } catch (e) {
             throw new Error('An error has occured while loading data from Neeo (Reason: ' + e + ').');
         }
+    }
+
+    async displayLanding(req, res) {
+        const recipes = SRV_VARS.data.recipes;
+        const rooms = SRV_VARS.data.rooms;
+        
+        
+        return res.render('main', { title: 'Existing NEEO Recipes', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE })
     }
 }
 

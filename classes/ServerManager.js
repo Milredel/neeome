@@ -17,26 +17,6 @@ class ServerManager {
         }
     }
 
-    getCompaniesAssociatedToUser(idUser) {
-        if (SRV_VARS.data.usersCompanies.hasOwnProperty(idUser)) {
-            return SRV_VARS.data.usersCompanies[idUser];
-        }
-
-        return [];
-    }
-
-    getUsersAssociatedToCompany(idCompany) {
-        if (SRV_VARS.data.companiesUsers.hasOwnProperty(idCompany)) {
-            return SRV_VARS.data.companiesUsers[idCompany];
-        }
-
-        return [];
-    }
-
-    isUserAssociatedToCompany(idUser, idCompany) {
-        return SRV_VARS.data.usersCompanies.hasOwnProperty(idUser) && SRV_VARS.data.usersCompanies[idUser].includes(+idCompany);
-    }
-
     getAuthedUserFromToken(token) {
         try {
             return SRV_VARS.users[SRV_VARS.tokens[token]];

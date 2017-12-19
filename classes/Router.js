@@ -6,7 +6,7 @@ const parseDir = util.promisify(fs.readdir);
 const routesDir = BASE_DIR + '/conf/routes';
 const controllersDir = BASE_DIR + '/controllers';
 const Logger = SRV_DEPENDENCIES.logger;
-const srvManager = SRV_DEPENDENCIES['srvManager'];
+const srvManager = SRV_DEPENDENCIES.srvManager;
 
 class Router {
 
@@ -90,7 +90,13 @@ class Router {
             const token = SRV_DEPENDENCIES.srvManager.getTokenFromRequest(req);
         
             if (token) {
-                jwt.verify(token, SRV_DEPENDENCIES.app.get('appSecret'), function(err, decoded) {      
+                if (token == CONFIG.home.private_token) {
+                    next();
+                } else {
+                    const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Erreur lors de l'identification du token de sécurité.", true, {});
+                    return srvManager.manageResult(res, result);
+                }
+                /*jwt.verify(token, SRV_DEPENDENCIES.app.get('appSecret'), function(err, decoded) {      
                     if (err) {
                         const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Erreur lors de l'identification du token de sécurité.", true, {});
                         return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
@@ -98,7 +104,7 @@ class Router {
                         req.appUser = decoded;    
                         next();
                     }
-                });
+                });*/
             } else {
                 const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Aucun token de session trouvé.", true, {});
                 return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
@@ -146,11 +152,13 @@ class Router {
             router[routing.method].apply(router, args);
         }
 
-        SRV_DEPENDENCIES.app.use('/api', apiRoutes);
+        SRV_DEPENDENCIES.app.use('', apiRoutes);
     }
 
     async checkSecuredRoute(req, res) {
-        try {
+        const routeConfig = this.routesSecured[req.method.toLowerCase() + ":" + req.route.path];
+        return routeConfig['call'](req, res);
+        /*try {
             Logger.info('La route' + req.route.path + ' est une route sécurisée, vérification du rôle utilisateur...');
 
             const routeConfig = this.routesSecured[req.method.toLowerCase() + ":" + req.route.path];
@@ -174,7 +182,7 @@ class Router {
             return SRV_DEPENDENCIES['srvManager'].manageResult(res, result);
         } catch (e) {
             throw new Error('Une erreur est survenue lors de la vérification d\'une route sécurisée. (Erreur: ' + e + ')');
-        }
+        }*/
     }
 
     async start() {

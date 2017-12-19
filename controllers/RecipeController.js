@@ -1,6 +1,7 @@
 "use strict";
 
 const Logger = SRV_DEPENDENCIES.logger;
+const srvManager = SRV_DEPENDENCIES.srvManager;
 
 class RecipeController {
 
@@ -12,8 +13,7 @@ class RecipeController {
         const recipes = SRV_VARS.data.recipes;
         const rooms = SRV_VARS.data.rooms;
         
-        
-        return res.render('main', { title: 'Existing NEEO Recipes', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE })
+        return res.render('recipes', { title: 'Existing NEEO Recipes', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE })
     }
 }
 

@@ -4,7 +4,7 @@
         "method": "get",
         "class": "Filbleu",
         "function": "getFilbleuHoraires",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []

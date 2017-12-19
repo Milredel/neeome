@@ -4,7 +4,7 @@
         "method": "get",
         "class": "Recipe",
         "function": "displayRecipes",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []
