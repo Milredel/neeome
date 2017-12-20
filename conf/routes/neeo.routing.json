@@ -18,5 +18,15 @@
         "binding": true,
         "type": "controller",
         "roles": []
+    },
+    {
+        "route": "/neeo/webhook",
+        "method": "post",
+        "class": "Neeo",
+        "function": "handleWebhook",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
     }
 ]

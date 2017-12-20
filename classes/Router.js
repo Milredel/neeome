@@ -80,6 +80,21 @@ class Router {
         const express = require('express');
         const cors = require('cors');
 
+        var io = require('socket.io').listen(SRV_DEPENDENCIES.app.listen(CONFIG.home.local_port));
+
+        io.sockets.on('connection', function (socket) {
+            console.log('a user connected');
+ 
+            socket.on('disconnect', () => {
+                console.log('user disconnected');
+            });
+        });
+
+        SRV_DEPENDENCIES.app.use(function(req,res,next) {
+            req.io = io;
+            next();
+        });
+
         SRV_DEPENDENCIES.app.use(cors({credentials: true, origin: DB.CROS_FRONT_URL}));
         SRV_DEPENDENCIES.app.use(bodyParser.urlencoded({ extended: false }));
         SRV_DEPENDENCIES.app.use(bodyParser.json());
@@ -204,7 +219,7 @@ class Router {
             Logger.success('Données serveur chargées !');
 
             // Lets rock baby !
-            SRV_DEPENDENCIES.app.listen(CONFIG.home.local_port);
+            
             Logger.success('Le serveur est démarré !');
         } catch (e) {
             Logger.err('Une erreur est survenue lors du démarrage du serveur. (Raison: ' + e + ')');

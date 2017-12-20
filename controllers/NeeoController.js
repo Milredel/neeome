@@ -117,6 +117,13 @@ class NeeoController {
             res.send('Error executing action ('+e+').');
         }
     }
+
+    async handleWebhook(req, res) {
+        res.end();
+        Logger.success("received something via webhook");
+        console.log(req.body);
+        req.io.sockets.emit('brain event', {toto: "totot"});
+    }
 }
 
 module.exports = NeeoController;
