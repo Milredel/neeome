@@ -17,7 +17,9 @@ class FilbleuController {
             
             var authorizedArrets = ["porte de Loire", "saint - cyr mairie"];
             if (authorizedArrets.indexOf(arret) === -1) {
-                Speaker.action("Désolé, je ne connais pas cet arrêt.");
+                if (arret != undefined) {
+                    Speaker.action("Désolé, je ne connais pas cet arrêt.");    
+                }
                 throw new Error('Unauthorized arret. Cannot move on.');
             }
 
