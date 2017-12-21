@@ -1,8 +1,20 @@
 (function($) {
   "use strict"; // Start of use strict
 
+  var socket = io();
+ 
+  socket.on('brain event', function(event){
+      console.log(event);
+  });
+
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
+
+    if ($(this).hasClass('load')) {
+      $('section#scenarios .container>div').addClass("hidden");
+      $('section#scenarios .container div#'+$(this).attr('data-room-id')).removeClass("hidden");
+    }
+    
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
       var target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
@@ -12,7 +24,7 @@
         }, 1000, "easeInOutExpo");
         return false;
       }
-    }
+    }  
   });
 
   // Closes responsive menu when a scroll trigger link is clicked

@@ -48,8 +48,9 @@ class ServerController {
         const recipes = SRV_VARS.data.recipes;
         const rooms = SRV_VARS.data.rooms;
         
+        var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
         
-        return res.render('main', { title: 'Existing NEEO Recipes', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE })
+        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes })
     }
 }
 

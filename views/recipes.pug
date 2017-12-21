@@ -1,12 +1,19 @@
 html(lang='en')
     head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description' content='')
+        meta(name='author' content='Morgan Fromentin')
+        
         title= title
 
+        link(href='/views/img/logo.png' rel='icon' type='image/png')
+
         style
-            include style.css
+            include css/style.css
         
         script(src='/views/vendor/jquery/jquery.min.js')
-        script(src='/views/recipes.js')
+        script(src='/views/js/recipes.js')
     body
         .container
                 if runningOnConfigSample
@@ -18,7 +25,7 @@ html(lang='en')
                     ul
                         each recipe in recipes
                             li
-                                include recipe.pug
+                                include recipesbuttons/recipe.pug
                 h1 Rooms & Devices
                 if rooms.error
                     p Something went wrong !
@@ -26,4 +33,4 @@ html(lang='en')
                     ul
                         each room in rooms
                             li
-                                include room.pug
+                                include recipesbuttons/room.pug
