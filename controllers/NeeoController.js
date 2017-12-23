@@ -120,10 +120,19 @@ class NeeoController {
 
     async handleWebhook(req, res) {
         res.end();
-        Logger.success("received something via webhook");
-        console.log(req.body);
-        req.io.sockets.emit('brain event', {toto: "totot"});
+        var event = req.body;
+        if (event.action == "launch" || event.action == "poweroff") {
+            var newState = event.action == "launch" ? true : false;
+            var recipe = neeoManager.updateRecipe("launch", event.recipe, {isPoweredOn: newState});
+            if (recipe == null) {
+                throw new Error("Problem updating recipe : ("+e+")");
+            }
+            req.io.sockets.emit('brain update recipe', {uid: recipe.uid, newState: newState});            
+        } else {
+            console.log("A button has been pushed, ignoring it, for now");
+        }
     }
+    
 }
 
 module.exports = NeeoController;

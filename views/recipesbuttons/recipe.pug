@@ -1,7 +1,8 @@
+- var recipeId = recipe.uid
 if recipe.isPoweredOn
-    p.isOn #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
+    p(class='isOn' id=recipeId) #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
 else 
-    p.isOff #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
+    p(class='isOff' id=recipeId) #{recipe.detail.roomname} : #{recipe.detail.devicename} (#{recipe.type})
 p 
     | setPowerOnUrl : 
     -

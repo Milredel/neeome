@@ -17,6 +17,7 @@ class NeeoManager {
             var response = await fetch(url);
             var recipes = await response.json();
             recipes.forEach(function(recipe, index) {
+                recipes[index].detail.devicename = decodeURI(recipes[index].detail.devicename);
                 var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOn, "on");;
                 recipes[index].url.distantSetPowerOn = distantUrl;
                 var pattern = /[0-9]{8,}/;
@@ -74,6 +75,29 @@ class NeeoManager {
             Logger.err("something went wrong when getting by url : "+e);
         }
         return data;
+    }
+
+    updateRecipe(type, name, data) {
+        for (var index = 0; index < SRV_VARS.data.recipes.length; index++) {
+            var recipe = SRV_VARS.data.recipes[index];
+            if (recipe.type == type && recipe.detail.devicename == name) {
+                for (var key in data) {
+                    SRV_VARS.data.recipes[index][key] = data[key];
+                }
+                return SRV_VARS.data.recipes[index];
+            }
+        }
+        return null;
+    }
+
+    getRecipeByName(name) {
+        for (var index = 0; index < SRV_VARS.data.recipes.length; index++) {
+            var recipe = SRV_VARS.data.recipes[index];
+            if (recipe.type == type && recipe.detail.devicename == name) {
+                return SRV_VARS.data.recipes[index];
+            }
+        }
+        return null;
     }
 }
 

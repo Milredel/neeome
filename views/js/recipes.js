@@ -1,3 +1,16 @@
+(function($) {
+  "use strict"; // Start of use strict
+
+  var socket = io();
+ 
+  socket.on('brain update recipe', function(event){
+      var newClass = event.newState ? "isOn" : "isOff";
+      $('#'+event.uid).removeClass('isOn isOff').addClass(newClass);
+  });
+
+
+})(jQuery); // End of use strict
+
 function onClickShowButtons(container_id) {
     $("#"+container_id).toggle();
 }
