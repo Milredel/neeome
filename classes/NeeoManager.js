@@ -17,6 +17,7 @@ class NeeoManager {
             var response = await fetch(url);
             var recipes = await response.json();
             recipes.forEach(function(recipe, index) {
+                recipes[index].detail.roomname = decodeURI(recipes[index].detail.roomname);
                 recipes[index].detail.devicename = decodeURI(recipes[index].detail.devicename);
                 var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOn, "on");;
                 recipes[index].url.distantSetPowerOn = distantUrl;
@@ -98,6 +99,17 @@ class NeeoManager {
             }
         }
         return null;
+    }
+
+    getActiveRecipes() {
+        let activeRecipes = [];
+        for (var index = 0; index < SRV_VARS.data.recipes.length; index++) {
+            var recipe = SRV_VARS.data.recipes[index];
+            if (true == recipe.isPoweredOn) {
+                activeRecipes.push(recipe);
+            }
+        }
+        return activeRecipes;
     }
 }
 

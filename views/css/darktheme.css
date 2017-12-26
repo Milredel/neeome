@@ -82,7 +82,7 @@ a {
       letter-spacing: 1px;
       border-bottom: none;
       background: transparent; }
-      #mainNav.navbar-shrink {
+      #mainNav.navbar-shrink, #subNav.navbar-shrink {
         padding-top: 10px;
         padding-bottom: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -91,6 +91,53 @@ a {
         outline: none;
         background-color: rgba(255, 255, 255, 0.3); }
         #mainNav .nav-link.active:hover {
+          color: white; } }
+
+#subNav {
+  font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: black; }
+  #subNav .navbar-toggler {
+    font-size: 14px;
+    padding: 11px;
+    color: white;
+    border: 1px solid white; }
+  #subNav .navbar-brand {
+    font-weight: 700; }
+  #subNav a {
+    color: white; }
+  #subNav .navbar-nav .nav-item {
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    transition: background 0.3s ease-in-out; }
+    #subNav .navbar-nav .nav-item:hover {
+      color: fade(white, 80%);
+      outline: none;
+      background-color: transparent; }
+    #subNav .navbar-nav .nav-item:active, #subNav .navbar-nav .nav-item:focus {
+      outline: none;
+      background-color: transparent; }
+  @media (min-width: 992px) {
+    #subNav {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      -webkit-transition: background 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s;
+      -moz-transition: background 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s;
+      transition: background 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s;
+      letter-spacing: 1px;
+      border-bottom: none;
+      background: transparent; }
+      #subNav.navbar-shrink, #subNav.navbar-shrink {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background: black; }
+      #subNav .nav-link.active {
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.3); }
+        #subNav .nav-link.active:hover {
           color: white; } }
 
 .masthead {
@@ -223,4 +270,18 @@ body {
 
 .nav-rooms .nav-item {
   margin: auto;
+}
+
+.below-main-nav {
+  top: 80px;
+}
+
+.navbar-shrink.below-main-nav {
+  top: 61px;
+}
+
+@media (max-width: 767px) {
+  .navbar-shrink.below-main-nav {
+    top: 57px;
+  }
 }

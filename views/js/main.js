@@ -3,8 +3,17 @@
 
   var socket = io();
  
-  socket.on('brain event', function(event){
-      console.log(event);
+  socket.on('brain update recipe', function(event){
+      if (false == event.newState) {
+        $('#subNav .container#'+event.uid).remove();
+      } else {
+        var banner = "<div class='container' id='"+event.uid+"'\
+                        <a class='navbar-brand'>"+event.devicename+"</a>\
+                        <div>\
+                          <p class='navbar-nav ml-auto'>\
+                              <i class='fa fa-power-off fa-lg'></i>";
+        $('#subNav').append(banner);
+      }
   });
 
   // Smooth scrolling using jQuery easing
@@ -41,9 +50,9 @@
   // Collapse Navbar
   var navbarCollapse = function() {
     if ($("#mainNav").offset().top > 100) {
-      $("#mainNav").addClass("navbar-shrink");
+      $("#mainNav, #subNav").addClass("navbar-shrink");
     } else {
-      $("#mainNav").removeClass("navbar-shrink");
+      $("#mainNav, #subNav").removeClass("navbar-shrink");
     }
   };
   // Collapse now if page is not at top

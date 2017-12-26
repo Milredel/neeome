@@ -87,8 +87,7 @@ class NeeoController {
             }
             if (action == "on" || action == "off") {
                 var recipeIsActiveUrl = UTILS.formatLocalUrl("isactive", roomId, recipeId);
-                var response = await neeoManager.getByUrl(recipeIsActiveUrl);
-                var responseJSON = await response.json();
+                var responseJSON = await neeoManager.getByUrl(recipeIsActiveUrl);
                 if (responseJSON.active == undefined) {
                     throw new Error("Cannot get powerState for the recipe.");
                 }
@@ -106,7 +105,7 @@ class NeeoController {
                 }
                 var executeUrl = UTILS.formatLocalButtonUrl("trigger", roomId, deviceId, buttonId);
                 for (var i = 0; i < repeat; i++) {
-                    var response = await neeoManager.getByUrl(executeUrl);
+                    var responseJSON = await neeoManager.getByUrl(executeUrl);
                 }
                 if (repeat > 1) {
                     res.send('OK, I received something from IFTTT and triggered the button '+repeat+' times');    
@@ -127,7 +126,7 @@ class NeeoController {
             if (recipe == null) {
                 throw new Error("Problem updating recipe : ("+e+")");
             }
-            req.io.sockets.emit('brain update recipe', {uid: recipe.uid, newState: newState});            
+            req.io.sockets.emit('brain update recipe', {uid: recipe.uid, newState: newState, devicename: event.recipe});            
         } else {
             console.log("A button has been pushed, ignoring it, for now");
         }

@@ -14,6 +14,11 @@ html(lang='en')
                             - var link = linkRecipes
                             a(class='nav-link js-scroll-trigger' href=link) Recipes & Buttons
 
+        if activeRecipes.length > 0
+            nav(class='navbar navbar-expand-lg navbar-light fixed-top below-main-nav' id='subNav')
+                each recipe in activeRecipes
+                    include recipebanner.pug
+
         header.masthead
             div.intro-body
                 div.container
@@ -37,7 +42,24 @@ html(lang='en')
                 each room in rooms
                     div(class='row hidden' id=room.key)
                         div(class='col-lg-8 mx-auto')
-                            p #{room.name}
+                            ul.nav.nav-scenarios
+                                each recipe in recipes
+                                    li.nav-item
+                                        if recipe.detail.roomname == room.name
+                                            if recipe.type == 'launch'
+                                                if recipe.detail.devicetype != 'LIGHT'
+                                                    - var link = recipe.url.distantSetPowerOn
+                                                    a(class='nav-link launch' data-link=link)
+                                                        p #{recipe.detail.devicename}
+                                                        - var myclass = "myicon "+recipe.detail.devicename
+                                                        i(class=myclass)
+                            ul.nav.nav-lights
+                                each recipe in recipes
+                                    li.nav-item
+                                        if recipe.detail.roomname == room.name
+                                            if recipe.type == 'launch'
+                                                if recipe.detail.devicetype == 'LIGHT'
+                                                    p Lumière
 
         section(id='commands' class='content-section text-center')
             div.container
