@@ -268,6 +268,11 @@ img::-moz-selection {
 body {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2); }
 
+
+
+/* custom css */
+
+
 .nav-rooms .nav-item {
   margin: auto;
 }
@@ -280,8 +285,48 @@ body {
   top: 61px;
 }
 
+#subNav .mycollapse {
+  display: -ms-flexbox!important;
+  display: flex!important;
+  -ms-flex-preferred-size: auto;
+  flex-basis: auto;
+  -ms-flex-preferred-size: 100%;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+#subNav .nav-item {
+  cursor: pointer;
+}
+
+#subNav .mycollapse ul {
+  width: 30%;
+}
+
+#subNav .mycollapse ul li:not(:last-child){
+  margin: auto;
+}
+
 @media (max-width: 767px) {
+  .below-main-nav {
+    top: 57px;
+  }
   .navbar-shrink.below-main-nav {
     top: 57px;
+  }
+  .navbar-nav {
+    flex-direction: row!important;
+  }
+  #subNav .mycollapse ul {
+    width: 60%;
+  }
+  #subNav .mycollapse ul li:not(:last-child){
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  #subNav #off-item {
+    padding-left: 20%;
   }
 }

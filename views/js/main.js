@@ -4,17 +4,49 @@
   var socket = io();
  
   socket.on('brain update recipe', function(event){
-      if (false == event.newState) {
-        $('#subNav .container#'+event.uid).remove();
-      } else {
-        var banner = "<div class='container' id='"+event.uid+"'\
-                        <a class='navbar-brand'>"+event.devicename+"</a>\
-                        <div>\
-                          <p class='navbar-nav ml-auto'>\
-                              <i class='fa fa-power-off fa-lg'></i>";
-        $('#subNav').append(banner);
+    var recipe = event.recipe;
+    if (false == recipe.isPoweredOn) {
+      $('#subNav .container#'+recipe.uid).remove();
+    } else {
+      var banner = "<div class='container' id='"+recipe.uid+"'\
+                      <a class='navbar-brand'>"+recipe.detail.devicename+"</a>\
+                      <div class='mycollapse'>\
+                        <ul class='navbar-nav ml-auto'>";
+      if (recipe.url.volumeDown != undefined) {
+        banner += "<li class='nav-item'>\
+                    <a data-link='"+recipe.url.volumeDown+"'>\
+                      <i class='fa fa-volume-down fa-lg'></i>\
+                    </a>\
+                  </li>";
       }
+      if (recipe.url.muteToggle != undefined) {
+        banner += "<li class='nav-item'>\
+                    <a data-link='"+recipe.url.muteToggle+"'>\
+                      <i class='fa fa-volume-off fa-lg'></i>\
+                    </a>\
+                  </li>";
+      }
+      if (recipe.url.volumeUp != undefined) {
+        banner += "<li class='nav-item'>\
+                    <a data-link='"+recipe.url.volumeUp+"'>\
+                      <i class='fa fa-volume-up fa-lg'></i>\
+                    </a>\
+                  </li>";
+      }
+      banner += "<i class='fa fa-power-off fa-lg'></i>\
+                </ul>";
+      $('#subNav').append(banner);
+      $('a[data-link]').off('click').on('click', onClickAWithLink);
+    }
   });
+
+  $('a[data-link]').on('click', onClickAWithLink);
+
+  function onClickAWithLink() {
+    $.get( $(this).attr("data-link"), function() {
+      //ok, action performed
+    });
+  }
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {

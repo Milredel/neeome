@@ -4,8 +4,8 @@
   var socket = io();
  
   socket.on('brain update recipe', function(event){
-      var newClass = event.newState ? "isOn" : "isOff";
-      $('#'+event.uid).removeClass('isOn isOff').addClass(newClass);
+      var newClass = event.recipe.isPoweredOn ? "isOn" : "isOff";
+      $('#'+event.recipe.uid).removeClass('isOn isOff').addClass(newClass);
   });
 
 

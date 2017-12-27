@@ -1,6 +1,20 @@
 - var recipeId = recipe.uid
 div(class='container' id=recipeId)
     a(class='navbar-brand') #{recipe.detail.devicename}
-    div
-        p(class='navbar-nav ml-auto')
-            i(class='fa fa-power-off fa-lg')
+    div(class='mycollapse')
+        ul(class='navbar-nav ml-auto')
+            if recipe.url.volumeDown != undefined
+                li.nav-item
+                    a(data-link=recipe.url.volumeDown)
+                        i(class='fa fa-volume-down fa-lg')
+            if recipe.url.muteToggle != undefined
+                li.nav-item
+                    a(data-link=recipe.url.muteToggle)
+                        i(class='fa fa-volume-off fa-lg')
+            if recipe.url.volumeUp != undefined
+                li.nav-item
+                    a(data-link=recipe.url.volumeUp)
+                        i(class='fa fa-volume-up fa-lg')
+            li.nav-item#off-item
+                a(data-link=recipe.url.distantSetPowerOff)
+                    i(class='fa fa-power-off fa-lg')

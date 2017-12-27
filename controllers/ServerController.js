@@ -17,6 +17,28 @@ class ServerController {
         try {
             Logger.info('Chargement des données');
             
+            const rooms = await neeoManager.getAllRooms();
+
+            SRV_VARS.data.rooms = {};
+            
+            if (rooms) {
+                SRV_VARS.data.rooms = rooms;
+                Logger.success(rooms.length + " rooms have been added !");
+            } else {
+                Logger.warn('No room have been found.');
+            }
+
+            const recipeSteps = await neeoManager.getAllRecipeSteps();
+
+            SRV_VARS.data.recipeSteps = {};
+            
+            if (recipeSteps) {
+                SRV_VARS.data.recipeSteps = recipeSteps;
+                Logger.success(Object.keys(recipeSteps).length + " recipeSteps have been added !");
+            } else {
+                Logger.warn('No recipeSteps have been found.');
+            }
+            
             const recipes = await neeoManager.getAllRecipes();
 
             SRV_VARS.data.recipes = {};
@@ -28,17 +50,6 @@ class ServerController {
                 Logger.warn('No recipe have been found.');
             }
 
-            const rooms = await neeoManager.getAllRooms();
-
-            SRV_VARS.data.rooms = {};
-            
-            if (rooms) {
-                SRV_VARS.data.rooms = rooms;
-                Logger.success(rooms.length + " rooms have been added !");
-            } else {
-                Logger.warn('No room have been found.');
-            }
-            
         } catch (e) {
             throw new Error('An error has occured while loading data from Neeo (Reason: ' + e + ').');
         }

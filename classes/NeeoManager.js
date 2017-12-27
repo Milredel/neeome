@@ -16,6 +16,7 @@ class NeeoManager {
         try {
             var response = await fetch(url);
             var recipes = await response.json();
+            var that = this;
             recipes.forEach(function(recipe, index) {
                 recipes[index].detail.roomname = decodeURI(recipes[index].detail.roomname);
                 recipes[index].detail.devicename = decodeURI(recipes[index].detail.devicename);
@@ -25,6 +26,18 @@ class NeeoManager {
                 var regex = new RegExp(pattern, "g");
                 var matches = distantUrl.match(regex);
                 recipes[index].url.distantSetPowerOnId = matches[1];
+                var steps = SRV_VARS.data.recipeSteps[matches[1]].steps;
+                for (var i = 0; i < steps.length; i++) {
+                    var step = steps[i];
+                    if(step.type == "volume") {
+                        var volumeDevice = that.getDeviceByKey(step.deviceKey);
+                        if (null != volumeDevice) {
+                            recipes[index].url.volumeUp = volumeDevice.macros["VOLUME UP"].distantUrl;
+                            recipes[index].url.volumeDown = volumeDevice.macros["VOLUME DOWN"].distantUrl;
+                            recipes[index].url.muteToggle = volumeDevice.macros["MUTE TOGGLE"].distantUrl;
+                        }
+                    }
+                }
                 var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOff, "off");
                 recipes[index].url.distantSetPowerOff = distantUrl;
                 var pattern = /[0-9]{8,}/;
@@ -35,6 +48,26 @@ class NeeoManager {
             var data = recipes;
         } catch (e) {
             Logger.err("something went wrong when getting recipes : "+e);
+        }
+        return data;
+    }
+
+    async getAllRecipeSteps() {
+        var url = "http://"+CONFIG.neeo.brain_ip+":3000/"+CONFIG.neeo.api_version+"/projects/home/rooms";
+        try {
+            var response = await fetch(url);
+            var rooms = await response.json();
+            var recipeSteps = {};
+            rooms.forEach(function(room, index) {
+                var recipes = room.recipes;
+                for (var key in recipes) {
+                    var recipe = recipes[key];
+                    recipeSteps[key] = recipe;
+                };
+            });
+            var data = recipeSteps;
+        } catch (e) {
+            Logger.err("something went wrong when getting recipe steps : "+e);
         }
         return data;
     }
@@ -110,6 +143,19 @@ class NeeoManager {
             }
         }
         return activeRecipes;
+    }
+
+    getDeviceByKey(key) {
+        for (var index = 0; index < SRV_VARS.data.rooms.length; index++) {
+            var room = SRV_VARS.data.rooms[index];
+            for (var deviceKey in room.devices) {
+                var device = room.devices[deviceKey];
+                if (key == device.key) {
+                    return device;
+                }
+            }
+        }
+        return null;
     }
 }
 

@@ -126,7 +126,7 @@ class NeeoController {
             if (recipe == null) {
                 throw new Error("Problem updating recipe : ("+e+")");
             }
-            req.io.sockets.emit('brain update recipe', {uid: recipe.uid, newState: newState, devicename: event.recipe});            
+            req.io.sockets.emit('brain update recipe', {recipe: recipe});            
         } else {
             console.log("A button has been pushed, ignoring it, for now");
         }
