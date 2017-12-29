@@ -43,9 +43,20 @@
   $('a[data-link]').on('click', onClickAWithLink);
 
   function onClickAWithLink() {
-    $.get( $(this).attr("data-link"), function() {
-      //ok, action performed
-    });
+    if ($(this).hasClass("launch")) {
+      var loader = "<i class='fa fa-spinner fa-spin fa-5x'></i>";
+      $('#commands .sub-container').html(loader);
+      $('html, body').animate({
+        scrollTop: ($('#commands').offset().top - 48)
+      }, 1000, "easeInOutExpo");
+      $.get("/neeo/load/commands/recipe/"+$(this).attr("data-recipe-id"), function(data) {
+        $('#commands .sub-container').html(data);
+      });
+    } else {
+      $.get( $(this).attr("data-link"), function() {
+        //ok, action performed
+      });
+    }
   }
 
   // Smooth scrolling using jQuery easing

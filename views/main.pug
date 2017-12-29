@@ -6,7 +6,7 @@ html(lang='en')
             div.container
                 a(class='navbar-brand js-scroll-trigger' href='#page-top') NeeOme
                 button(class='navbar-toggler navbar-toggler-right' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
-                    | Menu
+                    | Menu 
                     i(class='fa fa-bars')
                 div(class='collapse navbar-collapse' id='navbarResponsive')
                     ul(class='navbar-nav ml-auto')
@@ -41,15 +41,16 @@ html(lang='en')
                         p Sélectionnez une pièce
                 each room in rooms
                     div(class='row hidden' id=room.key)
-                        div(class='col-lg-8 mx-auto')
+                        div(class='col-lg-12 mx-auto')
                             ul.nav.nav-scenarios
                                 each recipe in recipes
-                                    li.nav-item
+                                    if recipe.type == 'launch'
                                         if recipe.detail.roomname == room.name
-                                            if recipe.type == 'launch'
-                                                if recipe.detail.devicetype != 'LIGHT'
+                                            if recipe.detail.devicetype != 'LIGHT'
+                                                li.nav-item.m-auto
                                                     - var link = recipe.url.distantSetPowerOn
-                                                    a(class='nav-link launch' data-link=link)
+                                                    - var recipeId = recipe.url.distantSetPowerOnId
+                                                    a(class='nav-link launch' data-link=link data-recipe-id=recipeId)
                                                         p #{recipe.detail.devicename}
                                                         - var myclass = "myicon "+recipe.detail.devicename
                                                         i(class=myclass)
@@ -64,40 +65,7 @@ html(lang='en')
         section(id='commands' class='content-section text-center')
             div.container
                 div.row
-                    div(class='col-lg-8 mx-auto')
-                        
-
-        //-
-            section(id='download' class='download-section content-section text-center')
-                div.container
-                    dic(class='col-lg-8 mx-auto')
-                        h2 Download Grayscale
-                        p You can download Grayscale for free on the preview page at Start Bootstrap.
-                        a(href='http://startbootstrap.com/template-overviews/grayscale/' class='btn btn-default btn-lg') Visit Download Page
-
-
-            section(id='contact' class='content-section text-center')
-                div.container
-                    div.row
-                        div(class='col-lg-8 mx-auto')
-                            h2 Contact Start Bootstrap
-                            p
-                                | Feel free to leave us a comment on the 
-                                a(href='http://startbootstrap.com/template-overviews/grayscale/') Grayscale template overview page
-                                |  on Star Bootstrap to give some feedback about this theme !
-                            ul(class='list-inline banner-social-buttons')
-                                li.list-inline-item
-                                    a(href='https://twitter.com/SBootstrap' class='btn btn-default btn-lg')
-                                        i(class='fa fa-twitter fa-fw')
-                                        span.network-name Twitter
-                                li.list-inline-item
-                                    a(href='https://github.com/BlackrockDigital/startbootstrap' class='btn btn-default btn-lg')
-                                        i(class='fa fa-github fa-fw')
-                                        span.network-name Github
-                                li.list-inline-item
-                                    a(href='https://plus.google.com/+Startbootstrap/posts' class='btn btn-default btn-lg')
-                                        i(class='fa fa-google-plus fa-fw')
-                                        span.network-name Google+
+                    div(class='col-lg-12 mx-auto sub-container')
 
         footer
             div(class='container text-center')

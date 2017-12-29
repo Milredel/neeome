@@ -27,6 +27,8 @@ class NeeoManager {
                 var matches = distantUrl.match(regex);
                 recipes[index].url.distantSetPowerOnId = matches[1];
                 var steps = SRV_VARS.data.recipeSteps[matches[1]].steps;
+                //TODO deal with recipes which don't have "volume" step
+                //id est load volume buttons directly from the volume buttons of the device
                 for (var i = 0; i < steps.length; i++) {
                     var step = steps[i];
                     if(step.type == "volume") {
@@ -151,6 +153,19 @@ class NeeoManager {
             for (var deviceKey in room.devices) {
                 var device = room.devices[deviceKey];
                 if (key == device.key) {
+                    return device;
+                }
+            }
+        }
+        return null;
+    }
+
+    getDeviceByName(name) {
+        for (var index = 0; index < SRV_VARS.data.rooms.length; index++) {
+            var room = SRV_VARS.data.rooms[index];
+            for (var deviceKey in room.devices) {
+                var device = room.devices[deviceKey];
+                if (name == device.name) {
                     return device;
                 }
             }

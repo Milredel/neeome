@@ -131,6 +131,26 @@ class NeeoController {
             console.log("A button has been pushed, ignoring it, for now");
         }
     }
+
+    async loadCommandsForRecipe(req, res) {
+        var recipe_id = req.params.id;
+        if (SRV_VARS.data.recipeSteps[recipe_id] == undefined) {
+            throw new Error("unknown recipe id");
+        }
+        var recipeSteps = SRV_VARS.data.recipeSteps[recipe_id].steps;
+        for (var i = 0; i < recipeSteps.length; i++) {
+            var step = recipeSteps[i];
+            if (step.type == "controls") {
+                var deviceName = step.scenarioName;
+            }
+        }
+        if (deviceName == undefined) {
+            throw new Error("impossible to find controls in steps");
+        }
+        console.log(neeoManager.getDeviceByName(deviceName));
+
+        return res.render('commands', { recipe_id: recipe_id })
+    }
     
 }
 

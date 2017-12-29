@@ -28,5 +28,15 @@
         "binding": true,
         "type": "controller",
         "roles": []
+    },
+    {
+        "route": "/neeo/load/commands/recipe/:id(\\d+)/",
+        "method": "get",
+        "class": "Neeo",
+        "function": "loadCommandsForRecipe",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
     }
 ]

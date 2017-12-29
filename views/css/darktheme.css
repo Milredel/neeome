@@ -309,6 +309,12 @@ body {
   margin: auto;
 }
 
+.ul-commands {
+  list-style: none;
+  display:flex;
+  flex-direction: row;
+}
+
 @media (max-width: 767px) {
   .below-main-nav {
     top: 57px;
@@ -328,5 +334,8 @@ body {
   }
   #subNav #off-item {
     padding-left: 20%;
+  }
+  .ul-commands {
+    display:initial;
   }
 }
