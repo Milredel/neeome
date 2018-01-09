@@ -1,11 +1,18 @@
+p #{device_name}
+
 ul.ul-commands
-    li.m-auto
-        p Tata
-    li.m-auto
-        p Tete
-    li.m-auto
-        p Titi
-    li.m-auto
-        p Toto
-    li.m-auto
-        p Tutu
+    each block in config
+        li.m-auto
+            if block.collapsable
+                p #{block.title}
+            ul.ul-line
+                each line in block.lines
+                    li.m-auto
+                        each elem in line
+                            - var buttonLink = elem.button.distantUrl
+                            a(data-link=buttonLink)
+                                - var buttonClass = elem.button.class
+                                if buttonClass != "" && buttonClass != undefined
+                                    i(class='fa fa-lg '+buttonClass)
+                                else
+                                    | #{elem.button.label}

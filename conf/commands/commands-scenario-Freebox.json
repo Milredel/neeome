@@ -1,0 +1,139 @@
+[
+    {
+        "title": "block1",
+        "collapsable": true,
+        "default": "collapsed",
+        "lines": [
+            [
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT HDMI 4",
+                        "label": "FREEBOX"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT AUDIO",
+                        "label": "SHIELD TV"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT AUX 1",
+                        "label": "CHROMECAST"
+                    }
+                }
+            ]
+        ]
+    },
+    {
+        "title": "block2",
+        "collapsable": false,
+        "lines": [
+            [
+                {
+                    "button": {
+
+                    }
+                },
+                {
+                    "button": {
+
+                    }
+                },
+                {
+                    "button": {
+
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+
+                    }
+                },
+                {
+                    "button": {
+
+                    }
+                },
+                {
+                    "button": {
+
+                    }
+                }
+            ]
+            
+        ]
+    },
+    {
+        "title": "block3",
+        "collapsable": false,
+        "lines": [
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "FUNCTION RED"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "CURSOR UP"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "FUNCTION BLUE"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "CURSOR LEFT"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "CURSOR ENTER"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "CURSOR RIGHT"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "FUNCTION GREEN"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "CURSOR DOWN"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "FUNCTION YELLOW"
+                    }
+                }
+            ]
+        ]
+    }
+]

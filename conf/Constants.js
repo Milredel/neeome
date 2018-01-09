@@ -12,6 +12,9 @@ global.UTILS = require('./Utils');
 //Database
 global.DB = require('./Database');
 
+//Buttons
+global.BUTTONS = require('./Buttons');
+
 //Config
 const fs = require('fs');
 const path = require('path');

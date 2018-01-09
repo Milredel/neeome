@@ -272,6 +272,24 @@ body {
 
 /* custom css */
 
+.blue {
+  color: #007bff;
+}
+.red {
+  color: #dc3545;
+}
+.yellow {
+  color : #ffc107;
+}
+.green {
+  color: #28a745;
+}
+.white {
+  color: #fff;
+}
+.black {
+  color: #000;
+}
 
 .nav-rooms .nav-item {
   margin: auto;
@@ -313,6 +331,11 @@ body {
   list-style: none;
   display:flex;
   flex-direction: row;
+}
+
+.ul-line {
+  list-style: none;
+  padding-left: 0;
 }
 
 @media (max-width: 767px) {

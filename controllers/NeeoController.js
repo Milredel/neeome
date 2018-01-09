@@ -2,6 +2,7 @@
 
 const Logger = SRV_DEPENDENCIES.logger;
 const neeoManager = SRV_DEPENDENCIES.neeoManager;
+const commandConfigDir = BASE_DIR + '/conf/commands';
 
 class NeeoController {
 
@@ -147,9 +148,50 @@ class NeeoController {
         if (deviceName == undefined) {
             throw new Error("impossible to find controls in steps");
         }
-        console.log(neeoManager.getDeviceByName(deviceName));
+        //console.log(neeoManager.getDeviceByName(deviceName));
+        var commandFileDir = commandConfigDir + '/' + 'commands-scenario-'+deviceName+'.json';
+        
+        try {
+            //TODO load commandConfigs during server start
+            var commandConfig = require(commandFileDir);
+        } catch (e) {
+            res.send('Unable to find command file for scenario "'+deviceName+'" : ('+e+')');
+        }
+        
+        for (var i = 0; i < commandConfig.length; i++) {
+            var block = commandConfig[i];
+            if (block.lines != undefined) {
+                for (var j = 0; j < block.lines.length; j++) {
+                    var line = block.lines[j];
+                    for (var k = 0; k < line.length; k++) {
+                        var elem = line[k];
+                        if (elem.button != undefined && !(Object.keys(elem.button).length === 0 && elem.button.constructor === Object)) {
+                            var button = elem.button;
+                            var button_name = (button.button_name).replace(" ", "_");
+                            if (button.label == undefined) {
+                                if (BUTTONS[button_name] != undefined && BUTTONS[button_name].label != undefined) {
+                                    commandConfig[i].lines[j][k].button.label = BUTTONS[button_name].label;
+                                }
+                            }
+                            if (button.class == undefined) {
+                                if (BUTTONS[button_name] != undefined && BUTTONS[button_name].class != undefined) {
+                                    commandConfig[i].lines[j][k].button.class = BUTTONS[button_name].class;
+                                }
+                            }
+                            if (button.icon == undefined) {
+                                if (BUTTONS[button_name] != undefined && BUTTONS[button_name].icon != undefined) {
+                                    commandConfig[i].lines[j][k].button.icon = BUTTONS[button_name].icon;
+                                }
+                            }
+                            var device = neeoManager.getDeviceByName(button.device_name);
+                            commandConfig[i].lines[j][k].button.distantUrl = device.macros[button.button_name].distantUrl;
+                        }
+                    }
+                }
+            }
+        }
 
-        return res.render('commands', { recipe_id: recipe_id })
+        return res.render('commands', { recipe_id: recipe_id, device_name: deviceName, config: commandConfig });
     }
     
 }

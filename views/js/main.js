@@ -51,6 +51,7 @@
       }, 1000, "easeInOutExpo");
       $.get("/neeo/load/commands/recipe/"+$(this).attr("data-recipe-id"), function(data) {
         $('#commands .sub-container').html(data);
+        $('a[data-link]').off('click').on('click', onClickAWithLink);
       });
     } else {
       $.get( $(this).attr("data-link"), function() {
