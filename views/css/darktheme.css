@@ -338,6 +338,42 @@ body {
   padding-left: 0;
 }
 
+.button-line {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.button-line li {
+  width: 30%;
+}
+
+.display-5 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.ul-commands .row.display-5 {
+  margin-bottom: 15px;
+}
+
+.margintop--5 {
+  margin-top: -5px;
+}
+
+.margintop-5 {
+  margin-top: 5px;
+}
+
+.marginleft--5 {
+  margin-left: -5px;
+}
+
+.marginright--5 {
+  margin-right: -5px;
+}
+
 @media (max-width: 767px) {
   .below-main-nav {
     top: 57px;
@@ -360,5 +396,8 @@ body {
   }
   .ul-commands {
     display:initial;
+  }
+  .ul-commands>li {
+    margin-bottom: 2em!important;
   }
 }

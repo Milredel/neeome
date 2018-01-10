@@ -1,18 +1,24 @@
 p #{device_name}
 
 ul.ul-commands
-    each block in config
+    each block, index in config
         li.m-auto
             if block.collapsable
                 p #{block.title}
-            ul.ul-line
+            div.container
                 each line in block.lines
-                    li.m-auto
+                    - var rowClass = (block.size != undefined) ? "row "+block.size : "row"
+                    div(class=rowClass)
                         each elem in line
-                            - var buttonLink = elem.button.distantUrl
-                            a(data-link=buttonLink)
-                                - var buttonClass = elem.button.class
-                                if buttonClass != "" && buttonClass != undefined
-                                    i(class='fa fa-lg '+buttonClass)
-                                else
-                                    | #{elem.button.label}
+                            div.col
+                                - var buttonLink = elem.button.distantUrl
+                                    a(data-link=buttonLink)
+                                        if elem.button.classes != undefined && elem.button.classes.length > 0
+                                            each myClass in elem.button.classes
+                                                i(class='fa fa-lg '+myClass)
+                                        else
+                                            - var buttonClass = elem.button.class        
+                                            if buttonClass != "" && buttonClass != undefined
+                                                i(class='fa fa-lg '+buttonClass)
+                                            else
+                                                | #{elem.button.label}

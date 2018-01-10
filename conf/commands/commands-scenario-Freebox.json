@@ -32,47 +32,82 @@
     {
         "title": "block2",
         "collapsable": false,
+        "size": "display-5",
         "lines": [
             [
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 1"
                     }
                 },
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 2"
                     }
                 },
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 3"
                     }
                 }
             ],
             [
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 4"
                     }
                 },
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 5"
                     }
                 },
                 {
                     "button": {
-
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 6"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 7"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 8"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 9"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "DIGIT 0"
                     }
                 }
             ]
-            
         ]
     },
     {
         "title": "block3",
         "collapsable": false,
+        "size": "display-5",
         "lines": [
             [
                 {
@@ -131,6 +166,45 @@
                     "button": {
                         "device_name": "Freebox",
                         "button_name": "FUNCTION YELLOW"
+                    }
+                }
+            ]
+        ]
+    },
+    {
+        "title": "block4",
+        "collapsable": false,
+        "lines": [
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "PREVIOUS"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "REVERSE"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "PLAY",
+                        "classes": ["fa-play white", "fa-pause white"]
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "FORWARD"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "NEXT"
                     }
                 }
             ]
