@@ -1,5 +1,6 @@
-- var recipeId = recipe.uid
-div(class='container' id=recipeId)
+- var recipeUid = recipe.uid
+- var recipeId = recipe.url.distantSetPowerOnId
+div(class='container active-recipe' id=recipeUid data-recipe-id=recipeId)
     a(class='navbar-brand') #{recipe.detail.devicename}
     div(class='mycollapse')
         ul(class='navbar-nav ml-auto')

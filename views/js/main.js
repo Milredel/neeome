@@ -37,6 +37,7 @@
                 </ul>";
       $('#subNav').append(banner);
       $('a[data-link]').off('click').on('click', onClickAWithLink);
+      $('.container.active-recipe').off('click').on('click', onClickActiveRecipeBanner);
     }
   });
 
@@ -67,7 +68,7 @@
 
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
-
+    $('#commands .sub-container').html("");
     if ($(this).hasClass('load')) {
       $('section#scenarios .container>div').addClass("hidden");
       $('section#scenarios .container div#'+$(this).attr('data-room-id')).removeClass("hidden");
@@ -84,6 +85,25 @@
       }
     }  
   });
+
+  $('.active-recipe .navbar-brand').on('click', onClickActiveRecipeBanner);
+
+  function onClickActiveRecipeBanner() {
+    var loader = "<i class='fa fa-spinner fa-spin fa-5x'></i>";
+    $('#commands .sub-container').html(loader);
+    $('html, body').animate({
+      scrollTop: ($('#commands').offset().top - 48)
+    }, 1000, "easeInOutExpo");
+    $.get("/neeo/load/commands/recipe/"+$(this).parent().attr("data-recipe-id"), function(data) {
+      $('#commands .sub-container').html(data);
+      $('a[data-link]').off('click').on('click', onClickAWithLink);
+      $('.block-title.collapsable').off('click').on('click', onClickBlockTitle);
+    });
+  }
+
+  $('#exampleModalCenter').on('shown.bs.modal', function () {
+    console.log("pouet");
+  })
 
   // Closes responsive menu when a scroll trigger link is clicked
   $('.js-scroll-trigger').click(function() {

@@ -4,7 +4,9 @@ html(lang='en')
     body#page-top
         nav(class='navbar navbar-expand-lg navbar-light fixed-top' id='mainNav')
             div.container
-                a(class='navbar-brand js-scroll-trigger' href='#page-top') NeeOme
+                a(class='navbar-brand js-scroll-trigger' href='') NeeOme
+                a(class="lightbulb-link" data-toggle="modal" data-target="#exampleModalCenter")
+                    i.fa.fa-lightbulb-o.white.fa-lg
                 button(class='navbar-toggler navbar-toggler-right' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
                     | Menu 
                     i(class='fa fa-bars')
@@ -50,7 +52,7 @@ html(lang='en')
                                                 li.nav-item.m-auto
                                                     - var link = recipe.url.distantSetPowerOn
                                                     - var recipeId = recipe.url.distantSetPowerOnId
-                                                    a(class='nav-link launch' data-link=link data-recipe-id=recipeId)
+                                                    a(class='nav-link launch' data-link=link data-recipe-id=recipeId href="#commands")
                                                         p #{recipe.detail.devicename}
                                                         - var myclass = "myicon "+recipe.detail.devicename
                                                         i(class=myclass)
@@ -70,6 +72,19 @@ html(lang='en')
         footer
             div(class='container text-center')
                 p Copyright &copy; Your Website 2017
+
+
+        div(class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true")
+            div(class="modal-dialog modal-dialog-centered modal-lg" role="document")
+                div.modal-content
+                    div.modal-header
+                        h5.modal-title#exampleModalLongTitle Modal title
+                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true") &times;
+                    div.modal-body ...
+                    div.modal-footer
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+                        button(type="button" class="btn btn-primary") Save changes
 
         script(src='/views/vendor/jquery/jquery.min.js')
         script(src='/views/vendor/bootstrap/js/bootstrap.bundle.min.js')
