@@ -49,15 +49,6 @@
                         "label": "JEU VIDEO"
                     }
                 }
-            ],
-            [
-                {
-                    "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "LAUNCH NETFLIX",
-                        "label": "NETFLIX"
-                    }
-                }
             ]
         ]
     },
@@ -69,56 +60,55 @@
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "CURSOR UP"
+                        "device_name": "CD",
+                        "button_name": "PLAY",
+                        "class": "fa-play white"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "CD",
+                        "button_name": "PAUSE",
+                        "class": "fa-pause white"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "CD",
+                        "button_name": "STOP",
+                        "class": "fa-stop white"
+                    }
+                },
+                {
+                    "button":  {
+                        "device_name": "CD",
+                        "button_name": "OPEN/CLOSE"
                     }
                 }
             ],
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "CURSOR LEFT"
+                        "device_name": "CD",
+                        "button_name": "PREVIOUS"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "CURSOR ENTER"
+                        "device_name": "CD",
+                        "button_name": "REVERSE"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "CURSOR RIGHT"
-                    }
-                }
-            ],
-            [
-                {
-                    "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "CURSOR DOWN"
-                    }
-                }
-            ]
-        ]
-    },
-    {
-        "title": "block3",
-        "collapsable": false,
-        "lines": [
-            [
-                {
-                    "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "BACK"
+                        "device_name": "CD",
+                        "button_name": "FORWARD"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "MENU"
+                        "device_name": "CD",
+                        "button_name": "NEXT"
                     }
                 }
             ]

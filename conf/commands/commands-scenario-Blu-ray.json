@@ -49,15 +49,6 @@
                         "label": "JEU VIDEO"
                     }
                 }
-            ],
-            [
-                {
-                    "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "LAUNCH NETFLIX",
-                        "label": "NETFLIX"
-                    }
-                }
             ]
         ]
     },
@@ -69,7 +60,7 @@
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
+                        "device_name": "Blu-ray",
                         "button_name": "CURSOR UP"
                     }
                 }
@@ -77,19 +68,19 @@
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
+                        "device_name": "Blu-ray",
                         "button_name": "CURSOR LEFT"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
+                        "device_name": "Blu-ray",
                         "button_name": "CURSOR ENTER"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
+                        "device_name": "Blu-ray",
                         "button_name": "CURSOR RIGHT"
                     }
                 }
@@ -97,7 +88,7 @@
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
+                        "device_name": "Blu-ray",
                         "button_name": "CURSOR DOWN"
                     }
                 }
@@ -107,18 +98,60 @@
     {
         "title": "block3",
         "collapsable": false,
+        "size": "display-5",
         "lines": [
             [
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "BACK"
+                        "device_name": "Blu-ray",
+                        "button_name": "PLAY",
+                        "class": "fa-play white"
                     }
                 },
                 {
                     "button": {
-                        "device_name": "Shield TV",
-                        "button_name": "MENU"
+                        "device_name": "Blu-ray",
+                        "button_name": "PAUSE",
+                        "class": "fa-pause white"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Blu-ray",
+                        "button_name": "STOP",
+                        "class": "fa-stop white"
+                    }
+                },
+                {
+                    "button":  {
+                        "device_name": "Blu-ray",
+                        "button_name": "OPEN/CLOSE"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Blu-ray",
+                        "button_name": "PREVIOUS"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Blu-ray",
+                        "button_name": "REVERSE"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Blu-ray",
+                        "button_name": "FORWARD"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Blu-ray",
+                        "button_name": "NEXT"
                     }
                 }
             ]

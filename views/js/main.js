@@ -52,12 +52,17 @@
       $.get("/neeo/load/commands/recipe/"+$(this).attr("data-recipe-id"), function(data) {
         $('#commands .sub-container').html(data);
         $('a[data-link]').off('click').on('click', onClickAWithLink);
+        $('.block-title.collapsable').off('click').on('click', onClickBlockTitle);
       });
     } else {
       $.get( $(this).attr("data-link"), function() {
         //ok, action performed
       });
     }
+  }
+
+  function onClickBlockTitle() {
+    $(this).parent().find('.container').first().toggle();
   }
 
   // Smooth scrolling using jQuery easing

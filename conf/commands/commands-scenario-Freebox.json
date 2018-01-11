@@ -1,6 +1,6 @@
 [
     {
-        "title": "block1",
+        "title": "Shortcuts",
         "collapsable": true,
         "default": "collapsed",
         "lines": [
@@ -24,6 +24,59 @@
                         "device_name": "Ampli",
                         "button_name": "INPUT AUX 1",
                         "label": "CHROMECAST"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT CABLE/SATELLITE",
+                        "label": "BLU-RAY"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT DISC",
+                        "label": "CD"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT GAME",
+                        "label": "JEU VIDEO"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "LAUNCH TV",
+                        "label": "TV"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "LAUNCH REPLAY",
+                        "label": "REPLAY"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "LAUNCH DEEZER",
+                        "label": "DEEZER"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Freebox",
+                        "button_name": "LAUNCH DISK",
+                        "label": "DISK"
                     }
                 }
             ]

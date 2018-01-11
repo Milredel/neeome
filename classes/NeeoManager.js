@@ -20,7 +20,7 @@ class NeeoManager {
             recipes.forEach(function(recipe, index) {
                 recipes[index].detail.roomname = decodeURI(recipes[index].detail.roomname);
                 recipes[index].detail.devicename = decodeURI(recipes[index].detail.devicename);
-                var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOn, "on");;
+                var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOn, "on");
                 recipes[index].url.distantSetPowerOn = distantUrl;
                 var pattern = /[0-9]{8,}/;
                 var regex = new RegExp(pattern, "g");
@@ -40,12 +40,16 @@ class NeeoManager {
                         }
                     }
                 }
-                var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOff, "off");
-                recipes[index].url.distantSetPowerOff = distantUrl;
-                var pattern = /[0-9]{8,}/;
-                var regex = new RegExp(pattern, "g");
-                var matches = distantUrl.match(regex);
-                recipes[index].url.distantSetPowerOffId = matches[1];
+                recipes[index].url.distantSetPowerOff = null;
+                recipes[index].url.distantSetPowerOffId = null;
+                if (recipe.url.setPowerOff != undefined) {
+                    var distantUrl = UTILS.formatDistantUrl(recipe.url.setPowerOff, "off");
+                    recipes[index].url.distantSetPowerOff = distantUrl;
+                    var pattern = /[0-9]{8,}/;
+                    var regex = new RegExp(pattern, "g");
+                    var matches = distantUrl.match(regex);
+                    recipes[index].url.distantSetPowerOffId = matches[1];
+                }
             });
             var data = recipes;
         } catch (e) {

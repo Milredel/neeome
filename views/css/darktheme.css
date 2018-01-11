@@ -374,6 +374,18 @@ body {
   margin-right: -5px;
 }
 
+.block-title {
+  display: none;
+}
+
+.block-title.collapsable {
+  display: none;
+}
+
+.container.block.collapsable {
+  display:block;
+}
+
 @media (max-width: 767px) {
   .below-main-nav {
     top: 57px;
@@ -399,5 +411,11 @@ body {
   }
   .ul-commands>li {
     margin-bottom: 2em!important;
+  }
+  .container.block.collapsable {
+    display:none;
+  }
+  .block-title.collapsable {
+    display: block;
   }
 }

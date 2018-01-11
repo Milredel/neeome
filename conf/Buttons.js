@@ -78,6 +78,9 @@ module.exports = {
     PAUSE: {
         class: "fa-pause white"
     },
+    STOP: {
+        class: "fa-stop white"
+    },
     FORWARD: {
         class: "fa-forward white"
     },
@@ -89,5 +92,8 @@ module.exports = {
     },
     BACK: {
         label: "BACK"
+    },
+    OPEN_CLOSE: {
+        class: "fa-eject white"
     }
 }

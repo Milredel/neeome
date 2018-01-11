@@ -3,9 +3,9 @@ p #{device_name}
 ul.ul-commands
     each block, index in config
         li.m-auto
-            if block.collapsable
-                p #{block.title}
-            div.container
+            - var collapsableClass = (block.collapsable != undefined && block.collapsable) ? "collapsable" : ""
+            p(class="block-title "+collapsableClass) #{block.title}
+            div(class="container block "+collapsableClass)
                 each line in block.lines
                     - var rowClass = (block.size != undefined) ? "row "+block.size : "row"
                     div(class=rowClass)
