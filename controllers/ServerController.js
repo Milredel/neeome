@@ -5,6 +5,7 @@ require('./../conf/Constants.js');
 const util = require('util');
 const srvManager = SRV_DEPENDENCIES.srvManager;
 const neeoManager = SRV_DEPENDENCIES.neeoManager;
+const commandConfigManager = SRV_DEPENDENCIES.commandConfigManager;
 const Logger = SRV_DEPENDENCIES.logger;
 
 class ServerController {
@@ -49,6 +50,17 @@ class ServerController {
             } else {
                 Logger.warn('No recipe have been found.');
             }
+
+            const commandConfigs = await commandConfigManager.getAllCommandConfigs();
+
+            SRV_VARS.data.commandConfigs = {};
+            
+            if (commandConfigs) {
+                SRV_VARS.data.commandConfigs = commandConfigs;
+                Logger.success(Object.keys(commandConfigs).length + " commandConfigs have been added !");
+            } else {
+                Logger.warn('No commandConfigs have been found.');
+            }            
 
         } catch (e) {
             throw new Error('An error has occured while loading data from Neeo (Reason: ' + e + ').');

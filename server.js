@@ -9,7 +9,8 @@ global.SRV_DEPENDENCIES = {
     'logger': null,
     'neeoManager': null,
     'srvManager': null,
-    'speaker': null
+    'speaker': null,
+    'commandConfigManager': null
 };
 global.SRV_VARS = {
     'data': {}
@@ -31,6 +32,11 @@ SRV_DEPENDENCIES.srvManager = new ServerManager();
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance NeeoManager...');
 const NeeoManager = require(BASE_DIR + '/classes/NeeoManager');
 SRV_DEPENDENCIES.neeoManager = new NeeoManager();
+
+// Loading CommandConfig manager
+SRV_DEPENDENCIES.logger.log('Chargement de la dépendance CommandConfigManager...');
+const CommandConfigManager = require(BASE_DIR + '/classes/CommandConfigManager');
+SRV_DEPENDENCIES.commandConfigManager = new CommandConfigManager();
 
 // Loading notifier
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance Notifier...');

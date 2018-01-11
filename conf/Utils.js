@@ -24,17 +24,6 @@ module.exports = {
     isNull: function(val) {
         return (typeof val === 'undefined' || val === null);
     },
-    frenchDateToSqlDate: function(date) {
-        try {
-            let datePart = date.match(/\d+/g);
-
-            return datePart[2] + '-' + datePart[1] + '-' + datePart[0];
-        } catch(e) {
-            return date;
-        }
-
-        return date;
-    },
     toFrenchDate: function(date, withTime = false) {
         try {
             if (!date) {
@@ -60,32 +49,6 @@ module.exports = {
             return date;
         }
     },
-    toSqlDate: function(date, withTime = false) {
-        try {
-            if (!date) {
-                throw new Error('Need a date !');
-            }
-
-            date = new Date(date);
-            let day = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate());
-            let monthNum = date.getMonth() + 1;
-            let month = (monthNum < 10 ? "0" + monthNum : monthNum);
-
-            let result = date.getFullYear() + "-" + month + "-" + day;
-
-            if (withTime === true) {
-                let hours = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours());
-                let minutes = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
-                let seconds = (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
-
-                result += " " + hours + ':' + minutes + ':' + seconds;
-            }
-
-            return result;
-        } catch (e) {
-            return date;
-        }
-    },
     isRoutingFile: function(filename) {
         return filename.match(/([a-zA-Z_-]+)\.routing\.json$/);
     },
@@ -97,6 +60,16 @@ module.exports = {
             return filename.match(/([a-zA-Z]+)Controller\.js$/)[1];
         } catch(e) {
             throw new Error('Erreur lors de la récupération du nom du controleur pour le fichier ' + filename);
+        }
+    },
+    isCommandConfigFile: function(filename) {
+        return filename.match(/^commands-scenario-([a-zA-Z_-\s]+)\.json$/);
+    },
+    getScenarioName: function(filename) {
+        try {
+            return filename.match(/^commands-scenario-([a-zA-Z_-\s]+)\.json$/)[1];
+        } catch(e) {
+            throw new Error('Error while getting scenario name for ' + filename);
         }
     },
     applyObjectChanges: function(object, changes) {
