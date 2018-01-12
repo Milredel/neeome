@@ -1,10 +1,10 @@
 [
     {
-        "route": "/render/lights/:room(\\d+)/",
+        "route": "/render/lights/:room([a-z0-9]+)/",
         "method": "get",
         "class": "Light",
         "function": "displayLights",
-        "secure": true,
+        "secure": false,
         "binding": true,
         "type": "controller",
         "roles": []

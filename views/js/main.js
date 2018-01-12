@@ -102,7 +102,9 @@
   }
 
   $('#exampleModalCenter').on('shown.bs.modal', function () {
-    console.log("pouet");
+    $.get('/render/lights/all/', function(data) {
+      $('.modal-body').html(data);
+    });
   })
 
   // Closes responsive menu when a scroll trigger link is clicked

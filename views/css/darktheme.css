@@ -401,6 +401,18 @@ body {
   min-height: calc(100% - (.5rem * 2));
 }
 
+.modal-content {
+  background-color: #000;
+}
+
+.modal-content button.close {
+  color: #FFF;
+}
+
+.modal-body {
+  text-align: center;
+}
+
 @media (max-width: 767px) {
   #mainNav {
     z-index: 1040;

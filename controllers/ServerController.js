@@ -63,17 +63,6 @@ class ServerController {
                 Logger.warn('No commandConfigs have been found.');
             }
 
-            const lights = await hueLightManager.getAllLights();
-
-            SRV_VARS.data.lights = {};
-            
-            if (lights) {
-                SRV_VARS.data.lights = lights;
-                Logger.success(lights.length + " lights have been added !");
-            } else {
-                Logger.warn('No lights have been found.');
-            }
-
         } catch (e) {
             throw new Error('An error has occured while loading data from Neeo (Reason: ' + e + ').');
         }
