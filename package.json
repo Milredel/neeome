@@ -30,6 +30,7 @@
     "express": "^4.16.2",
     "form-data": "^2.3.1",
     "google-tts-api": "0.0.2",
+    "huejay": "^1.7.4",
     "jsonwebtoken": "^8.1.0",
     "node-fetch": "^1.7.3",
     "pug": "^2.0.0-rc.4",

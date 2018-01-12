@@ -6,6 +6,7 @@ config.neeo = {};
 config.home = {};
 config.freebox = {};
 config.googlehome = {};
+config.hue = {};
 
 //-------------------------------------------
 // NEEO Settings
@@ -35,6 +36,23 @@ config.neeo.api_version = 'v1';
 //-------------------------------------------
 
 config.googlehome.ip_address = 'googlehomelocalip';
+
+//-------------------------------------------
+// Philips Hue Settings
+//-------------------------------------------
+
+//Philips Hue Bridge IP address
+config.hue.bridge_ip_address = 'philipshuebridgelocalip';
+
+//port used to communicate with bridge
+config.hue.port = 80;
+
+//username used to communicate with bridge/
+//to be created manually (one tap on bridge needed)
+config.hue.username = 'myhueusername';
+
+//timeout for hue request
+config.hue.timeout = 15000;
 
 //-------------------------------------------
 // Freebox Settings

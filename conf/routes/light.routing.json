@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/render/lights/:room(\\d+)/",
+        "method": "get",
+        "class": "Light",
+        "function": "displayLights",
+        "secure": true,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    }
+]

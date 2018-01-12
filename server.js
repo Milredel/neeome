@@ -10,7 +10,8 @@ global.SRV_DEPENDENCIES = {
     'neeoManager': null,
     'srvManager': null,
     'speaker': null,
-    'commandConfigManager': null
+    'commandConfigManager': null,
+    'hueLightManager': null
 };
 global.SRV_VARS = {
     'data': {}
@@ -37,6 +38,11 @@ SRV_DEPENDENCIES.neeoManager = new NeeoManager();
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance CommandConfigManager...');
 const CommandConfigManager = require(BASE_DIR + '/classes/CommandConfigManager');
 SRV_DEPENDENCIES.commandConfigManager = new CommandConfigManager();
+
+// Loading HueLight manager
+SRV_DEPENDENCIES.logger.log('Chargement de la dépendance HueLightManager...');
+const HueLightManager = require(BASE_DIR + '/classes/HueLightManager');
+SRV_DEPENDENCIES.hueLightManager = new HueLightManager();
 
 // Loading notifier
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance Notifier...');

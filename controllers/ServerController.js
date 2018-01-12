@@ -6,6 +6,7 @@ const util = require('util');
 const srvManager = SRV_DEPENDENCIES.srvManager;
 const neeoManager = SRV_DEPENDENCIES.neeoManager;
 const commandConfigManager = SRV_DEPENDENCIES.commandConfigManager;
+const hueLightManager = SRV_DEPENDENCIES.hueLightManager;
 const Logger = SRV_DEPENDENCIES.logger;
 
 class ServerController {
@@ -60,7 +61,18 @@ class ServerController {
                 Logger.success(Object.keys(commandConfigs).length + " commandConfigs have been added !");
             } else {
                 Logger.warn('No commandConfigs have been found.');
-            }            
+            }
+
+            const lights = await hueLightManager.getAllLights();
+
+            SRV_VARS.data.lights = {};
+            
+            if (lights) {
+                SRV_VARS.data.lights = lights;
+                Logger.success(lights.length + " lights have been added !");
+            } else {
+                Logger.warn('No lights have been found.');
+            }
 
         } catch (e) {
             throw new Error('An error has occured while loading data from Neeo (Reason: ' + e + ').');
