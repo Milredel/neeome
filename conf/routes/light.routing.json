@@ -8,5 +8,15 @@
         "binding": true,
         "type": "controller",
         "roles": []
+    },
+    {
+        "route": "/light/:id([0-9]+)/",
+        "method": "post",
+        "class": "Light",
+        "function": "updateState",
+        "secure": false,
+        "binding": true,
+        "type": "controller",
+        "roles": []
     }
 ]

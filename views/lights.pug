@@ -1,2 +1,18 @@
-each light in lights
-    p #{light.name}
+ul.list-group
+    each light in lights
+        li(class="light-item list-group-item d-flex flex-column justify-content-between align-items-center" id=light.id) 
+            div.container.p-2
+                span.float-left.lineheight-2 #{light.name}
+                div.float-right.badge
+                    label.switch
+                        if light.on == true
+                            input(type="checkbox" checked)
+                        else
+                            input(type="checkbox")
+                        span.slider.round
+            -var displayClass = light.on ? "" : "hidden"
+            div(class="container p-2 brightness-container "+displayClass)
+                div.progress
+                    - var mybrightness = light.brightness / 254 * 100
+                    - var bgcolor = "rgb("+light.rgbcolor[0]+", "+light.rgbcolor[1]+", "+light.rgbcolor[2]+")"
+                    div(class="progress-bar" role="progressbar" aria-valuenow=mybrightness aria-valuemin=0 aria-valuemax=254 style="width:"+mybrightness+"%;background-color:"+bgcolor+";")

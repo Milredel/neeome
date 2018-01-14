@@ -104,8 +104,30 @@
   $('#exampleModalCenter').on('shown.bs.modal', function () {
     $.get('/render/lights/all/', function(data) {
       $('.modal-body').html(data);
+      $('.slider.round').off('click').on('click', onClickLightSwitch);
     });
   })
+
+  function onClickLightSwitch() {
+    var that = $(this);
+    var lightId = $(this).parents(".light-item").first().attr("id");
+    var newState = !$(this).parent().find('input').is(':checked');
+    $.post('/light/'+lightId,
+      {
+        on: newState
+      },
+      function(data){
+        if (false == newState) {
+          that.parents('.light-item').first().find('.brightness-container').hide();
+        } else {
+          that.parents('.light-item').first().find('.brightness-container').show();
+        }
+      },
+      "json"
+    ).fail(function(xhr, textStatus, errorThrown) {
+        console.log(xhr);
+    });
+  }
 
   // Closes responsive menu when a scroll trigger link is clicked
   $('.js-scroll-trigger').click(function() {
