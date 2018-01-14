@@ -21,7 +21,8 @@ html(lang='en')
                 each recipe in activeRecipes
                     include recipebanner.pug
 
-        header.masthead
+        - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
+        section(class="masthead "+displayClass)
             div.intro-body
                 div.container
                     div.row
@@ -36,13 +37,16 @@ html(lang='en')
                                             - var myclass = "myicon "+room.iconName
                                             i(class=myclass)
 
-        section(id='scenarios' class='content-section text-center')
+        - var contentClass = onlyOneRoomWithRecipes ? "paddingtop-150" : "";
+        section(id='scenarios' class='content-section text-center '+contentClass)
             div.container
-                div.row
+                - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
+                div(class="row "+displayClass)
                     div(class='col-lg-8 mx-auto')
                         p Sélectionnez une pièce
                 each room in rooms
-                    div(class='row hidden' id=room.key)
+                    - var displayClass = (onlyOneRoomWithRecipes && onlyRoomWithRecipes == room.name) ? "" : "hidden";
+                    div(class='row '+displayClass id=room.key)
                         div(class='col-lg-12 mx-auto')
                             ul.nav.nav-scenarios
                                 each recipe in recipes
@@ -56,13 +60,14 @@ html(lang='en')
                                                         p #{recipe.detail.devicename}
                                                         - var myclass = "myicon "+recipe.detail.devicename
                                                         i(class=myclass)
-                            ul.nav.nav-lights
-                                each recipe in recipes
-                                    li.nav-item
-                                        if recipe.detail.roomname == room.name
-                                            if recipe.type == 'launch'
-                                                if recipe.detail.devicetype == 'LIGHT'
-                                                    p Lumière
+                            //-
+                                ul.nav.nav-lights
+                                    each recipe in recipes
+                                        li.nav-item
+                                            if recipe.detail.roomname == room.name
+                                                if recipe.type == 'launch'
+                                                    if recipe.detail.devicetype == 'LIGHT'
+                                                        p Lumière
 
         section(id='commands' class='content-section text-center')
             div.container

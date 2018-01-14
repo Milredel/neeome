@@ -75,8 +75,23 @@ class ServerController {
         var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
 
         const activeRecipes = neeoManager.getActiveRecipes();
+
+        var roomsWithRecipe = {};
+        for (var room of rooms) {
+            for (var recipe of recipes) {
+                if (recipe.type == 'launch' && recipe.detail.roomname == room.name && recipe.detail.devicetype != 'LIGHT') {
+                    roomsWithRecipe[room.name] = room.key;
+                }
+            }
+        }
+
+        var onlyOneRoomWithRecipes = false;
+        if (Object.keys(roomsWithRecipe).length == 1) {
+            onlyOneRoomWithRecipes = true;
+            var onlyRoomWithRecipes = Object.keys(roomsWithRecipe)[0];
+        }
         
-        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, activeRecipes: activeRecipes })
+        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes })
     }
 }
 
