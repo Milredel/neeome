@@ -122,6 +122,51 @@ config.freebox.channels = {
     "red" : "chaîne précédente"
 };
 
+config.freebox.channels_for_program = [
+    "TF1",
+    "France 2",
+    "France 3",
+    "Canal+",
+    "France 5",
+    "M6",
+    "Arte",
+    "C8",
+    "W9",
+    "TMC",
+    "NT1",
+    "NRJ 12",
+    "France 4",
+    "CNews",
+    "CStar",
+    "Gulli",
+    "France Ô",
+    "HD1",
+    "L'Equipe",
+    "6ter",
+    "Numéro 23",
+    "RMC Découverte",
+    "Chérie 25",
+    "Paris Première",
+    "RTL9",
+    "beIN SPORTS 1",
+    "beIN SPORTS 2",
+    "beIN SPORTS 3",
+    "Eurosport 1",
+    "Eurosport 2",
+    "Game One",
+    "TEVA",
+    "AB 1",
+    "Disney Channel",
+    "Disney Channel +1",
+    "National Geographic Channel",
+    "Nat geo wild",
+    "Comedie+",
+    "Polar+",
+    "Warner TV",
+    "Série Club",
+    "Mangas"
+]
+
 //-------------------------------------------
 
 module.exports = config;

@@ -11,7 +11,8 @@ global.SRV_DEPENDENCIES = {
     'srvManager': null,
     'speaker': null,
     'commandConfigManager': null,
-    'hueLightManager': null
+    'hueLightManager': null,
+    'freeboxManager': null
 };
 global.SRV_VARS = {
     'data': {}
@@ -43,6 +44,11 @@ SRV_DEPENDENCIES.commandConfigManager = new CommandConfigManager();
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance HueLightManager...');
 const HueLightManager = require(BASE_DIR + '/classes/HueLightManager');
 SRV_DEPENDENCIES.hueLightManager = new HueLightManager();
+
+// Loading Freebox manager
+SRV_DEPENDENCIES.logger.log('Chargement de la dépendance FreeboxManager...');
+const FreeboxManager = require(BASE_DIR + '/classes/FreeboxManager');
+SRV_DEPENDENCIES.freeboxManager = new FreeboxManager();
 
 // Loading notifier
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance Notifier...');

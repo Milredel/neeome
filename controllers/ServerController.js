@@ -7,6 +7,7 @@ const srvManager = SRV_DEPENDENCIES.srvManager;
 const neeoManager = SRV_DEPENDENCIES.neeoManager;
 const commandConfigManager = SRV_DEPENDENCIES.commandConfigManager;
 const hueLightManager = SRV_DEPENDENCIES.hueLightManager;
+const freeboxManager = SRV_DEPENDENCIES.freeboxManager;
 const Logger = SRV_DEPENDENCIES.logger;
 
 class ServerController {
@@ -18,6 +19,20 @@ class ServerController {
 
         try {
             Logger.info('Chargement des données');
+
+            const tvChannels = await freeboxManager.getChannelsFromConfig();
+
+            SRV_VARS.data.tvChannels = {};
+            
+            if (tvChannels) {
+                SRV_VARS.data.tvChannels = tvChannels;
+                Logger.success(Object.keys(tvChannels).length + " TV channels have been added !");
+            } else {
+                Logger.warn('No TV channels have been found.');
+            }
+
+            const test = await freeboxManager.getProgram("uuid-webtv-613");
+            //console.log(test);
             
             const rooms = await neeoManager.getAllRooms();
 
