@@ -20,7 +20,17 @@ class LightController {
         if (req.body.on != undefined) {
             params['on'] = req.body.on;
         }
-        var light = await hueLightManager.updateLight(params);
+        if (req.body.brightness != undefined) {
+            params['brightness'] = req.body.brightness;
+        }
+        if (req.body['rgb[red]'] != undefined && req.body['rgb[green]'] != undefined && req.body['rgb[blue]'] != undefined) {
+            params['xy'] = UTILS.rgb_to_cie(req.body['rgb[red]'], req.body['rgb[green]'], req.body['rgb[red]']);
+        }
+        try {
+            var light = await hueLightManager.updateLight(params);
+        } catch (e) {
+            res.send('Error when updating light : ('+e+').');
+        }
         
         res.send(light);
     }

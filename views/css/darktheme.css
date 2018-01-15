@@ -367,6 +367,10 @@ body {
   margin-top: 5px;
 }
 
+.margintop--22 {
+  margin-top: -22px;
+}
+
 .marginleft--5 {
   margin-left: -5px;
 }
@@ -486,6 +490,38 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.brightness-range-input {
+  width: 100%;
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  height: 10px; /* Specified height */
+  outline: none; /* Remove outline */
+  border-radius: 5px;
+}
+
+/* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
+.brightness-range-input::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    border-radius: 50%;
+    background: #FFF;
+    cursor: pointer; /* Cursor on hover */
+}
+
+.brightness-range-input::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    border-radius: 50%;
+    background: #FFF;
+    cursor: pointer; /* Cursor on hover */
+}
+
+.color-light {
+  cursor: pointer;
 }
 
 @media (max-width: 767px) {

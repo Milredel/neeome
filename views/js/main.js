@@ -105,6 +105,8 @@
     $.get('/render/lights/all/', function(data) {
       $('.modal-body').html(data);
       $('.slider.round').off('click').on('click', onClickLightSwitch);
+      $('.brightness-range-input').off('input').on('input', onInputBrightnessRange);
+      $('.color-light').off('click').on('click', onClickColorLight);
     });
   })
 
@@ -127,6 +129,73 @@
     ).fail(function(xhr, textStatus, errorThrown) {
         console.log(xhr);
     });
+  }
+
+  function onInputBrightnessRange() {
+    var that = $(this);
+    var lightId = $(this).parents(".light-item").first().attr("id");
+    var brightnessValue = $(this).val();
+    $.post('/light/'+lightId,
+      {
+        brightness: brightnessValue
+      },
+      function(data){
+        
+      },
+      "json"
+    ).fail(function(xhr, textStatus, errorThrown) {
+        console.log(xhr);
+    });
+  }
+
+  var color;
+
+  function onClickColorLight() {
+    var $parentItem = $(this).parents(".light-item").first();
+    var lightId = $parentItem.attr("id");
+    var $styleElement = $parentItem.find('input.brightness-range-input');
+    var styleElement = $styleElement[0];
+    var rgb = getRGB($styleElement.css("backgroundColor"));
+    if (color == undefined) {
+      var options = {
+          valueElement: null,
+          width: 300,
+          height: 120,
+          sliderSize: 20,
+          position: 'top',
+          borderColor: '#CCC',
+          insetColor: '#CCC',
+          backgroundColor: '#202020',
+          zIndex: 10000,
+          styleElement: styleElement
+      };
+      color = new jscolor($(this).last()[0], options);
+      color.onFineChange = function() {
+        var rgb = getRGB(color.toRGBString());
+        $.post('/light/'+lightId,
+          {
+            rgb: rgb
+          },
+          function(data){
+            
+          },
+          "json"
+        ).fail(function(xhr, textStatus, errorThrown) {
+            console.log(xhr);
+        });
+      }
+      color.fromRGB(rgb.red, rgb.green, rgb.blue, false);
+    }
+    color.show();
+  }
+
+  function getRGB(str){
+    var match = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+    return match ? {
+      red: match[1],
+      green: match[2],
+      blue: match[3]
+    } : {};
   }
 
   // Closes responsive menu when a scroll trigger link is clicked

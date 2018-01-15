@@ -208,6 +208,6 @@ module.exports = {
             y = 0;   
 
 
-        return [x, y];
+        return [parseFloat(x), parseFloat(y)];
     }
 }

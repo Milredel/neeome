@@ -86,7 +86,7 @@ class NeeoManager {
             var rooms = [];
             roomsRaw.forEach(function(room, index) {
                 var roomDevices = room.devices;
-                if (!(Object.keys(roomDevices).length === 0 && roomDevices.constructor === Object)) {
+                if (roomDevices != undefined && !(Object.keys(roomDevices).length === 0 && roomDevices.constructor === Object)) {
                     room.iconName = room.icon.split('.')[room.icon.split('.').length - 1 ];
                     Object.keys(roomDevices).forEach(function(deviceKey, index) {
                         var macros = roomDevices[deviceKey].macros;

@@ -5,14 +5,20 @@ ul.list-group
                 span.float-left.lineheight-2 #{light.name}
                 div.float-right.badge
                     label.switch
+                        - var id = "checkbbox_light_"+(light.id)
                         if light.on == true
-                            input(type="checkbox" checked)
+                            input(type="checkbox" id=id checked)
                         else
-                            input(type="checkbox")
+                            input(type="checkbox" id=id)
                         span.slider.round
             -var displayClass = light.on ? "" : "hidden"
             div(class="container p-2 brightness-container "+displayClass)
-                div.progress
-                    - var mybrightness = light.brightness / 254 * 100
-                    - var bgcolor = "rgb("+light.rgbcolor[0]+", "+light.rgbcolor[1]+", "+light.rgbcolor[2]+")"
-                    div(class="progress-bar" role="progressbar" aria-valuenow=mybrightness aria-valuemin=0 aria-valuemax=254 style="width:"+mybrightness+"%;background-color:"+bgcolor+";")
+                div.row
+                    div.col-3.col-md-1.margintop--22
+                        span.jscolor.color-light
+                            i.fa.fa-eye.fa-3x
+                    div.col-9.col-md-11
+                        - var mybrightness = light.brightness
+                        - var bgcolor = "rgb("+light.rgbcolor[0]+", "+light.rgbcolor[1]+", "+light.rgbcolor[2]+")"
+                        - var id = "range_light_"+(light.id)
+                        input(type="range" class="brightness-range-input" min="0" max="254" value=mybrightness id=id step="1" style="background-color:"+bgcolor+";")
