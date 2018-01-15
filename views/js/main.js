@@ -1,6 +1,8 @@
 (function($) {
   "use strict"; // Start of use strict
 
+  var JsVars = jQuery('#js-vars').data('vars');
+
   var socket = io();
  
   socket.on('brain update recipe', function(event){
@@ -50,7 +52,7 @@
       $('html, body').animate({
         scrollTop: ($('#commands').offset().top - 48)
       }, 1000, "easeInOutExpo");
-      $.get("/neeo/load/commands/recipe/"+$(this).attr("data-recipe-id"), function(data) {
+      $.get("/neeo/load/commands/recipe/"+$(this).attr("data-recipe-id")+'?token='+JsVars.private_token, function(data) {
         $('#commands .sub-container').html(data);
         $('a[data-link]').off('click').on('click', onClickAWithLink);
         $('.block-title.collapsable').off('click').on('click', onClickBlockTitle);
@@ -94,7 +96,7 @@
     $('html, body').animate({
       scrollTop: ($('#commands').offset().top - 48)
     }, 1000, "easeInOutExpo");
-    $.get("/neeo/load/commands/recipe/"+$(this).parent().attr("data-recipe-id"), function(data) {
+    $.get("/neeo/load/commands/recipe/"+$(this).parent().attr("data-recipe-id")+'?token='+JsVars.private_token, function(data) {
       $('#commands .sub-container').html(data);
       $('a[data-link]').off('click').on('click', onClickAWithLink);
       $('.block-title.collapsable').off('click').on('click', onClickBlockTitle);
@@ -102,7 +104,7 @@
   }
 
   $('#exampleModalCenter').on('shown.bs.modal', function () {
-    $.get('/render/lights/all/', function(data) {
+    $.get('/render/lights/all/?token='+JsVars.private_token, function(data) {
       $('.modal-body').html(data);
       $('.slider.round').off('click').on('click', onClickLightSwitch);
       $('.brightness-range-input').off('input').on('input', onInputBrightnessRange);
@@ -114,7 +116,7 @@
     var that = $(this);
     var lightId = $(this).parents(".light-item").first().attr("id");
     var newState = !$(this).parent().find('input').is(':checked');
-    $.post('/light/'+lightId,
+    $.post('/light/'+lightId+'?token='+JsVars.private_token,
       {
         on: newState
       },
@@ -135,7 +137,7 @@
     var that = $(this);
     var lightId = $(this).parents(".light-item").first().attr("id");
     var brightnessValue = $(this).val();
-    $.post('/light/'+lightId,
+    $.post('/light/'+lightId+'?token='+JsVars.private_token,
       {
         brightness: brightnessValue
       },
@@ -172,7 +174,7 @@
       color = new jscolor($(this).last()[0], options);
       color.onFineChange = function() {
         var rgb = getRGB(color.toRGBString());
-        $.post('/light/'+lightId,
+        $.post('/light/'+lightId+'?token='+JsVars.private_token,
           {
             rgb: rgb
           },

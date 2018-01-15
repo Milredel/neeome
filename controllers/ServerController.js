@@ -69,6 +69,8 @@ class ServerController {
     }
 
     async displayLanding(req, res) {
+        const vars = {private_token : CONFIG.home.private_token};
+
         const recipes = SRV_VARS.data.recipes;
         const rooms = SRV_VARS.data.rooms;
         
@@ -91,7 +93,7 @@ class ServerController {
             var onlyRoomWithRecipes = Object.keys(roomsWithRecipe)[0];
         }
         
-        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes })
+        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
     }
 }
 

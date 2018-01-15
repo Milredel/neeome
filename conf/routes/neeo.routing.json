@@ -24,7 +24,7 @@
         "method": "post",
         "class": "Neeo",
         "function": "handleWebhook",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []
@@ -34,7 +34,7 @@
         "method": "get",
         "class": "Neeo",
         "function": "loadCommandsForRecipe",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []

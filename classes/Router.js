@@ -121,7 +121,7 @@ class Router {
                     }
                 });*/
             } else {
-                const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Aucun token de session trouvé.", true, {});
+                const result = UTILS.formatReturn(RESULT_FORBIDDEN, "You forgot the magic word !", true, {});
                 return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
             }
         });

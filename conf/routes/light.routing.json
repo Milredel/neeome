@@ -4,7 +4,7 @@
         "method": "get",
         "class": "Light",
         "function": "displayLights",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []
@@ -14,7 +14,7 @@
         "method": "post",
         "class": "Light",
         "function": "updateState",
-        "secure": false,
+        "secure": true,
         "binding": true,
         "type": "controller",
         "roles": []
