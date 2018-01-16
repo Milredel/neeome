@@ -44,50 +44,48 @@ class FreeboxManager {
     }
 
     async getProgram(channelId, beginTime, endTime) {
-        var result;
+        var result = {};
 
-        if (channelId == "all") {
-            throw new Error("Not implemented yet");
+        if (typeof channelId !== 'string' && !(channelId instanceof String)) {
+            throw new Error("channelId must be a string");
+        }
+        if (SRV_VARS.data.tvChannels[channelId] == undefined) {
+            throw new Error("impossible to find channelId '"+channelId+"' in server data");
+        }
+        if (beginTime == undefined) {
+            beginTime = ((new Date()).getTime()/1000.0).toFixed(0);
+        }
+        if (endTime == undefined) {
+            var date = new Date();
+            var endDate = date.setDate(date.getDate() + 1);
+            var endEpoch = ((new Date(endDate)).getTime()/1000.0).toFixed(0);
+            endTime = endEpoch;
+            //var plop = new Date(endEpoch*1000);
+            //console.log(plop.toLocaleString());
+        }
+        if (endTime <= beginTime) {
+            throw new Error("endTime cannot precede beginTime");
         }
 
-        if (channelId instanceof Array) {
-            throw new Error("Not implemented yet");
+        try {
+            do {
+                var url = "http://mafreebox.freebox.fr/api/v3/tv/epg/by_channel/"+channelId+"/"+beginTime;
+                var response = await fetch(url);
+                var res = await response.json();
+                var progs = res.result;
+                var orderedProgs = UTILS.sortObj(progs, function(a, b) {
+                    return progs[a]['date'] - progs[b]['date'];
+                });
+                var lastProgForThisSession = this.getLastByDate(progs);
+                beginTime = (lastProgForThisSession.next).split("_")[0];
+                for (var prog in orderedProgs) {
+                    result[prog] = orderedProgs[prog];
+                }
+            } while (beginTime <= endTime);
+        } catch(e) {
+            Logger.err("something went wrong when getting tv program : ('"+e+"')");
+            throw new Error("something went wrong when getting tv program : ('"+e+"')");
         }
-
-        if (typeof channelId === 'string' || channelId instanceof String) {
-            if (SRV_VARS.data.tvChannels[channelId] == undefined) {
-                throw new Error("impossible to find channelId '"+channelId+"' in server data");
-            }
-            if (beginTime == undefined) {
-                beginTime = ((new Date()).getTime()/1000.0).toFixed(0);
-            }
-            if (endTime == undefined) {
-                var date = new Date();
-                var endDate = date.setDate(date.getDate() + 1);
-                var endEpoch = ((new Date(endDate)).getTime()/1000.0).toFixed(0);
-                endTime = endEpoch;
-                //var plop = new Date(endEpoch*1000);
-                //console.log(plop.toLocaleString());
-            }
-            if (endTime <= beginTime) {
-                throw new Error("endTime cannot precede beginTime");
-            }
-
-            try {
-                do {
-                    var url = "http://mafreebox.freebox.fr/api/v3/tv/epg/by_channel/"+channelId+"/"+beginTime;
-                    var response = await fetch(url);
-                    var progs = await response.json();
-                    var lastProgForThisSession = this.getLastByDate(progs.result);
-                    beginTime = (lastProgForThisSession.next).split("_")[0];
-                    console.log(lastProgForThisSession);
-                } while (beginTime <= endTime);
-            } catch(e) {
-                Logger.err("something went wrong when getting tv program : ('"+e+"')");
-                throw new Error("something went wrong when getting tv program : ('"+e+"')");
-            }
-        }
-
         return result;
     }
 

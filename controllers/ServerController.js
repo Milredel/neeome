@@ -31,9 +31,6 @@ class ServerController {
                 Logger.warn('No TV channels have been found.');
             }
 
-            const test = await freeboxManager.getProgram("uuid-webtv-613");
-            //console.log(test);
-            
             const rooms = await neeoManager.getAllRooms();
 
             SRV_VARS.data.rooms = {};
@@ -91,6 +88,8 @@ class ServerController {
         
         var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
 
+        var linkTVGuide = "/tv/guide?token="+CONFIG.home.private_token;
+
         const activeRecipes = neeoManager.getActiveRecipes();
 
         var roomsWithRecipe = {};
@@ -108,7 +107,7 @@ class ServerController {
             var onlyRoomWithRecipes = Object.keys(roomsWithRecipe)[0];
         }
         
-        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
+        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
     }
 }
 

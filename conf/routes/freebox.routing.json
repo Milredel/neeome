@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/tv/guide",
+        "method": "get",
+        "class": "Freebox",
+        "function": "displayTVGuide",
+        "secure": true,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    }
+]

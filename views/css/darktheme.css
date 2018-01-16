@@ -535,6 +535,9 @@ input:checked + .slider:before {
     top: 57px;
   }
   .navbar-nav {
+    flex-direction: column;
+  }
+  #subNav .navbar-nav {
     flex-direction: row!important;
   }
   #subNav .mycollapse ul {
