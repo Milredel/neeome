@@ -1,107 +1,69 @@
-html(lang='en')
-    head
-        include head.pug
-    body#page-top
-        nav(class='navbar navbar-expand-lg navbar-light fixed-top' id='mainNav')
-            div.container
-                a(class='navbar-brand js-scroll-trigger' href='') NeeOme
-                a(class="lightbulb-link" data-toggle="modal" data-target="#exampleModalCenter")
-                    i.fa.fa-lightbulb-o.white.fa-lg
-                button(class='navbar-toggler navbar-toggler-right' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
-                    | Menu 
-                    i(class='fa fa-bars')
-                div(class='collapse navbar-collapse' id='navbarResponsive')
-                    ul(class='navbar-nav ml-auto')
-                        li.nav-item
-                            - var link = linkRecipes
-                            a(class='nav-link js-scroll-trigger' href=link) Recipes & Buttons
-                        li.nav-item
-                            - var link = linkTVGuide
-                            a(class='nav-link js-scroll-trigger' href=link) TV Guide
+extends layout.pug
 
-        if activeRecipes.length > 0
-            nav(class='navbar navbar-expand-lg navbar-light fixed-top below-main-nav' id='subNav')
-                each recipe in activeRecipes
-                    include recipebanner.pug
+block append menu
 
-        - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
-        section(class="masthead "+displayClass)
-            div.intro-body
-                div.container
-                    div.row
-                        div(class='col-lg-8 mx-auto')
-                            if runningOnConfigSample
-                                p Warning, you are using config.sample.js file. <br>Please create a copy of config.sample.js and rename it config.js to write your own config.
-                            ul.nav.nav-rooms
-                                each room in rooms
-                                    li.nav-item
-                                        a(class='nav-link js-scroll-trigger load' data-room-id=room.key href='#scenarios') 
-                                            p #{room.name}
-                                            - var myclass = "myicon "+room.iconName
-                                            i(class=myclass)
+    if activeRecipes.length > 0
+        nav(class='navbar navbar-expand-lg navbar-light fixed-top below-main-nav' id='subNav')
+            each recipe in activeRecipes
+                include recipebanner.pug
 
-        - var contentClass = onlyOneRoomWithRecipes ? "paddingtop-150" : "";
-        section(id='scenarios' class='content-section text-center '+contentClass)
-            div.container
-                - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
-                div(class="row "+displayClass)
-                    div(class='col-lg-8 mx-auto')
-                        p Sélectionnez une pièce
-                each room in rooms
-                    - var displayClass = (onlyOneRoomWithRecipes && onlyRoomWithRecipes == room.name) ? "" : "hidden";
-                    div(class='row '+displayClass id=room.key)
-                        div(class='col-lg-12 mx-auto')
-                            ul.nav.nav-scenarios
-                                each recipe in recipes
-                                    if recipe.type == 'launch'
-                                        if recipe.detail.roomname == room.name
-                                            if recipe.detail.devicetype != 'LIGHT'
-                                                li.nav-item.m-auto
-                                                    - var link = recipe.url.distantSetPowerOn
-                                                    - var recipeId = recipe.url.distantSetPowerOnId
-                                                    a(class='nav-link launch' data-link=link data-recipe-id=recipeId href="#commands")
-                                                        p #{recipe.detail.devicename}
-                                                        - var myclass = "myicon "+recipe.detail.devicename
-                                                        i(class=myclass)
-                            //-
-                                ul.nav.nav-lights
-                                    each recipe in recipes
-                                        li.nav-item
-                                            if recipe.detail.roomname == room.name
-                                                if recipe.type == 'launch'
-                                                    if recipe.detail.devicetype == 'LIGHT'
-                                                        p Lumière
+block content
 
-        section(id='commands' class='content-section text-center')
+    - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
+    section(class="masthead "+displayClass)
+        div.intro-body
             div.container
                 div.row
-                    div(class='col-lg-12 mx-auto sub-container')
+                    div(class='col-lg-8 mx-auto')
+                        if runningOnConfigSample
+                            p Warning, you are using config.sample.js file. <br>Please create a copy of config.sample.js and rename it config.js to write your own config.
+                        ul.nav.nav-rooms
+                            each room in rooms
+                                li.nav-item
+                                    a(class='nav-link js-scroll-trigger load' data-room-id=room.key href='#scenarios') 
+                                        p #{room.name}
+                                        - var myclass = "myicon "+room.iconName
+                                        i(class=myclass)
 
-        footer
-            div(class='container text-center')
-                p Copyright &copy; Your Website 2017
+    - var contentClass = onlyOneRoomWithRecipes ? "paddingtop-150" : "";
+    section(id='scenarios' class='content-section text-center '+contentClass)
+        div.container
+            - var displayClass = onlyOneRoomWithRecipes ? "hidden" : "";
+            div(class="row "+displayClass)
+                div(class='col-lg-8 mx-auto')
+                    p Sélectionnez une pièce
+            each room in rooms
+                - var displayClass = (onlyOneRoomWithRecipes && onlyRoomWithRecipes == room.name) ? "" : "hidden";
+                div(class='row '+displayClass id=room.key)
+                    div(class='col-lg-12 mx-auto')
+                        ul.nav.nav-scenarios
+                            each recipe in recipes
+                                if recipe.type == 'launch'
+                                    if recipe.detail.roomname == room.name
+                                        if recipe.detail.devicetype != 'LIGHT'
+                                            li.nav-item.m-auto
+                                                - var link = recipe.url.distantSetPowerOn
+                                                - var recipeId = recipe.url.distantSetPowerOnId
+                                                a(class='nav-link launch' data-link=link data-recipe-id=recipeId href="#commands")
+                                                    p #{recipe.detail.devicename}
+                                                    - var myclass = "myicon "+recipe.detail.devicename
+                                                    i(class=myclass)
+                        //-
+                            ul.nav.nav-lights
+                                each recipe in recipes
+                                    li.nav-item
+                                        if recipe.detail.roomname == room.name
+                                            if recipe.type == 'launch'
+                                                if recipe.detail.devicetype == 'LIGHT'
+                                                    p Lumière
 
+    section(id='commands' class='content-section text-center')
+        div.container
+            div.row
+                div(class='col-lg-12 mx-auto sub-container')
 
-        div(class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true")
-            div(class="modal-dialog modal-dialog-centered modal-lg" role="document")
-                div.modal-content
-                    div.modal-header
-                        h5.modal-title#exampleModalLongTitle Lights
-                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-                            span(aria-hidden="true") &times;
-                    div.modal-body
-                        i.fa.fa-spinner.fa-spin.fa-5x
-                    div.modal-footer
-
-        div(id="js-vars" style="display:none;" data-vars=vars)
-
-        script(src='/views/vendor/jquery/jquery.min.js')
-        script(src='/views/vendor/bootstrap/js/bootstrap.bundle.min.js')
-
-        script(src='/views/vendor/jquery-easing/jquery.easing.min.js')
+block append scripts
 
         script(src='/views/vendor/jscolor/jscolor.min.js')
-
         script(src='/views/vendor/socketio/socket.io.2.0.4.slim.js')
-
         script(src='/views/js/main.js')

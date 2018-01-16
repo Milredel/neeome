@@ -9,9 +9,13 @@ class FreeboxController {
     constructor() { }
 
     async displayTVGuide(req, res) {
+        const vars = {private_token : CONFIG.home.private_token};
+        var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
+        var linkTVGuide = "/tv/guide?token="+CONFIG.home.private_token;
+
         var channels = SRV_VARS.data.tvChannels;
         
-        res.render('tvguide', { channels: channels });
+        res.render('tvguide', { channels: channels, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, vars: vars});
     }
 
 }
