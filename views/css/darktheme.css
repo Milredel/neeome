@@ -524,6 +524,19 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.content-section#section-tvguide {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.img-thumbnail {
+  background-color: #000;
+}
+
+#off-item {
+  text-align: right;
+}
+
 @media (max-width: 767px) {
   #mainNav {
     z-index: 1040;
@@ -546,9 +559,6 @@ input:checked + .slider:before {
   #subNav .mycollapse ul li:not(:last-child){
     padding-left: 5%;
     padding-right: 5%;
-  }
-  #subNav #off-item {
-    padding-left: 20%;
   }
   .ul-commands {
     display:initial;

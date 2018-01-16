@@ -1,2 +1,11 @@
 extends layout.pug
 
+block content
+    section(id='section-tvguide' class='content-section text-center')
+        div.container.d-flex.flex-column
+            div.row
+            each channel in channels
+                div.row
+                    div.col-3.col-md-1
+                        img(src='http://mafreebox.freebox.fr'+channel.logo_url alt='logo '+channel.name class='img-thumbnail')
+                    div.col-9.col-md-11

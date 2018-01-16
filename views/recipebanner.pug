@@ -2,20 +2,19 @@
 - var recipeId = recipe.url.distantSetPowerOnId
 div(class='container active-recipe' id=recipeUid data-recipe-id=recipeId)
     a(class='navbar-brand') #{recipe.detail.devicename}
-    div(class='mycollapse')
-        ul(class='navbar-nav ml-auto')
-            if recipe.url.volumeDown != undefined
-                li.nav-item
-                    a(data-link=recipe.url.volumeDown)
-                        i(class='fa fa-volume-down fa-lg')
-            if recipe.url.muteToggle != undefined
-                li.nav-item
-                    a(data-link=recipe.url.muteToggle)
-                        i(class='fa fa-volume-off fa-lg')
-            if recipe.url.volumeUp != undefined
-                li.nav-item
-                    a(data-link=recipe.url.volumeUp)
-                        i(class='fa fa-volume-up fa-lg')
-            li.nav-item#off-item
-                a(data-link=recipe.url.distantSetPowerOff)
-                    i(class='fa fa-power-off fa-lg')
+    div(class='mycollapse d-flex flex-row-reverse')
+        div.p-2.col-2.col-md-1#off-item
+            a(data-link=recipe.url.distantSetPowerOff)
+                i(class='fa fa-power-off fa-lg')
+        if recipe.url.volumeUp != undefined
+            div.p-2.col-2.col-md-1
+                a(data-link=recipe.url.volumeUp)
+                    i(class='fa fa-volume-up fa-lg')
+        if recipe.url.muteToggle != undefined
+            div.p-2.col-2.col-md-1
+                a(data-link=recipe.url.muteToggle)
+                    i(class='fa fa-volume-off fa-lg')
+        if recipe.url.volumeDown != undefined
+            div.p-2.col-2.col-md-1
+                a(data-link=recipe.url.volumeDown)
+                    i(class='fa fa-volume-down fa-lg')
