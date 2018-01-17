@@ -23,8 +23,9 @@ class LightController {
         if (req.body.brightness != undefined) {
             params['brightness'] = req.body.brightness;
         }
-        if (req.body['rgb[red]'] != undefined && req.body['rgb[green]'] != undefined && req.body['rgb[blue]'] != undefined) {
-            params['xy'] = UTILS.rgb_to_cie(req.body['rgb[red]'], req.body['rgb[green]'], req.body['rgb[red]']);
+        if (req.body.hex != undefined) {
+            var colors = UTILS.colors(); 
+            params['xy'] = colors.getCIEColor(req.body.hex);
         }
         try {
             var light = await hueLightManager.updateLight(params);

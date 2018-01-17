@@ -173,10 +173,10 @@
       };
       color = new jscolor($(this).last()[0], options);
       color.onFineChange = function() {
-        var rgb = getRGB(color.toRGBString());
+        var hex = (color.toHEXString()).replace("#", "");
         $.post('/light/'+lightId+'?token='+JsVars.private_token,
           {
-            rgb: rgb
+            hex: hex
           },
           function(data){
             
