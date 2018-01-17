@@ -128,9 +128,9 @@ class NeeoController {
                 throw new Error("Problem updating recipe : ("+e+")");
             }
             req.io.sockets.emit('brain update recipe', {recipe: recipe});            
-        } else {
-            console.log("A button has been pushed, ignoring it, for now");
         }
+        event.message = "A NEEO button has been pushed";
+        Logger.log(event);
     }
 
     async loadCommandsForRecipe(req, res) {
