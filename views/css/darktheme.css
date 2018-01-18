@@ -537,6 +537,35 @@ input:checked + .slider:before {
   text-align: right;
 }
 
+.timetable aside {
+  width: 10%!important;
+  margin-top: 75px!important;
+}
+.timetable section {
+  width: 90%!important;
+}
+.timetable section header {
+  height: 75px!important;
+}
+.timetable section header ul:first-child li {
+  line-height: 23px!important;
+  height: 23px!important;
+  width: calc(24*96px)!important;
+}
+.timetable aside li {
+  border-bottom: none!important;
+  background-color: #000!important;
+  line-height: 77px!important;
+  padding: 0!important;
+}
+.timetable aside li, 
+.timetable time li {
+  height: 77px!important;
+}
+.timetable ul.room-timeline li:first-child .time-entry {
+  height: 77px!important;
+}
+
 @media (max-width: 767px) {
   #mainNav {
     z-index: 1040;
@@ -571,6 +600,12 @@ input:checked + .slider:before {
   }
   .block-title.collapsable {
     display: block;
+  }
+  .timetable aside {
+    width: 20%!important;
+  }
+  .timetable section {
+    width: 80%!important;
   }
 }
 

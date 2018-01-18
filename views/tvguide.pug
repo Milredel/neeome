@@ -1,11 +1,22 @@
 extends layout.pug
 
+block append head
+
+    link(href='/views/vendor/timetable/css/timetablejs.css' rel='stylesheet' type='text/css')
+
 block content
     section(id='section-tvguide' class='content-section text-center')
-        div.container.d-flex.flex-column
-            div.row
-            each channel in channels
+        //-
+            div.container.d-flex.flex-column
                 div.row
-                    div.col-3.col-md-1
-                        img(src='http://mafreebox.freebox.fr'+channel.logo_url alt='logo '+channel.name class='img-thumbnail')
-                    div.col-9.col-md-11
+                each channel in channels
+                    div.row
+                        div.col-3.col-md-1
+                            img(src='http://mafreebox.freebox.fr'+channel.logo_url alt='logo '+channel.name class='img-thumbnail')
+                        div.col-9.col-md-11
+        div.container.timetable
+
+block append scripts
+
+    script(src='/views/vendor/timetable/js/timetable.js')
+    script(src='/views/js/tvguide.js')
