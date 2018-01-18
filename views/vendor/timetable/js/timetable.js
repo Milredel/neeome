@@ -8,7 +8,16 @@ var Timetable = function() {
 		hourEnd: 17
 	};
 	this.locations = [];
-	this.events = [];
+	var startDate = new Date();
+	var startCopy = new Date(+startDate);
+	var endDate = new Date(startCopy.setMinutes(startCopy.getMinutes()+1));
+	this.events = [{
+		name: "now",
+		location: "all",
+		startDate: startDate,
+		endDate: endDate,
+		options: undefined
+	}];
 };
 
 Timetable.Renderer = function(tt) {
@@ -235,7 +244,7 @@ Timetable.Renderer = function(tt) {
 			function appendLocationEvents(location, node) {
 				for (var k=0; k<timetable.events.length; k++) {
 					var event = timetable.events[k];
-					if (event.location === location.id) {
+					if (event.location === location.id || event.location === "all") {
 						appendEvent(event, node);
 					}
 				}
@@ -280,7 +289,7 @@ Timetable.Renderer = function(tt) {
 			}
 			function computeEventBlockOffset(event) {
 				var scopeStartHours = timetable.scope.hourStart;
-				var eventStartHours = event.startDate.getHours() + (event.startDate.getMinutes() / 60);
+				var eventStartHours = (event.startDate.getHours() + (event.startDate.getMinutes() / 60)) + getDayOffset(event)*24;
 				var dayOffset = getDayOffset(event);
 				var hoursBeforeEvent =  getDurationHours(scopeStartHours, eventStartHours, dayOffset);
 				return hoursBeforeEvent / (scopeDurationHours*(getDays().length)) * 100 + '%';
@@ -293,7 +302,7 @@ Timetable.Renderer = function(tt) {
 					var day = days[index];
 					if (days.hasOwnProperty(index)) {
 						if (eventDay == day.getAttribute("data-date")) {
-							return parseInt(index)+1;
+							return parseInt(index);
 						}	
 					}
 				};
@@ -310,7 +319,7 @@ Timetable.Renderer = function(tt) {
 				var sectionElem = document.querySelector(selector+" section");
 				var timeElem = document.querySelector(selector+" section time");
 				var event = {startDate: dateTime};
-				sectionElem.scrollTo(timeElem.offsetWidth*parseFloat(computeEventBlockOffset(event).replace("%", ""))/100, 0);
+				sectionElem.scrollTo((timeElem.offsetWidth*parseFloat(computeEventBlockOffset(event).replace("%", ""))/100)-200, 0);
 			}
 
 			var timetable = this.timetable;

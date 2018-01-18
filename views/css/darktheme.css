@@ -562,7 +562,7 @@ input:checked + .slider:before {
 .timetable time li {
   height: 77px!important;
 }
-.timetable ul.room-timeline li:first-child .time-entry {
+.timetable ul.room-timeline li .time-entry {
   height: 77px!important;
 }
 
