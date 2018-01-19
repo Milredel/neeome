@@ -8,5 +8,15 @@
         "binding": true,
         "type": "controller",
         "roles": []
+    },
+    {
+        "route": "/tv/guide/program/:channel([a-z0-9-]+)/",
+        "method": "get",
+        "class": "Freebox",
+        "function": "getProgram",
+        "secure": true,
+        "binding": true,
+        "type": "controller",
+        "roles": []
     }
 ]

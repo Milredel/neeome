@@ -19,6 +19,20 @@ class FreeboxController {
         res.render('tvguide', { channels: channels, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, vars: vars});
     }
 
+    async getProgram(req, res) {
+        var channel = req.params.channel;
+        if (!freeboxManager.isKnownChannel(channel)) {
+            const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Unknown channel '"+channel+"'", true, {});
+            return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
+        }
+        try {
+            var program = await freeboxManager.getProgram(channel);
+            res.send(program);
+        } catch (e) {
+            const result = UTILS.formatReturn(RESULT_INTERNAL, "An error has occured when retrieving program for channel '"+channel+"' ('"+e+"')", true, {});
+            return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
+        }
+    }
 }
 
 module.exports = FreeboxController;

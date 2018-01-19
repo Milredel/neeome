@@ -8,16 +8,7 @@ var Timetable = function() {
 		hourEnd: 17
 	};
 	this.locations = [];
-	var startDate = new Date();
-	var startCopy = new Date(+startDate);
-	var endDate = new Date(startCopy.setMinutes(startCopy.getMinutes()+1));
-	this.events = [{
-		name: "now",
-		location: "all",
-		startDate: startDate,
-		endDate: endDate,
-		options: undefined
-	}];
+	this.events = [];
 };
 
 Timetable.Renderer = function(tt) {
@@ -46,6 +37,7 @@ Timetable.Renderer = function(tt) {
 		return number >= 0 && number < 25;
 	}
 	function locationExistsIn(loc, locs) {
+		if (loc == "all") return true;
 		for (var k=0; k<locs.length; k++) {
 			if (loc === locs[k].id) {
 				return true;
@@ -237,6 +229,9 @@ Timetable.Renderer = function(tt) {
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
+					liNode.className = 'channel-timeline';
+					liNode.setAttribute('data-channel-uuid', timetable.locations[k].uuid);
+					liNode.setAttribute('data-channel-name', timetable.locations[k].name);
 					appendLocationEvents(timetable.locations[k], liNode);/**/
 				}
 			}

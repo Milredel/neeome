@@ -15,11 +15,29 @@
   }
   timetable.setScope(0, 24);
   timetable.addLocations(lines);
-  timetable.addEvent('Frankadelic', 'TF1', new Date(2018,0,18,16,0), new Date(2018,0,18,16,45));
-  timetable.addEvent('Frankadelic2', 'TF1', new Date(2018,0,19,16,45), new Date(2018,0,19,18,15));
-  timetable.addEvent('Frankadelic3', 'TF1', new Date(2018,0,21,0,0), new Date(2018,0,21,1,0));
+  var startDate = new Date();
+  var startCopy = new Date(+startDate);
+  var endDate = new Date(startCopy.setMinutes(startCopy.getMinutes()+1));
+  timetable.addEvent("now", "all", startDate, endDate);
   var renderer = new Timetable.Renderer(timetable);
   renderer.setOptions({defaultCycleNumber: 3});
   renderer.draw('.timetable');
+  $('.channel-timeline').each(function(index, elem) {
+    if($(elem).visible()) {
+      loadProgram($(elem).data('channel-uuid'));
+    }
+  })
+
+  function loadProgram(channelUuid, start, end) {
+    var url = "/tv/guide/program/"+channelUuid+"/?token="+JsVars.private_token;
+    $.get(url,
+           {},
+           function(response) {
+                console.log(response);
+           }
+    ).fail(function(xhr, textStatus, errorThrown) {
+        console.log(xhr);
+    });
+  }
 
 })(jQuery); // End of use strict

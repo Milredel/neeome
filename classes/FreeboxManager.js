@@ -53,11 +53,15 @@ class FreeboxManager {
             throw new Error("impossible to find channelId '"+channelId+"' in server data");
         }
         if (beginTime == undefined) {
-            beginTime = ((new Date()).getTime()/1000.0).toFixed(0);
+            var date = new Date();
+            var beginDate = date.setHours(date.getHours() - 4);
+            var beginTime = ((new Date(beginDate)).getTime()/1000.0).toFixed(0);
+            //var plop = new Date(beginTime*1000);
+            //console.log(plop.toLocaleString());
         }
         if (endTime == undefined) {
             var date = new Date();
-            var endDate = date.setDate(date.getDate() + 1);
+            var endDate = date.setHours(date.getHours() + 12);
             var endEpoch = ((new Date(endDate)).getTime()/1000.0).toFixed(0);
             endTime = endEpoch;
             //var plop = new Date(endEpoch*1000);
@@ -104,6 +108,15 @@ class FreeboxManager {
             }
         }
         return result;
+    }
+
+    isKnownChannel(channelName) {
+        for (var channelUuid in SRV_VARS.data.tvChannels) {
+            if (channelUuid == channelName) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
