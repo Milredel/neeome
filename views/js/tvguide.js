@@ -31,13 +31,38 @@
   function loadProgram(channelUuid, start, end) {
     var url = "/tv/guide/program/"+channelUuid+"/?token="+JsVars.private_token;
     $.get(url,
-           {},
-           function(response) {
-                console.log(response);
-           }
+          {},
+          function(response) {
+            $('li.channel-timeline[data-channel-uuid="'+channelUuid+'"]').addClass('init-loaded');
+          }
     ).fail(function(xhr, textStatus, errorThrown) {
         console.log(xhr);
     });
   }
+
+  function debounce(func, wait, immediate) {
+      var timeout;
+      return function() {
+          var context = this, args = arguments;
+          var later = function() {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+      };
+  };
+
+  var myEfficientFn = debounce(function() {
+    $('.channel-timeline').each(function(index, elem) {
+      if($(elem).visible() && !$(elem).hasClass('init-loaded')) {
+        loadProgram($(elem).data('channel-uuid'));
+      }
+    })
+  }, 500);
+
+  window.addEventListener('scroll', myEfficientFn);
 
 })(jQuery); // End of use strict
