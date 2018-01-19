@@ -58,9 +58,8 @@ Timetable.Renderer = function(tt) {
 		var correctOrder = start < end;
 		return correctTypes && correctOrder;
 	}
-	function getDurationHours(startHour, endHour, dayOffset) {
-		dayOffset = dayOffset == undefined ? 1 : dayOffset;
-		return endHour >= startHour ? dayOffset*(endHour - startHour) : dayOffset*(25 + endHour - startHour);
+	function getDurationHours(startHour, endHour) {
+		return endHour >= startHour ? endHour - startHour : 25 + endHour - startHour;
 	}
 
 	Timetable.prototype = {
@@ -275,6 +274,10 @@ Timetable.Renderer = function(tt) {
 
 				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
+				if(event.name=="now") {
+					aNode.style.width = "0px";
+					aNode.style.padding = "0";
+				}
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
 			}
@@ -289,9 +292,12 @@ Timetable.Renderer = function(tt) {
 			}
 			function computeEventBlockOffset(event) {
 				var scopeStartHours = timetable.scope.hourStart;
-				var eventStartHours = (event.startDate.getHours() + (event.startDate.getMinutes() / 60)) + getDayOffset(event)*24;
 				var dayOffset = getDayOffset(event);
-				var hoursBeforeEvent =  getDurationHours(scopeStartHours, eventStartHours, dayOffset);
+				if (null == dayOffset) {
+					return "-5%";
+				}
+				var eventStartHours = (event.startDate.getHours() + (event.startDate.getMinutes() / 60)) + dayOffset*24;
+				var hoursBeforeEvent = getDurationHours(scopeStartHours, eventStartHours);
 				return hoursBeforeEvent / (scopeDurationHours*(getDays().length)) * 100 + '%';
 			}
 			function getDayOffset(event) {
