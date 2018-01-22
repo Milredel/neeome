@@ -550,7 +550,7 @@ input:checked + .slider:before {
 .timetable section header ul:first-child li {
   line-height: 23px!important;
   height: 23px!important;
-  width: calc(24*96px)!important;
+  width: calc(24*200px)!important;
 }
 .timetable aside li {
   border-bottom: none!important;

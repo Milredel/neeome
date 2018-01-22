@@ -22,6 +22,7 @@
   var renderer = new Timetable.Renderer(timetable);
   renderer.setOptions({defaultCycleNumber: 3});
   renderer.draw('.timetable');
+
   $('.channel-timeline').each(function(index, elem) {
     if($(elem).visible()) {
       loadProgram($(elem).data('channel-uuid'));
@@ -34,6 +35,14 @@
           {},
           function(response) {
             $('li.channel-timeline[data-channel-uuid="'+channelUuid+'"]').addClass('init-loaded');
+            var location = $('li.channel-timeline[data-channel-uuid="'+channelUuid+'"]').data('channel-name');
+            var events = [];
+            for (var index in response) {
+              var event = response[index];
+              event.location = location;
+              events.push(event);
+            }
+            renderer.insertEvent(events);
           }
     ).fail(function(xhr, textStatus, errorThrown) {
         console.log(xhr);

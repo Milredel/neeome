@@ -8,7 +8,9 @@ var Timetable = function() {
 		hourEnd: 17
 	};
 	this.locations = [];
-	this.events = [];
+	this.events = {};
+	this.events.toBeDisplayed = [];
+	this.events.displayed = [];
 };
 
 Timetable.Renderer = function(tt) {
@@ -21,6 +23,7 @@ Timetable.Renderer = function(tt) {
 		startDateTime: "now"
 	};
 	this.authorizedOptions = ["defaultCycleNumber", "startDateTime"];
+	this.container = null;
 };
 
 (function() {
@@ -112,18 +115,42 @@ Timetable.Renderer = function(tt) {
 			}
 
 			var optionsHasValidType = Object.prototype.toString.call(options) === '[object Object]';
-
-			this.events.push({
-				name: name,
-				location: location,
-				startDate: start,
-				endDate: end,
-				options: optionsHasValidType ? options : undefined
-			});
+			
+			if (name == "now") {
+				var existingLocations = this.locations;
+				for (var k=0; k<existingLocations.length; k++) {
+					var location = existingLocations[k].name;
+					var uuid = uuidv4();
+					this.events.toBeDisplayed.push({
+						name: name,
+						location: location,
+						uuid: uuid,
+						startDate: start,
+						endDate: end,
+						options: optionsHasValidType ? options : undefined
+					});
+				}
+			} else {
+				var uuid = uuidv4();
+				this.events.toBeDisplayed.push({
+					name: name,
+					location: location,
+					uuid: uuid,
+					startDate: start,
+					endDate: end,
+					options: optionsHasValidType ? options : undefined
+				});
+			}
 
 			return this;
 		}
 	};
+
+	function uuidv4() {
+	 	return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+	    	(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	  	)
+	}
 
 	function emptyNode(node) {
 		while (node.firstChild) {
@@ -145,7 +172,10 @@ Timetable.Renderer = function(tt) {
 				this.options[option] = options[option];
 			}
 		},
-		draw: function(selector) {
+		insertEvent: function(events) {
+			this.draw(this.container, true, events);
+		},
+		draw: function(selector, isUpdate, events) {
 			function checkContainerPrecondition(container) {
 				if (container === null) {
 					throw new Error('Timetable container not found');
@@ -234,11 +264,12 @@ Timetable.Renderer = function(tt) {
 					liNode.setAttribute('data-channel-name', timetable.locations[k].name);
 					appendLocationEvents(timetable.locations[k], liNode);/**/
 				}
+				moveToDisplayedEvents("all");
 			}
 			function appendLocationEvents(location, node) {
-				for (var k=0; k<timetable.events.length; k++) {
-					var event = timetable.events[k];
-					if (event.location === location.id || event.location === "all") {
+				for (var k in timetable.events.toBeDisplayed) {
+					var event = timetable.events.toBeDisplayed[k];
+					if (event.location === location.id) {
 						appendEvent(event, node);
 					}
 				}
@@ -272,9 +303,29 @@ Timetable.Renderer = function(tt) {
 				if(event.name=="now") {
 					aNode.style.width = "0px";
 					aNode.style.padding = "0";
+					aNode.style.zIndex = "1000";
 				}
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
+			}
+			function moveToDisplayedEvents(event) {
+				if (event == "all") {
+					timetable.events.displayed = timetable.events.toBeDisplayed;
+					timetable.events.toBeDisplayed = [];
+				} else {
+					var index = null;
+					var toBeDisplayedEvents = timetable.events.toBeDisplayed;
+					for (var k in toBeDisplayedEvents) {
+						var currentEvent = toBeDisplayedEvents[k];
+						if (currentEvent.uuid == event.uuid) {
+							index = k;
+						}
+					}
+					if (index) {
+						delete timetable.events.toBeDisplayed[k];
+						timetable.events.displayed.push(event);
+					}
+				}
 			}
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
@@ -310,7 +361,7 @@ Timetable.Renderer = function(tt) {
 				return offset;
 			}
 			function getDays() {
-				return document.querySelectorAll(selector+" .header-days");
+				return document.querySelectorAll(".header-days");
 			}
 			function getInnerWidth(elem) {
 			    var style = window.getComputedStyle(elem);
@@ -325,16 +376,32 @@ Timetable.Renderer = function(tt) {
 
 			var timetable = this.timetable;
 			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
-			var container = document.querySelector(selector);
 			var options = this.options;
-			checkContainerPrecondition(container);
-			emptyNode(container);
-			appendTimetableAside(container);
-			appendTimetableSection(container);
-
-			if (options.startDateTime == "now") {
-				var now = new Date();
-				manageInitialOffset(now);
+			if (isUpdate == undefined || false == isUpdate) {
+				this.container = document.querySelector(selector);
+				checkContainerPrecondition(this.container);
+				emptyNode(this.container);
+				appendTimetableAside(this.container);
+				appendTimetableSection(this.container);
+				if (options.startDateTime == "now") {
+					var now = new Date();
+					manageInitialOffset(now);
+				}
+			} else {
+				for (var k in events) {
+					var event = events[k];
+					var myEvent = {};
+					myEvent.name = event.title;
+					myEvent.location = event.location;
+					var uuid = uuidv4();
+					myEvent.uuid = uuid;
+					myEvent.startDate = new Date(event.date*1000);
+					myEvent.endDate = new Date((event.date+event.duration)*1000);
+					myEvent.options = event;
+					var node = document.querySelector('.channel-timeline[data-channel-name="'+event.location+'"]');
+					appendEvent(myEvent, node);
+					timetable.events.displayed.push(myEvent);
+				}
 			}
 		}
 	};
