@@ -393,11 +393,14 @@ Timetable.Renderer = function(tt) {
 					var myEvent = {};
 					myEvent.name = event.title;
 					myEvent.location = event.location;
-					var uuid = uuidv4();
+					var uuid = k;
 					myEvent.uuid = uuid;
-					myEvent.startDate = new Date(event.date*1000);
-					myEvent.endDate = new Date((event.date+event.duration)*1000);
+					var startDateMilli = event.date*1000;
+					myEvent.startDate = new Date(startDateMilli);
+					var endDateMilli = (event.date+event.duration)*1000;
+					myEvent.endDate = new Date(endDateMilli);
 					myEvent.options = event;
+					myEvent.options.data = {id: event.id, start: startDateMilli, end: endDateMilli};
 					var node = document.querySelector('.channel-timeline[data-channel-name="'+event.location+'"]');
 					appendEvent(myEvent, node);
 					timetable.events.displayed.push(myEvent);

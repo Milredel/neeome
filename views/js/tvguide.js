@@ -43,6 +43,9 @@
               events.push(event);
             }
             renderer.insertEvent(events);
+            $('.container.timetable section')[0].removeEventListener('scroll', myEfficientFn2);
+            $('.container.timetable section')[0].addEventListener('scroll', myEfficientFn2);
+            checkHorizontalVisibilityAndLoad();
           }
     ).fail(function(xhr, textStatus, errorThrown) {
         console.log(xhr);
@@ -66,11 +69,38 @@
 
   var myEfficientFn = debounce(function() {
     $('.channel-timeline').each(function(index, elem) {
-      if($(elem).visible() && !$(elem).hasClass('init-loaded')) {
+      if($(elem).visible(true) && !$(elem).hasClass('init-loaded')) {
         loadProgram($(elem).data('channel-uuid'));
       }
     })
   }, 500);
+
+  var myEfficientFn2 = debounce(function() {
+    checkHorizontalVisibilityAndLoad();
+  }, 500);
+
+  function checkHorizontalVisibilityAndLoad() {
+    $('.channel-timeline').each(function(index, elem) {
+      if($(elem).attr("title") != "now") {
+        var $firstItem = $(elem).find('span.time-entry:eq(1):not([title="now"])');
+        if($firstItem.visible(true)) {
+          prependProgram($(elem).data('channel-uuid'), $firstItem.data("start"));
+        }
+        var $lastItem = $(elem).find('span.time-entry:last:not([title="now"])');
+        if($lastItem.visible(true)) {
+          appendProgram($(elem).data('channel-uuid'), $lastItem.data("end"));
+        }
+      }
+    });
+  }
+
+  function prependProgram(channel, begin) {
+    console.log("begin : "+channel+" - "+begin);
+  }
+
+  function appendProgram(channel, end) {
+    console.log("end : "+channel+" - "+end);
+  }
 
   window.addEventListener('scroll', myEfficientFn);
 
