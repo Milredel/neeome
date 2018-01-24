@@ -20,11 +20,11 @@
   var endDate = new Date(startCopy.setMinutes(startCopy.getMinutes()+1));
   timetable.addEvent("now", "all", startDate, endDate);
   var renderer = new Timetable.Renderer(timetable);
-  renderer.setOptions({defaultCycleNumber: 3});
+  renderer.setOptions({defaultCycleNumber: 8});
   renderer.draw('.timetable');
 
   $('.channel-timeline').each(function(index, elem) {
-    if($(elem).visible()) {
+    if($(elem).visible(true)) {
       loadProgram($(elem).data('channel-uuid'));
     }
   })
