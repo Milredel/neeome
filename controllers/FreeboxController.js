@@ -19,7 +19,7 @@ class FreeboxController {
         res.render('tvguide', { channels: channels, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, vars: vars});
     }
 
-    async getProgram(req, res) {
+    async getProgramByChannel(req, res) {
         var channel = req.params.channel;
         if (!freeboxManager.isKnownChannel(channel)) {
             const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Unknown channel '"+channel+"'", true, {});
@@ -30,6 +30,17 @@ class FreeboxController {
             res.send(program);
         } catch (e) {
             const result = UTILS.formatReturn(RESULT_INTERNAL, "An error has occured when retrieving program for channel '"+channel+"' ('"+e+"')", true, {});
+            return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
+        }
+    }
+
+    async getProgramInfo(req, res) {
+        var programId = req.params.id;
+        try {
+            var programInfo = await freeboxManager.getProgramInfo(programId);
+            res.render('tvprograminfo', { programInfo: programInfo });
+        } catch (e) {
+            const result = UTILS.formatReturn(RESULT_INTERNAL, "An error has occured when retrieving program info for program '"+programId+"' ('"+e+"')", true, {});
             return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
         }
     }

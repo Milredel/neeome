@@ -118,6 +118,18 @@ class FreeboxManager {
         }
         return false;
     }
+
+    async getProgramInfo(programId) {
+        var url = "http://mafreebox.freebox.fr/api/v3/tv/epg/programs/"+programId;
+        try {
+            var response = await fetch(url);
+            var programInfo = await response.json();
+            return programInfo.result;
+        } catch(e) {
+            Logger.err("something went wrong when getting program info for '"+programId+"' : ('"+e+"')");
+            throw new Error("something went wrong when getting program info for '"+programId+"' : ('"+e+"')");
+        }
+    }
 }
 
 module.exports = FreeboxManager;

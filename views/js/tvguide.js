@@ -81,14 +81,16 @@
 
   function checkHorizontalVisibilityAndLoad() {
     $('.channel-timeline').each(function(index, elem) {
-      if($(elem).attr("title") != "now") {
-        var $firstItem = $(elem).find('span.time-entry:eq(1):not([title="now"])');
-        if($firstItem.visible(true)) {
-          prependProgram($(elem).data('channel-uuid'), $firstItem.data("start"));
-        }
-        var $lastItem = $(elem).find('span.time-entry:last:not([title="now"])');
-        if($lastItem.visible(true)) {
-          appendProgram($(elem).data('channel-uuid'), $lastItem.data("end"));
+      if($(elem).visible(true) && $(elem).hasClass('init-loaded')) {
+        if($(elem).attr("title") != "now") {
+          var $firstItem = $(elem).find('span.time-entry:eq(1):not([title="now"])');
+          if($firstItem.visible(true)) {
+            prependProgram($(elem).data('channel-uuid'), $firstItem.data("start"));
+          }
+          var $lastItem = $(elem).find('span.time-entry:last:not([title="now"])');
+          if($lastItem.visible(true)) {
+            appendProgram($(elem).data('channel-uuid'), $lastItem.data("end"));
+          }
         }
       }
     });
@@ -103,5 +105,20 @@
   }
 
   window.addEventListener('scroll', myEfficientFn);
+
+  $('#timeEntryModalCenter').on('shown.bs.modal', function (event) {
+    var $timeEntry = $(event.relatedTarget);
+    var programId = $timeEntry.data("id");
+    var start = $timeEntry.data("start");
+    var end = $timeEntry.data("end");
+    var startDate = new Date(start);
+    var endDate = new Date(end);
+    var hourText = "De "+(startDate.getHours() < 10 ? "0"+startDate.getHours() : startDate.getHours())+":"+(startDate.getMinutes() < 10 ? "0"+startDate.getMinutes() : startDate.getMinutes())+" à "+(endDate.getHours() < 10 ? "0"+endDate.getHours() : endDate.getHours())+":"+(endDate.getMinutes() < 10 ? "0"+endDate.getMinutes() : endDate.getMinutes());
+    $.get('/tv/guide/info/program/'+programId+'/?token='+JsVars.private_token, function(data) {
+      $('#timeEntryModalCenter .modal-title').html($(event.relatedTarget).attr('title'));
+      $('#timeEntryModalCenter .modal-body').html(data);
+      $('#timeEntryModalCenter var#hours').html(hourText);
+    });
+  })
 
 })(jQuery); // End of use strict

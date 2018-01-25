@@ -291,7 +291,8 @@ Timetable.Renderer = function(tt) {
 				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
 				aNode.title = event.name;
-
+				aNode.setAttribute('data-toggle', "modal");
+				aNode.setAttribute('data-target', "#timeEntryModalCenter");
 				if (hasURL) {
 					aNode.href = event.options.url;
 				}
@@ -300,14 +301,66 @@ Timetable.Renderer = function(tt) {
 						aNode.setAttribute('data-'+key, event.options.data[key]);
 					}
 				}
+				if (hasOptions && event.options.category != undefined) {
+					if (!hasAdditionalClass) {
+						event.options.class = "";
+						hasAdditionalClass = true;
+					}
+					switch(event.options.category) {
+						case 1:
+							event.options.class += ' film';
+							break;
+					    case 2:
+					    	event.options.class += ' telefilm';
+					    	break;
+					    case 3:
+					    	event.options.class += ' serie';
+					    	break;
+					    case 5:
+					    	event.options.class += ' docu';
+					    	break;
+					    case 10:
+					    	event.options.class += ' magazine';
+					    	break;
+					    case 11:
+					    	event.options.class += ' jeunesse';
+					    	break;
+					    case 12:
+					    	event.options.class += ' jeu';
+					    	break;
+					    case 13:
+					    	event.options.class += ' musique';
+					    	break;
+					    case 14:
+					    	event.options.class += ' divertissement';
+					    	break;
+					    case 19:
+					    	event.options.class += ' sport';
+					    	break;
+					    case 20:
+					    	event.options.class += ' journal';
+					    	break;
+					    case 22:
+					    	event.options.class += ' debat';
+					    	break;
+					    case 24:
+					    	event.options.class += ' spectacle';
+					    	break;
+					    default:
+					    	event.options.class += '';
+					}
+					event.options.class = event.options.class.trim();
+					if (event.options.season_number != undefined || event.options.episode_number != undefined || event.options.sub_title != undefined) {
+						var smallSubNode = aNode.appendChild(document.createElement('small'));
+						smallSubNode.textContent = "";
+						smallSubNode.textContent += event.options.season_number != undefined ? "s"+event.options.season_number : "";
+						smallSubNode.textContent += event.options.episode_number != undefined ? "e"+event.options.episode_number : "";
+						smallSubNode.textContent += event.options.sub_title != undefined ? ((event.options.season_number == undefined && event.options.episode_number == undefined) ? "" : " - ")+event.options.sub_title : "";
+					}
+				}
 
 				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
-				if(event.name=="now") {
-					aNode.style.width = "0px";
-					aNode.style.padding = "0";
-					aNode.style.zIndex = "1000";
-				}
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
 			}

@@ -1,0 +1,21 @@
+div(class="d-flex flex-column justify-content-between align-items-center")
+    div(class="container p-2")
+        div(class="d-flex justify-content-between align-items-center")
+            if (programInfo.picture != undefined)
+                img(class="img-thumbnail" alt=programInfo.title src="http://mafreebox.freebox.fr"+programInfo.picture)
+            div.container.p-2.text-left
+                - var text = ""
+                if (programInfo.season_number != undefined)
+                    - text += "s"+programInfo.season_number
+                if (programInfo.episode_number != undefined)
+                    - text += "e"+programInfo.episode_number
+                if (programInfo.season_number != undefined || programInfo.episode_number != undefined)
+                    - text += " - "
+                if (programInfo.sub_title != undefined)
+                    - text += programInfo.sub_title
+                | #{text}<br/>
+                if (programInfo.category_name != undefined)
+                    | #{programInfo.category_name}<br/>
+                var#hours
+    if (programInfo.desc != undefined)
+        div(class="container p-2 text-justify" style="max-height:200px;overflow-y:auto") #{programInfo.desc}

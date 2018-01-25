@@ -562,8 +562,88 @@ input:checked + .slider:before {
 .timetable time li {
   height: 77px!important;
 }
-.timetable ul.room-timeline li .time-entry {
+.timetable aside img {
+  max-width: 100%;
+}
+.timetable .time-entry small {
+  font-size: 70%;
+  text-align: left;
+}
+.timetable .time-entry small:only-child {
+  top: 50%!important;
+}
+.timetable .time-entry small {
+  top: 40%!important;
+}
+.timetable .time-entry small:not(:first-child) {
+  font-size: 60%;
+  padding-top: 5%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.timetable .time-entry[title="now"] {
+  border: 1px #e32c1b dashed!important;
+  background-color: #000!important;
+  width: 0px!important;
+  height: 80px!important;
+  padding: 0!important;
+  z-index: 1000!important;
+}
+.timetable .time-entry {
   height: 77px!important;
+  cursor: pointer;
+}
+.timetable .time-entry:not([title="now"]) {
+  background-color: #000!important;
+  border-left: 1px rgba(255, 255, 255, 0.6) solid;
+  border-right: none;
+  border-bottom: 1px black solid;
+}
+.timetable .time-entry.film {
+  border-top: 1px #a66bd6 solid!important;
+}
+.timetable .time-entry.telefilm {
+  border-top: 1px #ea41e7 solid!important;
+}
+.timetable .time-entry.serie {
+  border-top: 1px #76f778 solid!important;
+}
+.timetable .time-entry.docu {
+  border-top: 1px #938f8f solid!important;
+}
+.timetable .time-entry.magazine {
+  border-top: 1px #66d6e2 solid!important;
+}
+.timetable .time-entry.jeunesse {
+  border-top: 1px #2d5bd8 solid!important;
+}
+.timetable .time-entry.jeu {
+  border-top: 1px #f7ca2a solid!important;
+}
+.timetable .time-entry.musique {
+  border-top: 1px #e5a70b solid!important;
+}
+.timetable .time-entry.divertissement {
+  border-top: 1px #d0dd18 solid!important;
+}
+.timetable .time-entry.sport {
+  border-top: 1px #9bd9ef solid!important;
+}
+.timetable .time-entry.journal {
+  border-top: 1px #dd2525 solid!important;
+}
+.timetable .time-entry.debat {
+  border-top: 1px #636161 solid!important;
+}
+.timetable .time-entry.spectacle {
+  border-top: 1px #f9a4a4 solid!important;
+}
+
+.timetable ul.room-timeline li:first-of-type {
+  border-top: 1px solid #000!important;
+}
+.timetable ul.room-timeline li:nth-of-type(odd), .timetable ul.room-timeline li:nth-of-type(even) {
+  background-color: #000!important;
 }
 
 @media (max-width: 767px) {
@@ -602,10 +682,13 @@ input:checked + .slider:before {
     display: block;
   }
   .timetable aside {
-    width: 20%!important;
+    width: 10%!important;
+  }
+  .timetable aside img {
+    max-width: 35px;
   }
   .timetable section {
-    width: 80%!important;
+    width: 90%!important;
   }
 }
 

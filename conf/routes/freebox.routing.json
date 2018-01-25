@@ -13,7 +13,17 @@
         "route": "/tv/guide/program/:channel([a-z0-9-]+)/",
         "method": "get",
         "class": "Freebox",
-        "function": "getProgram",
+        "function": "getProgramByChannel",
+        "secure": true,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    },
+    {
+        "route": "/tv/guide/info/program/:id([a-z0-9_]+)/",
+        "method": "get",
+        "class": "Freebox",
+        "function": "getProgramInfo",
         "secure": true,
         "binding": true,
         "type": "controller",

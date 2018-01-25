@@ -5,10 +5,11 @@
   
   $('#exampleModalCenter').on('shown.bs.modal', function () {
     $.get('/render/lights/all/?token='+JsVars.private_token, function(data) {
-      $('.modal-body').html(data);
-      $('.slider.round').off('click').on('click', onClickLightSwitch);
-      $('.brightness-range-input').off('input').on('input', onInputBrightnessRange);
-      $('.color-light').off('click').on('click', onClickColorLight);
+      $('#exampleModalCenter .modal-title').html("Lights");
+      $('#exampleModalCenter .modal-body').html(data);
+      $('#exampleModalCenter .slider.round').off('click').on('click', onClickLightSwitch);
+      $('#exampleModalCenter .brightness-range-input').off('input').on('input', onInputBrightnessRange);
+      $('#exampleModalCenter .color-light').off('click').on('click', onClickColorLight);
     });
   })
 
