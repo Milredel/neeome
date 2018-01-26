@@ -10,10 +10,10 @@
         "roles": []
     },
     {
-        "route": "/tv/guide/program/:channel([a-z0-9-]+)/",
+        "route": "/tv/guide/channels/",
         "method": "get",
         "class": "Freebox",
-        "function": "getProgramByChannel",
+        "function": "getProgramByChannels",
         "secure": true,
         "binding": true,
         "type": "controller",

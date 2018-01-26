@@ -20,6 +20,9 @@ html(lang='en')
                     div(class='collapse navbar-collapse' id='navbarResponsive')
                         ul(class='navbar-nav ml-auto')
                             li.nav-item
+                                - var link = linkHome
+                                a(class='nav-link js-scroll-trigger' href=link) Home
+                            li.nav-item
                                 - var link = linkRecipes
                                 a(class='nav-link js-scroll-trigger' href=link) Recipes & Buttons
                             li.nav-item
@@ -32,7 +35,7 @@ html(lang='en')
             
             footer
                 div(class='container text-center')
-                    p Copyright &copy; Your Website 2017
+                    p Copyright &copy; NeeOme 2017
         
         block misc
             

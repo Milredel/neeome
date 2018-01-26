@@ -26,13 +26,14 @@ class FreeboxManager {
     async getChannelsFromConfig() {
         try {
             var channels = await this.getAllChannels();
-            var channelsFromConfig = CONFIG.freebox.channels_for_program
+            var channelsFromConfig = CONFIG.freebox.channels_for_program;
 
             var result = {};
-            for (var channelName of channelsFromConfig) {
+            for (var channelNumber in channelsFromConfig) {
                 for (var index in channels) {
                     var channel = channels[index];
-                    if (channel['name'] == channelName) {
+                    if (channel['name'] == channelsFromConfig[channelNumber]) {
+                        channel["number"] = channelNumber;
                         result[index] = channel;
                     }
                 };
@@ -52,28 +53,44 @@ class FreeboxManager {
         if (SRV_VARS.data.tvChannels[channelId] == undefined) {
             throw new Error("impossible to find channelId '"+channelId+"' in server data");
         }
-        if (beginTime == undefined) {
+
+        if (beginTime == undefined && endTime == undefined) {
             var date = new Date();
             var beginDate = date.setHours(date.getHours() - 4);
-            var beginTime = ((new Date(beginDate)).getTime()/1000.0).toFixed(0);
-            //var plop = new Date(beginTime*1000);
-            //console.log(plop.toLocaleString());
-        }
-        if (endTime == undefined) {
+            var myBeginTime = ((new Date(beginDate)).getTime()/1000.0).toFixed(0);
             var date = new Date();
-            var endDate = date.setHours(date.getHours() + 12);
+            var endDate = date.setHours(date.getHours() + 6);
             var endEpoch = ((new Date(endDate)).getTime()/1000.0).toFixed(0);
-            endTime = endEpoch;
+            var myEndTime = endEpoch;
             //var plop = new Date(endEpoch*1000);
             //console.log(plop.toLocaleString());
         }
-        if (endTime <= beginTime) {
+        if (beginTime != undefined && endTime == undefined) {
+            var date = new Date(beginTime*1000);
+            var beginDate = date.setHours(date.getHours() - 4);
+            var myBeginTime = ((new Date(beginDate)).getTime()/1000.0).toFixed(0);
+            var date = new Date(beginTime*1000);
+            var endDate = date.setHours(date.getHours() + 6);
+            var endEpoch = ((new Date(endDate)).getTime()/1000.0).toFixed(0);
+            var myEndTime = endEpoch;
+        }
+
+        if (beginTime == undefined && endTime != undefined) {
+            throw new Error("endTime cannot defined while beginTime is not");
+        }
+
+        if (beginTime != undefined && endTime != undefined) {
+            var myBeginTime = beginTime;
+            var myEndTime = endTime;
+        }
+        
+        if (myEndTime <= myBeginTime) {
             throw new Error("endTime cannot precede beginTime");
         }
 
         try {
             do {
-                var url = "http://mafreebox.freebox.fr/api/v3/tv/epg/by_channel/"+channelId+"/"+beginTime;
+                var url = "http://mafreebox.freebox.fr/api/v3/tv/epg/by_channel/"+channelId+"/"+myBeginTime;
                 var response = await fetch(url);
                 var res = await response.json();
                 var progs = res.result;
@@ -81,11 +98,11 @@ class FreeboxManager {
                     return progs[a]['date'] - progs[b]['date'];
                 });
                 var lastProgForThisSession = this.getLastByDate(progs);
-                beginTime = (lastProgForThisSession.next).split("_")[0];
+                myBeginTime = (lastProgForThisSession.next).split("_")[0];
                 for (var prog in orderedProgs) {
                     result[prog] = orderedProgs[prog];
                 }
-            } while (beginTime <= endTime);
+            } while (myBeginTime <= myEndTime);
         } catch(e) {
             Logger.err("something went wrong when getting tv program : ('"+e+"')");
             throw new Error("something went wrong when getting tv program : ('"+e+"')");

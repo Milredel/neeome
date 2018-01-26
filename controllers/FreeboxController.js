@@ -9,27 +9,35 @@ class FreeboxController {
     constructor() { }
 
     async displayTVGuide(req, res) {
+        var linkHome = "/?token="+CONFIG.home.private_token;
         var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
         var linkTVGuide = "/tv/guide?token="+CONFIG.home.private_token;
 
         var channels = SRV_VARS.data.tvChannels;
         
-        const vars = {private_token : CONFIG.home.private_token, channels: channels};
+        const vars = {public_dns : CONFIG.home.public_dns, private_token : CONFIG.home.private_token, channels: channels};
         
-        res.render('tvguide', { channels: channels, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, vars: vars});
+        res.render('tvguide', { channels: channels, linkHome: linkHome, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, vars: vars});
     }
 
-    async getProgramByChannel(req, res) {
-        var channel = req.params.channel;
-        if (!freeboxManager.isKnownChannel(channel)) {
-            const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Unknown channel '"+channel+"'", true, {});
-            return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
+    async getProgramByChannels(req, res) {
+        var channels = req.query.channels;
+        var begin = req.query.begin;
+        for (var channel of channels) {
+            if (!freeboxManager.isKnownChannel(channel)) {
+                const result = UTILS.formatReturn(RESULT_FORBIDDEN, "Unknown channel '"+channel+"'", true, {});
+                return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
+            }
         }
         try {
-            var program = await freeboxManager.getProgram(channel);
-            res.send(program);
+            var myRes = {};
+            for (var channel of channels) {
+                var program = await freeboxManager.getProgram(channel, begin);
+                myRes[channel] = program;
+            }
+            res.send(myRes);
         } catch (e) {
-            const result = UTILS.formatReturn(RESULT_INTERNAL, "An error has occured when retrieving program for channel '"+channel+"' ('"+e+"')", true, {});
+            const result = UTILS.formatReturn(RESULT_INTERNAL, "An error has occured when retrieving program for channels ('"+e+"')", true, {});
             return SRV_DEPENDENCIES.srvManager.manageResult(res, result);
         }
     }

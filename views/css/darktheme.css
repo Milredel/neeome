@@ -537,20 +537,20 @@ input:checked + .slider:before {
   text-align: right;
 }
 
+.timetable>header {
+  margin-left: 10%;
+  height: 25px;
+}
 .timetable aside {
   width: 10%!important;
-  margin-top: 75px!important;
+  margin-top: 45px!important;
 }
 .timetable section {
   width: 90%!important;
 }
-.timetable section header {
-  height: 75px!important;
-}
 .timetable section header ul:first-child li {
   line-height: 23px!important;
   height: 23px!important;
-  width: calc(24*200px)!important;
 }
 .timetable aside li {
   border-bottom: none!important;
@@ -644,6 +644,9 @@ input:checked + .slider:before {
 }
 .timetable ul.room-timeline li:nth-of-type(odd), .timetable ul.room-timeline li:nth-of-type(even) {
   background-color: #000!important;
+}
+.timetable ul.room-timeline li:last-of-type {
+  border-bottom: 1px solid #000!important;  
 }
 
 @media (max-width: 767px) {

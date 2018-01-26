@@ -183,6 +183,9 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendTimetableAside(container) {
+				var headerNode = container.appendChild(document.createElement('header'));
+				var spanNode = headerNode.appendChild(document.createElement('span'));
+				spanNode.className = "day-container";
 				var asideNode = container.appendChild(document.createElement('aside'));
 				var asideULNode = asideNode.appendChild(document.createElement('ul'));
 				appendRowHeaders(asideULNode);
@@ -191,6 +194,8 @@ Timetable.Renderer = function(tt) {
 				for (var k=0; k<timetable.locations.length; k++) {
 					var url = timetable.locations[k].href;
 					var liNode = ulNode.appendChild(document.createElement('li'));
+					liNode.className = "channel-button";
+					liNode.setAttribute("data-number", timetable.locations[k].number);
 					var imgNode = liNode.appendChild(document.createElement('img'));
 					imgNode.src = timetable.locations[k].logo_url;
 					//imgNode.className  = 'img-thumbnail';
@@ -212,34 +217,16 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
-				var headerULNode = headerNode.appendChild(document.createElement('ul'));
-				var weekday = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-				var month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-				var now = new Date();
-				var nowText = now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate();
-				var yesterday = now.setDate(now.getDate()-1);
-				var yesterdayDate = new Date(yesterday);
-				var yesterdayText = yesterdayDate.getFullYear()+"-"+(yesterdayDate.getMonth()+1)+"-"+yesterdayDate.getDate();
-				var now = new Date();
-				var tomorrow = now.setDate(now.getDate()+1);
-				var tomorrowDate = new Date(tomorrow);
-				var tomorrowText = tomorrowDate.getFullYear()+"-"+(tomorrowDate.getMonth()+1)+"-"+tomorrowDate.getDate();
 				for (var i = 0; i < options.defaultCycleNumber; i++) {
 					var now = new Date();
 					var current = now.setDate(now.getDate()-2+i);
 					var currentDate = new Date(current);
 					var currentText = currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate();
-					var currentFullText = weekday[currentDate.getDay()]+" "+currentDate.getDate()+" "+month[currentDate.getMonth()];
-					var liNode = headerULNode.appendChild(document.createElement('li'));
-					liNode.setAttribute('data-date', currentText);
-					liNode.className = "header-days";
-					var spanNode = liNode.appendChild(document.createElement('span'));
-					spanNode.textContent = currentFullText;
-					if (currentText == yesterdayText) spanNode.textContent = "Hier";
-					if (currentText == nowText) spanNode.textContent = "Aujourd'hui";
-					if (currentText == tomorrowText) spanNode.textContent = "Demain";
+					var spanNode = headerNode.appendChild(document.createElement('span'));
+					spanNode.setAttribute('data-date', currentText);
+					spanNode.className = "header-days";
 				}
-				
+
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 				var completed = false;
 				var looped = 0;
@@ -419,17 +406,24 @@ Timetable.Renderer = function(tt) {
 			function getDays() {
 				return document.querySelectorAll(".header-days");
 			}
-			function getInnerWidth(elem) {
-			    var style = window.getComputedStyle(elem);
-			    return elem.offsetWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) - parseFloat(style.borderLeft) - parseFloat(style.borderRight) - parseFloat(style.marginLeft) - parseFloat(style.marginRight);
-			}
 			function manageInitialOffset(dateTime) {
 				var sectionElem = document.querySelector(selector+" section");
 				var timeElem = document.querySelector(selector+" section time");
 				var event = {startDate: dateTime};
 				sectionElem.scrollTo((timeElem.offsetWidth*parseFloat(computeEventBlockOffset(event).replace("%", ""))/100)-200, 0);
 			}
-			
+			function isAlreadyDisplayed(event) {
+				for (var i in timetable.events.displayed) {
+					var displayedEvent = timetable.events.displayed[i];
+					if (displayedEvent.options != undefined) {
+						if (displayedEvent.options.id == event.id) {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+
 			var timetable = this.timetable;
 			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
 			var options = this.options;
@@ -447,20 +441,22 @@ Timetable.Renderer = function(tt) {
 				if (events) {
 					for (var k in events) {
 						var event = events[k];
-						var myEvent = {};
-						myEvent.name = event.title;
-						myEvent.location = event.location;
-						var uuid = k;
-						myEvent.uuid = uuid;
-						var startDateMilli = event.date*1000;
-						myEvent.startDate = new Date(startDateMilli);
-						var endDateMilli = (event.date+event.duration)*1000;
-						myEvent.endDate = new Date(endDateMilli);
-						myEvent.options = event;
-						myEvent.options.data = {id: event.id, start: startDateMilli, end: endDateMilli};
-						var node = document.querySelector('.channel-timeline[data-channel-name="'+event.location+'"]');
-						appendEvent(myEvent, node);
-						timetable.events.displayed.push(myEvent);
+						if (!isAlreadyDisplayed(event)) {
+							var myEvent = {};
+							myEvent.name = event.title;
+							myEvent.location = event.location;
+							var uuid = k;
+							myEvent.uuid = uuid;
+							var startDateMilli = event.date*1000;
+							myEvent.startDate = new Date(startDateMilli);
+							var endDateMilli = (event.date+event.duration)*1000;
+							myEvent.endDate = new Date(endDateMilli);
+							myEvent.options = event;
+							myEvent.options.data = {id: event.id, start: startDateMilli, end: endDateMilli};
+							var node = document.querySelector('.channel-timeline[data-channel-name="'+event.location+'"]');
+							appendEvent(myEvent, node);
+							timetable.events.displayed.push(myEvent);
+						}
 					}
 				}
 			}

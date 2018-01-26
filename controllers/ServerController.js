@@ -85,6 +85,8 @@ class ServerController {
 
         const recipes = SRV_VARS.data.recipes;
         const rooms = SRV_VARS.data.rooms;
+
+        var linkHome = "/?token="+CONFIG.home.private_token;
         
         var linkRecipes = "/recipes?token="+CONFIG.home.private_token;
 
@@ -107,7 +109,7 @@ class ServerController {
             var onlyRoomWithRecipes = Object.keys(roomsWithRecipe)[0];
         }
         
-        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
+        return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkHome: linkHome, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
     }
 }
 

@@ -23,33 +23,34 @@
   renderer.setOptions({defaultCycleNumber: 8});
   renderer.draw('.timetable');
 
-  $('.channel-timeline').each(function(index, elem) {
-    if($(elem).visible(true)) {
-      loadProgram($(elem).data('channel-uuid'));
-    }
-  })
-
-  function loadProgram(channelUuid, start, end) {
-    var url = "/tv/guide/program/"+channelUuid+"/?token="+JsVars.private_token;
+  function loadProgram(channels, start) {
+    var url = "/tv/guide/channels/?token="+JsVars.private_token;
     $.get(url,
-          {},
+          {
+            channels: channels,
+            begin: start
+          },
           function(response) {
-            $('li.channel-timeline[data-channel-uuid="'+channelUuid+'"]').addClass('init-loaded');
-            var location = $('li.channel-timeline[data-channel-uuid="'+channelUuid+'"]').data('channel-name');
             var events = [];
-            for (var index in response) {
-              var event = response[index];
-              event.location = location;
-              events.push(event);
+            for (var channel in response) {
+              var location = $('li.channel-timeline[data-channel-uuid="'+channel+'"]').data('channel-name');  
+              for (var index in response[channel]) {
+                var event = response[channel][index];
+                event.location = location;
+                events.push(event);
+              }  
             }
             renderer.insertEvent(events);
-            $('.container.timetable section')[0].removeEventListener('scroll', myEfficientFn2);
-            $('.container.timetable section')[0].addEventListener('scroll', myEfficientFn2);
-            checkHorizontalVisibilityAndLoad();
+            $('.channel-button').off('click').on('click', onClickChannelButton);
           }
     ).fail(function(xhr, textStatus, errorThrown) {
         console.log(xhr);
     });
+  }
+
+  function onClickChannelButton() {
+    var link = "/neeo/freebox?token="+JsVars.private_token+"&channel="+$(this).data("number");
+    $.get(link);
   }
 
   function debounce(func, wait, immediate) {
@@ -67,44 +68,64 @@
       };
   };
 
+  function getCurrentOffsetEpochTime() {
+    var $container = $('.container.timetable');
+    var $section = $container.find('section');
+    var $nowEvent = $(".time-entry[title='now']:first");
+    var nowOffset = $nowEvent.css('left').replace("px", "");
+    var nowEpoch = ((new Date()).getTime()/1000.0).toFixed(0);    
+    var oneHourWidthPercent = 1 / (24*$container.find('.header-days').length)*100;
+    var oneHourWidthPixel = $section.find("time")[0].offsetWidth*parseFloat(oneHourWidthPercent)/100;
+    var now = new Date();
+    var begin = new Date(now.getFullYear(), now.getMonth(), now.getDate()-2, 0, 0, 0);
+    var beginEpoch = (begin.getTime()/1000).toFixed(0);
+    var currentOffset = Math.abs($section.find('time').offset().left - $section.offset().left - 200);
+    var toto = currentOffset*(nowEpoch-beginEpoch)/nowOffset;
+    var currentEpoch = (parseFloat(toto)+parseFloat(beginEpoch)).toFixed(0);
+    return {currentOffset : currentOffset, currentEpoch: currentEpoch};
+  }
+
   var myEfficientFn = debounce(function() {
+    var currentEpoch = getCurrentOffsetEpochTime().currentEpoch;
+    
     $('.channel-timeline').each(function(index, elem) {
-      if($(elem).visible(true) && !$(elem).hasClass('init-loaded')) {
-        loadProgram($(elem).data('channel-uuid'));
+      if($(elem).visible(true)) {
+        loadProgram([$(elem).data('channel-uuid')], currentEpoch);
       }
     })
   }, 500);
 
-  var myEfficientFn2 = debounce(function() {
-    checkHorizontalVisibilityAndLoad();
-  }, 500);
+  function myFunction() {
+    var $container = $('.container.timetable');
+    var $section = $container.find('section');
+    var currentEpoch = getCurrentOffsetEpochTime().currentEpoch;
+    var currentOffset = getCurrentOffsetEpochTime().currentOffset;
+    var date = new Date(currentEpoch*1000);
+    var currentDayText = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    var weekday = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+    var month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    var currentDayPrettyText = weekday[date.getDay()]+" "+date.getDate()+" "+month[date.getMonth()];
+    var now = new Date();
+    var nowText = now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate();
+    var yesterday = now.setDate(now.getDate()-1);
+    var yesterdayDate = new Date(yesterday);
+    var yesterdayText = yesterdayDate.getFullYear()+"-"+(yesterdayDate.getMonth()+1)+"-"+yesterdayDate.getDate();
+    var now = new Date();
+    var tomorrow = now.setDate(now.getDate()+1);
+    var tomorrowDate = new Date(tomorrow);
+    var tomorrowText = tomorrowDate.getFullYear()+"-"+(tomorrowDate.getMonth()+1)+"-"+tomorrowDate.getDate();
 
-  function checkHorizontalVisibilityAndLoad() {
-    $('.channel-timeline').each(function(index, elem) {
-      if($(elem).visible(true) && $(elem).hasClass('init-loaded')) {
-        if($(elem).attr("title") != "now") {
-          var $firstItem = $(elem).find('span.time-entry:eq(1):not([title="now"])');
-          if($firstItem.visible(true)) {
-            prependProgram($(elem).data('channel-uuid'), $firstItem.data("start"));
-          }
-          var $lastItem = $(elem).find('span.time-entry:last:not([title="now"])');
-          if($lastItem.visible(true)) {
-            appendProgram($(elem).data('channel-uuid'), $lastItem.data("end"));
-          }
-        }
-      }
-    });
-  }
-
-  function prependProgram(channel, begin) {
-    console.log("begin : "+channel+" - "+begin);
-  }
-
-  function appendProgram(channel, end) {
-    console.log("end : "+channel+" - "+end);
+    var dayText = currentDayPrettyText;
+    if (currentDayText == nowText) dayText = "Aujourd'hui";
+    if (currentDayText == yesterdayText) dayText = "Hier";
+    if (currentDayText == tomorrowText) dayText = "Demain";
+    $container.find('.day-container').html(dayText);
   }
 
   window.addEventListener('scroll', myEfficientFn);
+  $('.container.timetable section')[0].addEventListener('scroll', myEfficientFn);
+
+  $('.container.timetable section')[0].addEventListener('scroll', myFunction);
 
   $('#timeEntryModalCenter').on('shown.bs.modal', function (event) {
     var $timeEntry = $(event.relatedTarget);
