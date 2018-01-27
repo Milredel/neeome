@@ -51,10 +51,10 @@ class FilbleuController {
                     var horaire2 = $(this).find('.passage1').text();
                 }
             
-                if (index == 1) {
+                if (index == 0) {
                     horairesPorteDeLoire = {horaire1 : horaire1,
                                             horaire2 : horaire2};
-                } else if (index == 0) {
+                } else if (index == 1) {
                     horairesStCyrMairie = {horaire1 : horaire1,
                                             horaire2 : horaire2};
                 }
