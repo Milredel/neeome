@@ -82,7 +82,7 @@ a {
       transition: background 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s;
       letter-spacing: 1px;
       border-bottom: none;
-      background: transparent; }
+      background: #000; }
       #mainNav.navbar-shrink, #subNav.navbar-shrink {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -539,14 +539,30 @@ input:checked + .slider:before {
 
 .timetable>header {
   margin-left: 10%;
-  height: 25px;
+  height: 30px;
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+  background-color: #000;
+}
+.timetable>header.with-navbar-shrink {
+  top: 61px;
+}
+.timetable .begin-hour-container {
+  float: left;
+}
+.timetable .end-hour-container {
+  float: right;
 }
 .timetable aside {
   width: 10%!important;
-  margin-top: 45px!important;
+  margin-top: 15px!important;
 }
 .timetable section {
   width: 90%!important;
+}
+.timetable section header {
+  height: 15px!important;
 }
 .timetable section header ul:first-child li {
   line-height: 23px!important;
@@ -683,6 +699,9 @@ input:checked + .slider:before {
   }
   .block-title.collapsable {
     display: block;
+  }
+  .timetable>header.with-navbar-shrink {
+    top: 57px;
   }
   .timetable aside {
     width: 10%!important;

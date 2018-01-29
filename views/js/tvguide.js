@@ -68,7 +68,7 @@
       };
   };
 
-  function getCurrentOffsetEpochTime() {
+  function getOffsetEpochTime(currentOffset) {
     var $container = $('.container.timetable');
     var $section = $container.find('section');
     var $nowEvent = $(".time-entry[title='now']:first");
@@ -79,14 +79,16 @@
     var now = new Date();
     var begin = new Date(now.getFullYear(), now.getMonth(), now.getDate()-2, 0, 0, 0);
     var beginEpoch = (begin.getTime()/1000).toFixed(0);
-    var currentOffset = Math.abs($section.find('time').offset().left - $section.offset().left - 200);
+    if (currentOffset == undefined) {
+      currentOffset = Math.abs($section.find('time').offset().left - $section.offset().left - 200);
+    }
     var toto = currentOffset*(nowEpoch-beginEpoch)/nowOffset;
     var currentEpoch = (parseFloat(toto)+parseFloat(beginEpoch)).toFixed(0);
     return {currentOffset : currentOffset, currentEpoch: currentEpoch};
   }
 
   var myEfficientFn = debounce(function() {
-    var currentEpoch = getCurrentOffsetEpochTime().currentEpoch;
+    var currentEpoch = getOffsetEpochTime().currentEpoch;
     
     $('.channel-timeline').each(function(index, elem) {
       if($(elem).visible(true)) {
@@ -98,8 +100,8 @@
   function myFunction() {
     var $container = $('.container.timetable');
     var $section = $container.find('section');
-    var currentEpoch = getCurrentOffsetEpochTime().currentEpoch;
-    var currentOffset = getCurrentOffsetEpochTime().currentOffset;
+    var currentEpoch = getOffsetEpochTime().currentEpoch;
+    var currentOffset = getOffsetEpochTime().currentOffset;
     var date = new Date(currentEpoch*1000);
     var currentDayText = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
     var weekday = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
@@ -120,6 +122,17 @@
     if (currentDayText == yesterdayText) dayText = "Hier";
     if (currentDayText == tomorrowText) dayText = "Demain";
     $container.find('.day-container').html(dayText);
+
+    var date = new Date((getOffsetEpochTime(currentOffset-200).currentEpoch)*1000);
+    $container.find('.begin-hour-container').html(prettyFormatHourMinute(date));
+    var date = new Date((getOffsetEpochTime(currentOffset-200+$section.width()).currentEpoch)*1000);
+    $container.find('.end-hour-container').html(prettyFormatHourMinute(date));
+  }
+
+  function prettyFormatHourMinute(date) {
+    var hours = date.getHours() < 10 ? "0"+date.getHours() : date.getHours();
+    var minutes = date.getMinutes() < 10 ? "0"+date.getMinutes() : date.getMinutes();
+    return hours+":"+minutes;
   }
 
   window.addEventListener('scroll', myEfficientFn);

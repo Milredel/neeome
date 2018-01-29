@@ -185,7 +185,11 @@ Timetable.Renderer = function(tt) {
 			function appendTimetableAside(container) {
 				var headerNode = container.appendChild(document.createElement('header'));
 				var spanNode = headerNode.appendChild(document.createElement('span'));
+				spanNode.className = "begin-hour-container";
+				var spanNode = headerNode.appendChild(document.createElement('span'));
 				spanNode.className = "day-container";
+				var spanNode = headerNode.appendChild(document.createElement('span'));
+				spanNode.className = "end-hour-container";
 				var asideNode = container.appendChild(document.createElement('aside'));
 				var asideULNode = asideNode.appendChild(document.createElement('ul'));
 				appendRowHeaders(asideULNode);
@@ -234,7 +238,7 @@ Timetable.Renderer = function(tt) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'time-label';
-					spanNode.textContent = prettyFormatHour(hour);
+					//spanNode.textContent = prettyFormatHour(hour);
 					if (++hour === 25) {
 						hour = 1;
 						looped += 1;

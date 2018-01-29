@@ -116,8 +116,10 @@
   var navbarCollapse = function() {
     if ($("#mainNav").offset().top > 100) {
       $("#mainNav, #subNav").addClass("navbar-shrink");
+      $(".container.timetable>header").addClass("with-navbar-shrink");
     } else {
       $("#mainNav, #subNav").removeClass("navbar-shrink");
+      $(".container.timetable>header").removeClass("with-navbar-shrink");
     }
   };
   // Collapse now if page is not at top

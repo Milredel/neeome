@@ -9,37 +9,48 @@
     var recipe = event.recipe;
     if (false == recipe.isPoweredOn) {
       $('#subNav .container#'+recipe.uid).remove();
+      if ($('#subNav .container').length == 0) {
+        $('#subNav').remove();
+      }
     } else {
-      var banner = "<div class='container' id='"+recipe.uid+"'\
-                      <a class='navbar-brand'>"+recipe.detail.devicename+"</a>\
-                      <div class='mycollapse'>\
-                        <ul class='navbar-nav ml-auto'>";
-      if (recipe.url.volumeDown != undefined) {
-        banner += "<li class='nav-item'>\
-                    <a data-link='"+recipe.url.volumeDown+"'>\
-                      <i class='fa fa-volume-down fa-lg'></i>\
+      var banner = "<div class='container active-recipe' data-recipe-id='"+recipe.url.distantSetPowerOnId+"' id='"+recipe.uid+"'>";
+      banner += "<a class='navbar-brand'>"+$.trim(recipe.detail.devicename)+"</a>";
+      banner += "<div class='mycollapse d-flex flex-row-reverse'>";
+      
+      banner += "<div class='p-2 col-2 col-md-1' id='off-item'>\
+                    <a data-link='"+recipe.url.distantSetPowerOff+"'>\
+                      <i class='fa fa-power-off fa-lg'></i>\
                     </a>\
-                  </li>";
-      }
-      if (recipe.url.muteToggle != undefined) {
-        banner += "<li class='nav-item'>\
-                    <a data-link='"+recipe.url.muteToggle+"'>\
-                      <i class='fa fa-volume-off fa-lg'></i>\
-                    </a>\
-                  </li>";
-      }
+                  </div>";
+
       if (recipe.url.volumeUp != undefined) {
-        banner += "<li class='nav-item'>\
+        banner += "<div class='p-2 col-2 col-md-1'>\
                     <a data-link='"+recipe.url.volumeUp+"'>\
                       <i class='fa fa-volume-up fa-lg'></i>\
                     </a>\
-                  </li>";
+                  </div>";
       }
-      banner += "<i class='fa fa-power-off fa-lg'></i>\
-                </ul>";
+      if (recipe.url.muteToggle != undefined) {
+        banner += "<div class='p-2 col-2 col-md-1'>\
+                    <a data-link='"+recipe.url.muteToggle+"'>\
+                      <i class='fa fa-volume-off fa-lg'></i>\
+                    </a>\
+                  </div>";
+      }
+      if (recipe.url.volumeDown != undefined) {
+        banner += "<div class='p-2 col-2 col-md-1'>\
+                    <a data-link='"+recipe.url.volumeDown+"'>\
+                      <i class='fa fa-volume-down fa-lg'></i>\
+                    </a>\
+                  </div>";
+      }
+      if($('#subNav').length == 0) {
+        var subNav = "<nav class='navbar navbar-expand-lg navbar-light fixed-top below-main-nav' id='subNav'></nav>";
+        $('#mainNav').after(subNav);
+      }
       $('#subNav').append(banner);
       $('a[data-link]').off('click').on('click', onClickAWithLink);
-      $('.container.active-recipe').off('click').on('click', onClickActiveRecipeBanner);
+      $('.active-recipe .navbar-brand').off('click').on('click', onClickActiveRecipeBanner);
     }
   });
 
@@ -47,6 +58,9 @@
 
   function onClickAWithLink() {
     if ($(this).hasClass("launch")) {
+      $.get( $(this).attr("data-link"), function() {
+        //ok, action performed
+      });
       var loader = "<i class='fa fa-spinner fa-spin fa-5x'></i>";
       $('#commands .sub-container').html(loader);
       $('html, body').animate({
