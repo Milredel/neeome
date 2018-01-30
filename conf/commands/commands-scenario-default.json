@@ -1,0 +1,55 @@
+[
+    {
+        "title": "Shortcuts",
+        "collapsable": false,
+        "default": "collapsed",
+        "lines": [
+            [
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT HDMI 4",
+                        "label": "FREEBOX"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT AUDIO",
+                        "label": "SHIELD TV"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT AUX 1",
+                        "label": "CHROMECAST"
+                    }
+                }
+            ],
+            [
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT CABLE/SATELLITE",
+                        "label": "BLU-RAY"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT DISC",
+                        "label": "CD"
+                    }
+                },
+                {
+                    "button": {
+                        "device_name": "Ampli",
+                        "button_name": "INPUT GAME",
+                        "label": "JEU VIDEO"
+                    }
+                }
+            ]
+        ]
+    }
+]

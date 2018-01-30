@@ -51,6 +51,7 @@
       $('#subNav').append(banner);
       $('a[data-link]').off('click').on('click', onClickAWithLink);
       $('.active-recipe .navbar-brand').off('click').on('click', onClickActiveRecipeBanner);
+      $('#subNav .active-recipe').last().find('.navbar-brand').click();
     }
   });
 
@@ -212,6 +213,10 @@
       green: match[2],
       blue: match[3]
     } : {};
+  }
+
+  if ($('#subNav .active-recipe').length > 0) {
+    $('#subNav .active-recipe').last().find('.navbar-brand').click();
   }
 
 })(jQuery); // End of use strict

@@ -2,6 +2,7 @@
 
 const Logger = SRV_DEPENDENCIES.logger;
 const neeoManager = SRV_DEPENDENCIES.neeoManager;
+const srvManager = SRV_DEPENDENCIES.srvManager;
 const commandConfigDir = BASE_DIR + '/conf/commands';
 
 class NeeoController {
@@ -136,7 +137,8 @@ class NeeoController {
     async loadCommandsForRecipe(req, res) {
         var recipe_id = req.params.id;
         if (SRV_VARS.data.recipeSteps[recipe_id] == undefined) {
-            throw new Error("unknown recipe id");
+            const result = UTILS.formatReturn(RESULT_MISSING, "unknown recipe id", true, {});
+            return srvManager.manageResult(res, result);
         }
         var recipeSteps = SRV_VARS.data.recipeSteps[recipe_id].steps;
         for (var i = 0; i < recipeSteps.length; i++) {
@@ -146,12 +148,16 @@ class NeeoController {
             }
         }
         if (deviceName == undefined) {
-            throw new Error("impossible to find controls in steps");
+            const result = UTILS.formatReturn(RESULT_MISSING, "impossible to find controls in steps", true, {});
+            return srvManager.manageResult(res, result);
         }
         
         var commandConfig = SRV_VARS.data.commandConfigs[deviceName];
-        return res.render('commands', { recipe_id: recipe_id, device_name: deviceName, config: commandConfig });
+        if (commandConfig == undefined) {
+            commandConfig = SRV_VARS.data.commandConfigs["default"];
+        }
         
+        return res.render('commands', { recipe_id: recipe_id, device_name: deviceName, config: commandConfig });
     }
 }
 
