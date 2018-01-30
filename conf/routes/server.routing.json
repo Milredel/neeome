@@ -8,5 +8,15 @@
         "binding": true,
         "type": "controller",
         "roles": []
+    },
+    {
+        "route": "/img/:img([a-z0-9\\-\\.]+)",
+        "method": "get",
+        "class": "Server",
+        "function": "displayImage",
+        "secure": false,
+        "binding": false,
+        "type": "controller",
+        "roles": []
     }
 ]

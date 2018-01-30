@@ -111,6 +111,20 @@ class ServerController {
         
         return res.render('main', { title: 'Your NeeOme', recipes: recipes, rooms: rooms, runningOnConfigSample: CONFIG.ISCONFIGSAMPLE, linkHome: linkHome, linkRecipes: linkRecipes, linkTVGuide: linkTVGuide, activeRecipes: activeRecipes, onlyOneRoomWithRecipes: onlyOneRoomWithRecipes, onlyRoomWithRecipes: onlyRoomWithRecipes, vars: vars })
     }
+
+    async displayImage(req, res) {
+        var file = req.params.img;
+        var options = {
+            root: BASE_DIR + '/views/img/',
+            dotfiles: 'deny',
+            headers: {
+                'x-timestamp': Date.now(),
+                'x-sent': true
+            }
+        };
+
+        return res.sendFile(file, options);
+    }
 }
 
 module.exports = ServerController;
