@@ -12,6 +12,10 @@
       if ($('#subNav .container').length == 0) {
         $('#subNav').remove();
       }
+      $('#commands .sub-container').html("");
+      $('html, body').animate({
+        scrollTop: (0)
+      }, 1000, "easeInOutExpo");
     } else {
       var banner = "<div class='container active-recipe' data-recipe-id='"+recipe.url.distantSetPowerOnId+"' id='"+recipe.uid+"'>";
       banner += "<a class='navbar-brand'>"+$.trim(recipe.detail.devicename)+"</a>";
@@ -58,7 +62,7 @@
   $('a[data-link]').on('click', onClickAWithLink);
 
   function onClickAWithLink() {
-    if ($(this).hasClass("launch")) {
+    /*if ($(this).hasClass("launch")) {
       $.get( $(this).attr("data-link"), function() {
         //ok, action performed
       });
@@ -76,7 +80,8 @@
       $.get( $(this).attr("data-link"), function() {
         //ok, action performed
       });
-    }
+    }*/
+    $.get( $(this).attr("data-link") );
   }
 
   function onClickBlockTitle() {

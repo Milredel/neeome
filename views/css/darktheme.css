@@ -304,6 +304,10 @@ body {
   top: 61px;
 }
 
+#subNav .navbar-brand {
+  font-size: 1.25rem;
+}
+
 #subNav .mycollapse {
   display: -ms-flexbox!important;
   display: flex!important;
@@ -680,6 +684,9 @@ input:checked + .slider:before {
   }
   #subNav .navbar-nav {
     flex-direction: row!important;
+  }
+  #subNav .navbar-brand {
+    font-size: 0.8rem;
   }
   #subNav .mycollapse ul {
     width: 60%;
