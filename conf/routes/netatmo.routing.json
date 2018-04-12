@@ -1,0 +1,12 @@
+[
+    {
+        "route": "/render/weather/",
+        "method": "get",
+        "class": "Netatmo",
+        "function": "displayWeather",
+        "secure": true,
+        "binding": true,
+        "type": "controller",
+        "roles": []
+    }
+]

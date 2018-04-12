@@ -45,6 +45,11 @@ SRV_DEPENDENCIES.logger.log('Chargement de la dépendance HueLightManager...');
 const HueLightManager = require(BASE_DIR + '/classes/HueLightManager');
 SRV_DEPENDENCIES.hueLightManager = new HueLightManager();
 
+// Loading Netatmo manager
+SRV_DEPENDENCIES.logger.log('Chargement de la dépendance Netatmo...');
+const NetatmoManager = require(BASE_DIR + '/classes/NetatmoManager');
+SRV_DEPENDENCIES.netatmoManager = new NetatmoManager();
+
 // Loading Freebox manager
 SRV_DEPENDENCIES.logger.log('Chargement de la dépendance FreeboxManager...');
 const FreeboxManager = require(BASE_DIR + '/classes/FreeboxManager');

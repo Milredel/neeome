@@ -14,6 +14,8 @@ html(lang='en')
                     a(class='navbar-brand js-scroll-trigger' href='') NeeOme
                     a(class="lightbulb-link" data-toggle="modal" data-target="#exampleModalCenter")
                         i.fa.fa-lightbulb-o.white.fa-lg
+                    a(class="weather-link" data-toggle="modal" data-target="#weatherModalCenter")
+                        i.fa.fa-sun-o.white.fa-lg
                     button(class='navbar-toggler navbar-toggler-right' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
                         | Menu 
                         i(class='fa fa-bars')
@@ -44,6 +46,17 @@ html(lang='en')
                     div.modal-content
                         div.modal-header
                             h5.modal-title#exampleModalLongTitle Lights
+                            button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        div.modal-body
+                            i.fa.fa-spinner.fa-spin.fa-5x
+                        div.modal-footer
+
+            div(class="modal fade" id="weatherModalCenter" tabindex="-1" role="dialog" aria-labelledby="weatherModalCenterTitle" aria-hidden="true")
+                div(class="modal-dialog modal-dialog-centered modal-lg" role="document")
+                    div.modal-content
+                        div.modal-header
+                            h5.modal-title#weatherModalLongTitle Weather
                             button(type="button" class="close" data-dismiss="modal" aria-label="Close")
                                 span(aria-hidden="true") &times;
                         div.modal-body

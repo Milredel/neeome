@@ -7,6 +7,7 @@ config.home = {};
 config.freebox = {};
 config.googlehome = {};
 config.hue = {};
+config.netatmo = {};
 
 //-------------------------------------------
 // NEEO Settings
@@ -168,6 +169,22 @@ config.freebox.channels_for_program = {
     83: "Série Club",
     90: "Mangas"
 }
+
+//-------------------------------------------
+// Netatmo Settings
+//-------------------------------------------
+
+//Netatmo client id
+config.netatmo.client_id = 'netatmoclientid';
+
+//Netatmo client secret
+config.netatmo.client_secret = 'netatmoclientsecret';
+
+//Netatmo username
+config.netatmo.username = 'netatmousername';
+
+//Netatmo password
+config.netatmo.password = 'netatmopassword';
 
 //-------------------------------------------
 

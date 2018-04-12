@@ -101,6 +101,13 @@
     } : {};
   }
 
+  $('#weatherModalCenter').on('shown.bs.modal', function () {
+    $.get('/render/weather/?token='+JsVars.private_token, function(data) {
+      $('#weatherModalCenter .modal-title').html("Weather");
+      $('#weatherModalCenter .modal-body').html(data);
+    });
+  })
+
   // Closes responsive menu when a scroll trigger link is clicked
   $('.js-scroll-trigger').click(function() {
     $('.navbar-collapse').collapse('hide');
