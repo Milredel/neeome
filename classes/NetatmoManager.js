@@ -19,12 +19,14 @@ class NetatmoManager {
     }
 
     async getStationData() {
-        return this.api.getStationsData(function(err, devices) {
-                if (err) throw new Error(err);
-                
-                console.log(devices);
-                return devices;
+        let api = this.api;
+        return new Promise(function(resolve,reject){
+            api.getStationsData(function(err, devices) {
+                if (err !== null) return reject(err);
+                resolve(devices);
             });
+        });
+        
     }
 }
 

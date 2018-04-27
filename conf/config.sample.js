@@ -186,6 +186,12 @@ config.netatmo.username = 'netatmousername';
 //Netatmo password
 config.netatmo.password = 'netatmopassword';
 
+//Netatmo indoor module 1 id
+config.netatmo.indoormodule_1_id = 'netatmoindoormodule1id';
+
+//Netatmo outdoor module id
+config.netatmo.outdoormodule_id = 'netatmooutdoormoduleid';
+
 //-------------------------------------------
 
 module.exports = config;
