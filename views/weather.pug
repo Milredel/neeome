@@ -4,11 +4,11 @@ ul.list-group
             span.float-left Intérieur
         div.container.p-2
             div.container.p-2
-                span Température : #{data.dashboard_data.Temperature}°C
+                span Température&nbsp;:&nbsp;#{data.dashboard_data.Temperature}°C
             div.container.p-2
-                span Humidité : #{data.dashboard_data.Humidity}% - 
-                span Bruit : #{data.dashboard_data.Noise}dB - 
-                span CO2 : #{data.dashboard_data.CO2}ppm
+                span Humidité&nbsp;:&nbsp;#{data.dashboard_data.Humidity}% -
+                span Bruit&nbsp;:&nbsp;#{data.dashboard_data.Noise}dB -
+                span CO2&nbsp;:&nbsp;#{data.dashboard_data.CO2}ppm
     each module in data.modules
         if module._id == config.moduleOutdoorId
             li(class="list-group-item d-flex flex-column justify-content-between align-items-center")
@@ -16,7 +16,7 @@ ul.list-group
                     span.float-left Extérieur
                 div.container.p-2
                     div.container.p-2
-                        span Température : #{module.dashboard_data.Temperature}°C
+                        span Température&nbsp;:&nbsp;#{module.dashboard_data.Temperature}°C
                     div.container.p-2
-                        span Humidité : #{module.dashboard_data.Humidity}% - 
-                        span Pression : #{data.dashboard_data.Pressure}mbar
+                        span Humidité : #{module.dashboard_data.Humidity}% -
+                        span Pression&nbsp;:&nbsp;#{data.dashboard_data.Pressure}mbar
