@@ -166,6 +166,22 @@
                 {
                     "button": {
                         "device_name": "Freebox",
+                        "button_name": "MENU",
+                        "label": "FREE"
+                    }
+                }
+            ]
+        ]
+    },
+    {
+        "title": "block4",
+        "collapsable": false,
+        "size": "display-5",
+        "lines": [
+            [
+                {
+                    "button": {
+                        "device_name": "Freebox",
                         "button_name": "FUNCTION RED"
                     }
                 },
@@ -225,7 +241,7 @@
         ]
     },
     {
-        "title": "block4",
+        "title": "block5",
         "collapsable": false,
         "lines": [
             [
