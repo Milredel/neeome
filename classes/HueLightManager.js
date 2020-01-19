@@ -28,20 +28,26 @@ class HueLightManager {
 
     async getAllLights() {
         await this.isAuthenticated();
-        
-        return this.client.lights.getAll()
-            .then(lights => {
-                for (var i = 0; i < lights.length; i++) {
-                    var light = lights[i];
-                    var name = light.name;
-                    lights[i].name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-                    lights[i].rgbcolor = UTILS.cie_to_rgb(light['xy'][0], light['xy'][1], light.brightness);
+
+        try {
+            var url = "http://" + CONFIG.hue.bridge_ip_address + "/api/" + CONFIG.hue.username +"/lights";
+            var response = await fetch(url);
+            let lights = await response.json();
+            let myLights = [];
+            for (var key of Object.keys(lights)) {
+                var light = lights[key];
+                light.id = key;
+                var name = light.name;
+                light.name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                if (light['state']['xy']) {
+                    light.rgbcolor = UTILS.cie_to_rgb(light['state']['xy'][0], light['state']['xy'][1], light['state'].bri);
                 }
-                return lights;
-            })
-            .catch(error => {
-                throw new Error("Cannot get all lights");
-            });
+                myLights.push(light);
+            }
+            return myLights;
+        } catch (e) {
+            throw new Error("Unable to retrieve all lights");
+        }
     }
 
     async updateLight(params) {

@@ -1,24 +1,24 @@
 ul.list-group
     each light in lights
-        li(class="light-item list-group-item d-flex flex-column justify-content-between align-items-center" id=light.id) 
+        li(class="light-item list-group-item d-flex flex-column justify-content-between align-items-center" id=light.id)
             div.container.p-2
                 span.float-left.lineheight-2 #{light.name}
                 div.float-right.badge
                     label.switch
                         - var id = "checkbbox_light_"+(light.id)
-                        if light.on == true
+                        if light.state.on == true
                             input(type="checkbox" id=id checked)
                         else
                             input(type="checkbox" id=id)
                         span.slider.round
-            -var displayClass = light.on ? "" : "hidden"
+            -var displayClass = light.state.on ? "" : "hidden"
             div(class="container p-2 brightness-container "+displayClass)
                 div.row
                     div.col-3.col-md-1.margintop--22
                         span.jscolor.color-light
                             i.fa.fa-eye.fa-3x
                     div.col-9.col-md-11
-                        - var mybrightness = light.brightness
-                        - var bgcolor = "rgb("+light.rgbcolor[0]+", "+light.rgbcolor[1]+", "+light.rgbcolor[2]+")"
+                        - var mybrightness = light.state.bri
+                        - var bgcolor = light.rgbcolor ? "rgb("+light.rgbcolor[0]+", "+light.rgbcolor[1]+", "+light.rgbcolor[2]+")" : "white"
                         - var id = "range_light_"+(light.id)
                         input(type="range" class="brightness-range-input" min="0" max="254" value=mybrightness id=id step="1" style="background-color:"+bgcolor+";")
